@@ -1,51 +1,113 @@
 :root {
-  --bg-dark: #0a0f1c;
-  --bg-light: #f5f7fa;
-
-  --text-dark: #ffffff;
-  --text-light: #111111;
-
-  --glow-dark: #3aa0ff;
-  --glow-light: #ffd84d;
-
   --transition: 0.3s ease;
-}
-
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  transition: var(--transition);
 }
 
 /* THEMES */
 body.dark {
-  background: radial-gradient(circle at top, #0f1a33, var(--bg-dark));
-  color: var(--text-dark);
-  --glow: var(--glow-dark);
+  --bg: #05070d;
+  --text: #ffffff;
+  --glow: #3aa0ff;
+  --card-bg: rgba(255,255,255,0.05);
+  --border: rgba(255,255,255,0.1);
 }
 
 body.light {
-  background: radial-gradient(circle at top, #ffffff, var(--bg-light));
-  color: var(--text-light);
-  --glow: var(--glow-light);
+  --bg: #f5f7fa;
+  --text: #111;
+  --glow: #ffd84d;
+  --card-bg: rgba(255,255,255,0.6);
+  --border: rgba(0,0,0,0.1);
 }
 
-/* LAYOUT */
-.container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+/* BASE */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: var(--transition);
+}
+
+/* BACKGROUND LAYERS */
+.bg-gradient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+
+  background:
+    radial-gradient(circle at 20% 30%, var(--glow), transparent 40%),
+    radial-gradient(circle at 80% 70%, var(--glow), transparent 40%);
+
+  filter: blur(120px);
+  opacity: 0.25;
+  animation: moveGradient 15s infinite alternate ease-in-out;
+}
+
+@keyframes moveGradient {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-50px, 50px); }
+}
+
+#particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* HEADER */
+.header {
+  position: sticky;
+  top: 0;
   text-align: center;
   padding: 20px;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
 }
 
 /* TITLE */
 .title {
   font-size: 3rem;
-  margin-bottom: 30px;
-  text-shadow: 0 0 20px var(--glow);
+  margin: 10px 0;
+  animation: glowPulse 3s infinite alternate;
+}
+
+@keyframes glowPulse {
+  from {
+    text-shadow: 0 0 10px var(--glow);
+  }
+  to {
+    text-shadow: 0 0 25px var(--glow), 0 0 50px var(--glow);
+  }
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.tab {
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: inherit;
+  transition: var(--transition);
+}
+
+.tab:hover {
+  box-shadow: 0 0 10px var(--glow);
+  border-color: var(--glow);
 }
 
 /* THEME BUTTON */
@@ -57,86 +119,48 @@ body.light {
   background: transparent;
   border: none;
   cursor: pointer;
-  color: inherit;
-  transition: transform 0.2s ease;
 }
 
-.theme-btn:hover {
-  transform: scale(1.2);
-}
-
-/* TABS */
-.tabs {
+/* SECTIONS */
+.section {
+  padding: 100px 20px;
   display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: 20px;
 }
 
-.tab {
-  padding: 10px 15px;
-  background: transparent;
-  border: 1px solid transparent;
-  cursor: pointer;
-  color: inherit;
+/* GLASS CARD */
+.card {
+  max-width: 800px;
+  width: 100%;
+  padding: 30px;
+  border-radius: 16px;
+
+  background: var(--card-bg);
+  backdrop-filter: blur(15px);
+  border: 1px solid var(--border);
+
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
   transition: var(--transition);
-  border-radius: 8px;
 }
 
-.tab:hover {
-  border-color: var(--glow);
-  box-shadow: 0 0 10px var(--glow);
+.card:hover {
+  box-shadow: 0 0 25px var(--glow);
 }
 
-.tab.active {
-  background: rgba(255,255,255,0.05);
-  box-shadow: 0 0 15px var(--glow);
+/* SCROLL */
+html {
+  scroll-behavior: smooth;
 }
 
-/* CONTENT */
-.content {
-  max-width: 700px;
-}
-
-.tab-content {
-  display: none;
-  animation: fadeIn 0.4s ease;
-}
-
-.tab-content.active {
-  display: block;
-}
-
-/* ANIMATIONS */
-.fade-in {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 0.8s ease forwards;
-}
-
-.delay-1 {
-  animation-delay: 0.3s;
-}
-
-.delay-2 {
-  animation-delay: 0.6s;
-}
-
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* LAYER FIX */
+header, main {
+  position: relative;
+  z-index: 1;
 }
 
 /* MOBILE */
 @media (max-width: 600px) {
   .title {
     font-size: 2rem;
-  }
-
-  .tabs {
-    gap: 10px;
   }
 }

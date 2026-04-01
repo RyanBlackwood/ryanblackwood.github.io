@@ -6,51 +6,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="dark">
 
-  <div class="container">
+  <!-- BACKGROUND -->
+  <canvas id="particles"></canvas>
+  <div class="bg-gradient"></div>
 
-    <!-- Theme Toggle -->
+  <!-- HEADER -->
+  <header class="header">
+    <h1 class="title">Ryan Blackwood</h1>
+
+    <div class="tabs">
+      <button class="tab" data-target="about">About</button>
+      <button class="tab" data-target="education">Education</button>
+      <button class="tab" data-target="work">Work</button>
+      <button class="tab" data-target="projects">Projects</button>
+      <button class="tab" data-target="homelab">Homelab</button>
+    </div>
+
     <button id="themeToggle" class="theme-btn">🌙</button>
+  </header>
 
-    <!-- Landing -->
-    <h1 class="title fade-in">Ryan Blackwood</h1>
+  <!-- MAIN -->
+  <main>
 
-    <!-- Tabs -->
-    <div class="tabs fade-in delay-1">
-      <button class="tab active" data-tab="about">About</button>
-      <button class="tab" data-tab="education">Education</button>
-      <button class="tab" data-tab="work">Work</button>
-      <button class="tab" data-tab="projects">Projects</button>
-      <button class="tab" data-tab="homelab">Homelab</button>
-    </div>
-
-    <!-- Content -->
-    <div class="content fade-in delay-2">
-
-      <div class="tab-content active" id="about">
-        <p>About me content goes here.</p>
+    <section id="about" class="section">
+      <div class="card">
+        <h2>About</h2>
+        <p>Your about content here.</p>
       </div>
+    </section>
 
-      <div class="tab-content" id="education">
-        <p>Education details go here.</p>
+    <section id="education" class="section">
+      <div class="card">
+        <h2>Education</h2>
+        <p>Your education details.</p>
       </div>
+    </section>
 
-      <div class="tab-content" id="work">
-        <p>Work history goes here.</p>
+    <section id="work" class="section">
+      <div class="card">
+        <h2>Work</h2>
+        <p>Your work history.</p>
       </div>
+    </section>
 
-      <div class="tab-content" id="projects">
-        <p>Projects go here.</p>
+    <section id="projects" class="section">
+      <div class="card">
+        <h2>Projects</h2>
+        <p>Your projects.</p>
       </div>
+    </section>
 
-      <div class="tab-content" id="homelab">
-        <p>Interactive homelab visualization coming soon.</p>
+    <section id="homelab" class="section">
+      <div class="card">
+        <h2>Homelab</h2>
+        <p>Interactive topology coming soon.</p>
       </div>
+    </section>
 
-    </div>
-
-  </div>
+  </main>
 
   <script src="script.js"></script>
 </body>

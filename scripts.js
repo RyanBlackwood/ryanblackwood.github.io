@@ -1,35 +1,89 @@
-const body = document.body;
-const toggleBtn = document.getElementById("themeToggle");
 const tabs = document.querySelectorAll(".tab");
-const contents = document.querySelectorAll(".tab-content");
+const toggleBtn = document.getElementById("themeToggle");
+const body = document.body;
 
-/* DEFAULT THEME */
-let currentTheme = "dark";
-body.classList.add("dark");
+/* SCROLL NAV */
+tabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    const target = document.getElementById(tab.dataset.target);
+
+    target.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  });
+});
 
 /* THEME TOGGLE */
+let isDark = true;
+
 toggleBtn.addEventListener("click", () => {
-  if (currentTheme === "dark") {
+  if (isDark) {
     body.classList.replace("dark", "light");
     toggleBtn.textContent = "☀️";
-    currentTheme = "light";
   } else {
     body.classList.replace("light", "dark");
     toggleBtn.textContent = "🌙";
-    currentTheme = "dark";
   }
+
+  isDark = !isDark;
 });
 
-/* TAB SWITCHING */
-tabs.forEach(tab => {
-  tab.addEventListener("click", () => {
+/* PARTICLES */
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
 
-    /* remove active */
-    tabs.forEach(t => t.classList.remove("active"));
-    contents.forEach(c => c.classList.remove("active"));
+let particlesArray = [];
 
-    /* activate clicked */
-    tab.classList.add("active");
-    document.getElementById(tab.dataset.tab).classList.add("active");
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.3;
+    this.speedY = (Math.random() - 0.5) * 0.3;
+  }
+
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+
+    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+  }
+
+  draw() {
+    ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--glow');
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function initParticles() {
+  particlesArray = [];
+  for (let i = 0; i < 120; i++) {
+    particlesArray.push(new Particle());
+  }
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  particlesArray.forEach(p => {
+    p.update();
+    p.draw();
   });
-});
+
+  requestAnimationFrame(animateParticles);
+}
+
+initParticles();
+animateParticles();
