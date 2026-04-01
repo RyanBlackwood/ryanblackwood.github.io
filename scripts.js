@@ -2,34 +2,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const tabs = document.querySelectorAll(".tab");
 const sections = document.querySelectorAll(".section");
+const underline = document.getElementById("tabUnderline");
 const toggleBtn = document.getElementById("themeToggle");
 const icon = document.getElementById("themeIcon");
 const body = document.body;
 
-/* SCROLL NAV */
+/* MOVE UNDERLINE */
+function moveUnderline(el) {
+  underline.style.width = el.offsetWidth + "px";
+  underline.style.left = el.offsetLeft + "px";
+}
+
+/* CLICK NAV */
 tabs.forEach(tab => {
   tab.addEventListener("click", () => {
     document.getElementById(tab.dataset.target)
       .scrollIntoView({ behavior: "smooth" });
+    moveUnderline(tab);
   });
 });
 
-/* ACTIVE TAB ON SCROLL */
+/* SCROLL ACTIVE TAB */
 window.addEventListener("scroll", () => {
   let current = "";
 
   sections.forEach(section => {
-    const top = section.offsetTop - 120;
-    if (scrollY >= top) current = section.id;
+    if (scrollY >= section.offsetTop - 150) {
+      current = section.id;
+    }
   });
 
   tabs.forEach(tab => {
     tab.classList.remove("active");
     if (tab.dataset.target === current) {
       tab.classList.add("active");
+      moveUnderline(tab);
     }
   });
 });
+
+/* INITIAL POSITION */
+moveUnderline(tabs[0]);
+tabs[0].classList.add("active");
 
 /* THEME TOGGLE */
 let isDark = true;
@@ -50,7 +64,7 @@ toggleBtn.addEventListener("click", () => {
   }, 200);
 });
 
-/* TYPING EFFECT */
+/* TYPING TEXT */
 const text = "Engineer | Mechanic | Tinkerer";
 let i = 0;
 function type() {
@@ -62,19 +76,18 @@ function type() {
 }
 type();
 
-/* SCROLL REVEAL */
+/* REVEAL */
 const reveals = document.querySelectorAll(".reveal");
 
-function revealOnScroll() {
+function reveal() {
   reveals.forEach(el => {
-    const top = el.getBoundingClientRect().top;
-    if (top < window.innerHeight - 100) {
+    if (el.getBoundingClientRect().top < window.innerHeight - 100) {
       el.classList.add("active");
     }
   });
 }
-window.addEventListener("scroll", revealOnScroll);
-revealOnScroll();
+window.addEventListener("scroll", reveal);
+reveal();
 
 /* PARTICLES */
 const canvas = document.getElementById("particles");

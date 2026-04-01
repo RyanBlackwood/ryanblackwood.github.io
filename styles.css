@@ -63,36 +63,66 @@ body {
 }
 
 .subtitle {
-  opacity: 0.8;
-  margin-top: -10px;
+  opacity: 0.85;
+  letter-spacing: 1px;
+  font-size: 0.95rem;
   min-height: 24px;
 }
 
+/* TITLE GLOW */
 @keyframes glowPulse {
   to { text-shadow: 0 0 25px var(--glow), 0 0 50px var(--glow); }
 }
 
 /* TABS */
 .tabs {
+  position: relative;
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-top: 10px;
+  gap: 20px;
+  margin-top: 15px;
 }
 
+/* TAB STYLE */
 .tab {
-  padding: 10px 15px;
-  border-radius: 8px;
-  background: transparent;
+  padding: 10px 5px;
   cursor: pointer;
+  position: relative;
+  color: var(--text);
   transition: var(--transition);
+  text-shadow: 0 0 5px transparent;
+}
+
+.tab:hover {
+  text-shadow: 0 0 10px var(--glow);
 }
 
 .tab.active {
-  box-shadow: 0 0 15px var(--glow);
+  text-shadow: 0 0 15px var(--glow), 0 0 30px var(--glow);
+}
+
+/* UNDERLINE */
+.tab-underline {
+  position: absolute;
+  bottom: -5px;
+  height: 2px;
+  width: 0;
+  background: var(--glow);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px var(--glow), 0 0 20px var(--glow);
 }
 
 /* THEME BUTTON */
+.theme-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 #themeIcon {
   transition: transform 0.5s, opacity 0.3s;
 }
@@ -100,15 +130,6 @@ body {
 .icon-animate {
   transform: rotate(180deg) scale(1.3);
   opacity: 0;
-}
-
-.theme-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
 }
 
 /* SECTIONS */
@@ -151,7 +172,7 @@ body {
   box-shadow: 0 0 30px var(--glow);
 }
 
-/* SCROLL REVEAL */
+/* REVEAL */
 .reveal {
   opacity: 0;
   transform: translateY(40px);
