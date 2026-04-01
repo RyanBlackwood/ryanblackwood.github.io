@@ -2,54 +2,45 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Ryan Blackwood</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ryan Blackwood</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
-
-<canvas id="particles"></canvas>
-<canvas id="attackMap"></canvas>
-<div class="bg-gradient"></div>
+<body class="dark">
 
 <header class="header">
   <h1 class="title">Ryan Blackwood</h1>
   <p class="subtitle">Engineer | Mechanic | Tinkerer</p>
 
-  <div class="tabs">
-    <div class="tab" data-target="about">About</div>
-    <div class="tab" data-target="education">Education</div>
-    <div class="tab" data-target="work">Work</div>
-    <div class="tab" data-target="skills">Skills</div>
-    <div class="tab" data-target="projects">Projects</div>
-    <div class="tab" data-target="homelab">Homelab</div>
-  </div>
+  <nav class="tabs">
+    <button class="tab" data-target="about">About</button>
+    <button class="tab" data-target="education">Education</button>
+    <button class="tab" data-target="work">Work</button>
+    <button class="tab" data-target="skills">Skills</button>
+    <button class="tab" data-target="projects">Projects</button>
+    <button class="tab" data-target="homelab">Homelab</button>
+  </nav>
 </header>
 
-<button id="themeToggle"><span id="themeIcon">🌙</span></button>
+<button id="themeToggle">🌙</button>
 
 <main>
-<section id="about" class="section"><div class="card"><h2>About</h2></div></section>
-<section id="education" class="section"><div class="card"><h2>Education</h2></div></section>
-<section id="work" class="section"><div class="card"><h2>Work</h2></div></section>
-<section id="skills" class="section"><div class="card"><h2>Skills</h2></div></section>
-<section id="projects" class="section"><div class="card"><h2>Projects</h2></div></section>
+  <section id="about" class="section"><div class="card"><h2>About</h2></div></section>
+  <section id="education" class="section"><div class="card"><h2>Education</h2></div></section>
+  <section id="work" class="section"><div class="card"><h2>Work</h2></div></section>
+  <section id="skills" class="section"><div class="card"><h2>Skills</h2></div></section>
+  <section id="projects" class="section"><div class="card"><h2>Projects</h2></div></section>
 
-<section id="homelab" class="section">
-  <div class="card">
-    <h2>Homelab</h2>
-    <div id="networkWrapper">
-      <div id="networkDiagram"></div>
+  <section id="homelab" class="section">
+    <div class="card">
+      <h2>Homelab</h2>
+      <div id="networkWrapper">
+        <div id="networkDiagram"></div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 </main>
-
-<div id="terminal">
-  <div id="terminalOutput"></div>
-  <input id="terminalInput" placeholder="type help...">
-</div>
 
 <script src="scripts.js"></script>
 </body>
