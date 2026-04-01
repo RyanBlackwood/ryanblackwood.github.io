@@ -6,12 +6,13 @@
 <title>Ryan Blackwood</title>
 <link rel="stylesheet" href="styles.css">
 </head>
-
 <body class="dark">
+
+<canvas id="particles"></canvas>
 
 <header class="header">
   <h1 class="title">Ryan Blackwood</h1>
-  <p class="subtitle">Engineer | Mechanic | Tinkerer</p>
+  <p class="subtitle" id="subtitle"></p>
 
   <nav class="tabs">
     <button class="tab" data-target="about">About</button>
@@ -41,6 +42,13 @@
     </div>
   </section>
 </main>
+
+<div id="terminal">
+  <div id="terminalOutput"></div>
+  <div id="terminalInputWrapper">
+    <span>&gt;</span><input id="terminalInput" placeholder="type help..." />
+  </div>
+</div>
 
 <script src="scripts.js"></script>
 </body>
