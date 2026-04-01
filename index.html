@@ -8,96 +8,137 @@
   <link rel="stylesheet" href="style.css">
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
-
 <body>
 
 <!-- 🔥 LANDING ANIMATION -->
 <div id="intro">
-  <h1 class="intro-text">Ryan Blackwood</h1>
+  <h1 class="intro-text">
+    <span class="letter">R</span><span class="letter">y</span><span class="letter">a</span><span class="letter">n</span>
+    <span class="space"></span>
+    <span class="letter">B</span><span class="letter">l</span><span class="letter">a</span><span class="letter">c</span>
+    <span class="letter">k</span><span class="letter">w</span><span class="letter">o</span><span class="letter">o</span>
+    <span class="letter">d</span>
+  </h1>
 </div>
 
 <div class="bg-glow"></div>
 
 <header class="hero">
-  <h1 class="gradient-text">Ryan Blackwood</h1>
-  <p class="hero-sub">
+  <h1 class="gradient-text reveal" data-aos="fade-up">Ryan Blackwood</h1>
+  <p class="hero-sub reveal" data-aos="fade-up" data-aos-delay="100">
     I design secure, scalable networks and build real-world infrastructure through my homelab.
   </p>
-  <div class="hero-buttons">
+  <div class="hero-buttons reveal" data-aos="fade-up" data-aos-delay="200">
     <a href="#projects" class="btn">View Projects</a>
     <a href="#homelab" class="btn-outline">View Home Lab</a>
   </div>
+
+  <!-- Scroll Down Indicator -->
+  <div id="scroll-indicator"><span>↓</span></div>
 </header>
+
+<!-- Dark Mode Toggle -->
+<button id="darkModeToggle">🌓</button>
 
 <nav>
   <a href="#about">About</a>
   <a href="#projects">Projects</a>
   <a href="#homelab">Home Lab</a>
   <a href="#experience">Experience</a>
+  <a href="#skills">Skills</a>
+  <a href="#certifications">Certifications</a>
   <a href="#education">Education</a>
 </nav>
 
 <main>
+  <section id="about" class="card reveal" data-aos="fade-up">
+    <h2>About Me</h2>
+    <p>
+      I build and manage segmented networks, secure VPN tunnels, and firewall systems.
+      My homelab mirrors enterprise environments where I test routing, VLAN isolation,
+      and real-world troubleshooting scenarios.
+    </p>
+  </section>
 
-<section id="about" class="card reveal" data-aos="fade-up">
-  <h2>About Me</h2>
-  <p>
-    I build and manage segmented networks, secure VPN tunnels, and firewall systems.
-    My homelab mirrors enterprise environments where I test routing, VLAN isolation,
-    and real-world troubleshooting scenarios.
-  </p>
-</section>
-
-<section id="projects">
-  <h2 class="reveal" data-aos="fade-up">Projects</h2>
-
-  <div class="grid">
-    <div class="card reveal glow-card" data-aos="fade-up">
-      <h3>OPNsense + WireGuard</h3>
-      <p>Secure tunnel between home lab and cloud VPC with routing + firewall rules.</p>
+  <section id="projects" class="reveal" data-aos="fade-up">
+    <h2>Projects</h2>
+    <div class="grid">
+      <div class="card glow-card reveal" data-aos="fade-up" data-aos-delay="50">
+        <h3>OPNsense + WireGuard</h3>
+        <p>Secure tunnel between home lab and cloud VPC with routing + firewall rules.</p>
+      </div>
+      <div class="card glow-card reveal" data-aos="fade-up" data-aos-delay="100">
+        <h3>VLAN Segmentation</h3>
+        <p>Isolated IoT, LAN, and guest traffic using managed switching and firewall rules.</p>
+      </div>
     </div>
+  </section>
 
-    <div class="card reveal glow-card" data-aos="fade-up">
-      <h3>VLAN Segmentation</h3>
-      <p>Isolated IoT, LAN, and guest traffic using managed switching and firewall rules.</p>
+  <section id="homelab" class="card reveal" data-aos="fade-up">
+    <h2>Home Lab</h2>
+    <p>Enterprise-style architecture with VLANs, firewall rules, and VPN routing.</p>
+    <div class="network-diagram">
+      <div class="node">Router</div>
+      <div class="node">Firewall</div>
+      <div class="node">Server</div>
+      <div class="node">Client</div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="homelab" class="card reveal" data-aos="fade-up">
-  <h2>Home Lab</h2>
-  <p>Enterprise-style architecture with VLANs, firewall rules, and VPN routing.</p>
-  <img src="network-diagram.png" alt="Network Diagram">
-</section>
-
-<section id="experience">
-  <h2 class="reveal" data-aos="fade-up">Experience</h2>
-  <div class="timeline">
-    <div class="timeline-item reveal">
-      <h3>IT / Networking Role</h3>
-      <span>2024 - Present</span>
-      <p>Managing infrastructure, troubleshooting networks, and optimizing systems.</p>
+  <section id="experience" class="reveal" data-aos="fade-up">
+    <h2>Experience</h2>
+    <div class="timeline">
+      <div class="timeline-item reveal" data-aos="fade-up">
+        <h3>IT / Networking Role</h3>
+        <span>2024 - Present</span>
+        <p>Managing infrastructure, troubleshooting networks, and optimizing systems.</p>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="education">
-  <h2 class="reveal" data-aos="fade-up">Education</h2>
-  <div class="timeline">
-    <div class="timeline-item reveal">
-      <h3>Networking Studies</h3>
-      <span>Ongoing</span>
-      <p>Focused on networking, systems, and security fundamentals.</p>
+  <section id="skills" class="card reveal" data-aos="fade-up">
+    <h2>Skills</h2>
+    <div class="skill">
+      <span>Routing & Switching</span>
+      <div class="bar"><div class="fill" data-fill="90%"></div></div>
     </div>
-  </div>
-</section>
+    <div class="skill">
+      <span>Firewall & VPN</span>
+      <div class="bar"><div class="fill" data-fill="85%"></div></div>
+    </div>
+    <div class="skill">
+      <span>VLAN / Segmentation</span>
+      <div class="bar"><div class="fill" data-fill="80%"></div></div>
+    </div>
+  </section>
 
+  <section id="certifications" class="card reveal" data-aos="fade-up">
+    <h2>Certifications</h2>
+    <div class="certs">
+      <div class="cert">CCNA
+        <span class="tooltip">Cisco Certified Network Associate</span>
+      </div>
+      <div class="cert">CompTIA Network+
+        <span class="tooltip">Networking fundamentals, routing & switching</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="education" class="reveal" data-aos="fade-up">
+    <h2>Education</h2>
+    <div class="timeline">
+      <div class="timeline-item reveal" data-aos="fade-up">
+        <h3>Networking Studies</h3>
+        <span>Ongoing</span>
+        <p>Focused on networking, systems, and security fundamentals.</p>
+      </div>
+    </div>
+  </section>
 </main>
 
 <button id="scrollTop">↑</button>
 
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script src="script.js"></script>
-
 </body>
 </html>
