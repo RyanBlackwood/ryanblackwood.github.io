@@ -51,7 +51,7 @@ toggleBtn.addEventListener("click", () => {
 });
 
 /* TYPING EFFECT */
-const text = "Network Engineer | Homelab Architect | Systems Builder";
+const text = "Engineer | Mechanic | Tinkerer";
 let i = 0;
 function type() {
   if (i < text.length) {
