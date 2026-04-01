@@ -1,0 +1,139 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #0d1117, #05080f);
+  color: #c9d1d9;
+  line-height: 1.6;
+  scroll-behavior: smooth;
+}
+
+/* Header */
+header {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #58a6ff, #00ffd5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 3rem;
+}
+
+header p {
+  color: #8b949e;
+  margin-top: 10px;
+}
+
+/* Nav */
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  padding: 15px;
+  background: rgba(22, 27, 34, 0.7);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid #30363d;
+}
+
+nav a {
+  color: #c9d1d9;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: #58a6ff;
+}
+
+/* Layout */
+main {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+section {
+  margin: 60px 0;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+/* Cards */
+.card {
+  background: rgba(22, 27, 34, 0.7);
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #30363d;
+  backdrop-filter: blur(12px);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: #58a6ff;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+/* Timeline */
+.timeline {
+  border-left: 2px solid #30363d;
+  padding-left: 20px;
+}
+
+.timeline-item {
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -11px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  background: #58a6ff;
+  border-radius: 50%;
+}
+
+/* Image */
+img {
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+img:hover {
+  transform: scale(1.02);
+}
+
+/* Scroll Button */
+#scrollTop {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  padding: 10px 15px;
+  border: none;
+  background: #58a6ff;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  display: none;
+}
