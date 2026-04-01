@@ -1,126 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ryan Blackwood | Network Engineer</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Ryan Blackwood</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="dark">
+<body>
 
-<header class="hero">
-  <h1 class="gradient-text intro-text">Ryan Blackwood</h1>
-  <p class="hero-sub reveal" data-delay="100">
-    I design secure, scalable networks and build real-world infrastructure through my homelab.
-  </p>
+  <div class="container">
 
-  <div class="hero-buttons reveal" data-delay="200">
-    <a href="#projects" class="btn">View Projects</a>
-    <span id="scroll-indicator">↓</span>
-    <a href="#homelab" class="btn-outline">View Home Lab</a>
+    <!-- Theme Toggle -->
+    <button id="themeToggle" class="theme-btn">🌙</button>
+
+    <!-- Landing -->
+    <h1 class="title fade-in">Ryan Blackwood</h1>
+
+    <!-- Tabs -->
+    <div class="tabs fade-in delay-1">
+      <button class="tab active" data-tab="about">About</button>
+      <button class="tab" data-tab="education">Education</button>
+      <button class="tab" data-tab="work">Work</button>
+      <button class="tab" data-tab="projects">Projects</button>
+      <button class="tab" data-tab="homelab">Homelab</button>
+    </div>
+
+    <!-- Content -->
+    <div class="content fade-in delay-2">
+
+      <div class="tab-content active" id="about">
+        <p>About me content goes here.</p>
+      </div>
+
+      <div class="tab-content" id="education">
+        <p>Education details go here.</p>
+      </div>
+
+      <div class="tab-content" id="work">
+        <p>Work history goes here.</p>
+      </div>
+
+      <div class="tab-content" id="projects">
+        <p>Projects go here.</p>
+      </div>
+
+      <div class="tab-content" id="homelab">
+        <p>Interactive homelab visualization coming soon.</p>
+      </div>
+
+    </div>
+
   </div>
-</header>
 
-<!-- Dark Mode Toggle -->
-<button id="darkModeToggle">🌙</button>
-
-<nav>
-  <a href="#about">About</a>
-  <a href="#projects">Projects</a>
-  <a href="#homelab">Home Lab</a>
-  <a href="#experience">Experience</a>
-  <a href="#skills">Skills</a>
-  <a href="#certifications">Certifications</a>
-  <a href="#education">Education</a>
-</nav>
-
-<main>
-  <section id="about" class="card reveal">
-    <h2>About Me</h2>
-    <p>I build and manage segmented networks, secure VPN tunnels, and firewall systems.
-      My homelab mirrors enterprise environments where I test routing, VLAN isolation,
-      and real-world troubleshooting scenarios.</p>
-  </section>
-
-  <section id="projects" class="reveal">
-    <h2>Projects</h2>
-    <div class="grid">
-      <div class="card glow-card reveal" data-delay="50">
-        <h3>OPNsense + WireGuard</h3>
-        <p>Secure tunnel between home lab and cloud VPC with routing + firewall rules.</p>
-      </div>
-      <div class="card glow-card reveal" data-delay="100">
-        <h3>VLAN Segmentation</h3>
-        <p>Isolated IoT, LAN, and guest traffic using managed switching and firewall rules.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="homelab" class="card reveal">
-    <h2>Home Lab</h2>
-    <p>Enterprise-style architecture with VLANs, firewall rules, and VPN routing.</p>
-    <div class="network-diagram">
-      <div class="node">Router</div>
-      <div class="node">Firewall</div>
-      <div class="node">Server</div>
-      <div class="node">Client</div>
-    </div>
-  </section>
-
-  <section id="experience" class="reveal">
-    <h2>Experience</h2>
-    <div class="timeline">
-      <div class="timeline-item reveal" data-delay="50">
-        <h3>IT / Networking Role</h3>
-        <span>2024 - Present</span>
-        <p>Managing infrastructure, troubleshooting networks, and optimizing systems.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="skills" class="card reveal">
-    <h2>Skills</h2>
-    <div class="skill">
-      <span>Routing & Switching</span>
-      <div class="bar"><div class="fill" data-fill="90%"></div></div>
-    </div>
-    <div class="skill">
-      <span>Firewall & VPN</span>
-      <div class="bar"><div class="fill" data-fill="85%"></div></div>
-    </div>
-    <div class="skill">
-      <span>VLAN / Segmentation</span>
-      <div class="bar"><div class="fill" data-fill="80%"></div></div>
-    </div>
-  </section>
-
-  <section id="certifications" class="card reveal">
-    <h2>Certifications</h2>
-    <div class="certs">
-      <div class="cert">CCNA
-        <span class="tooltip">Cisco Certified Network Associate</span>
-      </div>
-      <div class="cert">CompTIA Network+
-        <span class="tooltip">Networking fundamentals, routing & switching</span>
-      </div>
-    </div>
-  </section>
-
-  <section id="education" class="reveal">
-    <h2>Education</h2>
-    <div class="timeline">
-      <div class="timeline-item reveal" data-delay="50">
-        <h3>Networking Studies</h3>
-        <span>Ongoing</span>
-        <p>Focused on networking, systems, and security fundamentals.</p>
-      </div>
-    </div>
-  </section>
-</main>
-
-<button id="scrollTop">↑</button>
-<div class="bg-glow"></div>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
