@@ -13,21 +13,30 @@ function moveUnderline(el) {
   underline.style.left = el.offsetLeft + "px";
 }
 
-/* CLICK NAV */
+/* CLICK NAV WITH HEADER OFFSET */
 tabs.forEach(tab => {
   tab.addEventListener("click", () => {
-    document.getElementById(tab.dataset.target)
-      .scrollIntoView({ behavior: "smooth" });
+    const section = document.getElementById(tab.dataset.target);
+    const headerOffset = document.querySelector(".header").offsetHeight + 10; // 10px padding
+    const elementPosition = section.offsetTop;
+    const offsetPosition = elementPosition - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth"
+    });
+
     moveUnderline(tab);
   });
 });
 
-/* SCROLL ACTIVE TAB */
+/* SCROLL ACTIVE TAB WITH HEADER OFFSET */
 window.addEventListener("scroll", () => {
   let current = "";
 
   sections.forEach(section => {
-    if (scrollY >= section.offsetTop - 150) {
+    const sectionTop = section.offsetTop - document.querySelector(".header").offsetHeight - 15;
+    if (scrollY >= sectionTop) {
       current = section.id;
     }
   });
@@ -41,7 +50,7 @@ window.addEventListener("scroll", () => {
   });
 });
 
-/* INITIAL POSITION */
+/* INITIAL UNDERLINE */
 moveUnderline(tabs[0]);
 tabs[0].classList.add("active");
 
@@ -76,7 +85,7 @@ function type() {
 }
 type();
 
-/* REVEAL */
+/* SCROLL REVEAL */
 const reveals = document.querySelectorAll(".reveal");
 
 function reveal() {
