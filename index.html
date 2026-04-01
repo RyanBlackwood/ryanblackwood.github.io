@@ -6,15 +6,27 @@
   <title>Ryan Blackwood | Network Engineer</title>
 
   <link rel="stylesheet" href="style.css">
-
-  <!-- AOS Animation Library -->
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 </head>
+
 <body>
 
-<header>
+<!-- 🔥 LANDING ANIMATION -->
+<div id="intro">
+  <h1 class="intro-text">Ryan Blackwood</h1>
+</div>
+
+<div class="bg-glow"></div>
+
+<header class="hero">
   <h1 class="gradient-text">Ryan Blackwood</h1>
-  <p>Network Engineer | Homelab Architect</p>
+  <p class="hero-sub">
+    I design secure, scalable networks and build real-world infrastructure through my homelab.
+  </p>
+  <div class="hero-buttons">
+    <a href="#projects" class="btn">View Projects</a>
+    <a href="#homelab" class="btn-outline">View Home Lab</a>
+  </div>
 </header>
 
 <nav>
@@ -27,69 +39,55 @@
 
 <main>
 
-<section id="about" class="card" data-aos="fade-up">
+<section id="about" class="card reveal" data-aos="fade-up">
   <h2>About Me</h2>
   <p>
-    I design and build secure network environments with VLAN segmentation, VPN tunnels,
-    and firewall systems. My home lab replicates real-world infrastructure to test
-    enterprise-level networking concepts.
+    I build and manage segmented networks, secure VPN tunnels, and firewall systems.
+    My homelab mirrors enterprise environments where I test routing, VLAN isolation,
+    and real-world troubleshooting scenarios.
   </p>
 </section>
 
 <section id="projects">
-  <h2 data-aos="fade-up">Projects</h2>
+  <h2 class="reveal" data-aos="fade-up">Projects</h2>
 
   <div class="grid">
-    <div class="card" data-aos="fade-up" data-aos-delay="100">
+    <div class="card reveal glow-card" data-aos="fade-up">
       <h3>OPNsense + WireGuard</h3>
-      <p>Secure remote access between home lab and cloud VPC with full routing.</p>
+      <p>Secure tunnel between home lab and cloud VPC with routing + firewall rules.</p>
     </div>
 
-    <div class="card" data-aos="fade-up" data-aos-delay="200">
+    <div class="card reveal glow-card" data-aos="fade-up">
       <h3>VLAN Segmentation</h3>
-      <p>Isolated IoT, LAN, and guest networks using managed switching.</p>
+      <p>Isolated IoT, LAN, and guest traffic using managed switching and firewall rules.</p>
     </div>
   </div>
 </section>
 
-<section id="homelab" class="card" data-aos="fade-up">
+<section id="homelab" class="card reveal" data-aos="fade-up">
   <h2>Home Lab</h2>
-  <p>Enterprise-style network with VLANs, firewall rules, and VPN routing.</p>
+  <p>Enterprise-style architecture with VLANs, firewall rules, and VPN routing.</p>
   <img src="network-diagram.png" alt="Network Diagram">
 </section>
 
 <section id="experience">
-  <h2 data-aos="fade-up">Work Experience</h2>
-
+  <h2 class="reveal" data-aos="fade-up">Experience</h2>
   <div class="timeline">
-    <div class="timeline-item" data-aos="fade-right">
+    <div class="timeline-item reveal">
       <h3>IT / Networking Role</h3>
       <span>2024 - Present</span>
-      <p>Managing network systems, troubleshooting connectivity, and maintaining infrastructure.</p>
-    </div>
-
-    <div class="timeline-item" data-aos="fade-right" data-aos-delay="150">
-      <h3>Previous Role</h3>
-      <span>2022 - 2024</span>
-      <p>Supported hardware, system configurations, and technical troubleshooting.</p>
+      <p>Managing infrastructure, troubleshooting networks, and optimizing systems.</p>
     </div>
   </div>
 </section>
 
 <section id="education">
-  <h2 data-aos="fade-up">Education</h2>
-
+  <h2 class="reveal" data-aos="fade-up">Education</h2>
   <div class="timeline">
-    <div class="timeline-item" data-aos="fade-left">
-      <h3>School / Program</h3>
-      <span>Year - Year</span>
-      <p>Focused on networking, systems, and security.</p>
-    </div>
-
-    <div class="timeline-item" data-aos="fade-left" data-aos-delay="150">
-      <h3>Certifications</h3>
+    <div class="timeline-item reveal">
+      <h3>Networking Studies</h3>
       <span>Ongoing</span>
-      <p>Studying for networking certifications (CCNA, etc).</p>
+      <p>Focused on networking, systems, and security fundamentals.</p>
     </div>
   </div>
 </section>
@@ -98,7 +96,6 @@
 
 <button id="scrollTop">↑</button>
 
-<!-- Scripts -->
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script src="script.js"></script>
 
