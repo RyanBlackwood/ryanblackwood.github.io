@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Ryan Blackwood</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body class="dark">
 
@@ -15,6 +15,7 @@
   <!-- HEADER -->
   <header class="header">
     <h1 class="title">Ryan Blackwood</h1>
+    <p id="subtitle" class="subtitle"></p>
 
     <div class="tabs">
       <button class="tab" data-target="about">About</button>
@@ -24,47 +25,17 @@
       <button class="tab" data-target="homelab">Homelab</button>
     </div>
 
-    <button id="themeToggle" class="theme-btn">🌙</button>
+    <button id="themeToggle" class="theme-btn">
+      <span id="themeIcon">🌙</span>
+    </button>
   </header>
 
-  <!-- MAIN -->
   <main>
-
-    <section id="about" class="section">
-      <div class="card">
-        <h2>About</h2>
-        <p>Your about content here.</p>
-      </div>
-    </section>
-
-    <section id="education" class="section">
-      <div class="card">
-        <h2>Education</h2>
-        <p>Your education details.</p>
-      </div>
-    </section>
-
-    <section id="work" class="section">
-      <div class="card">
-        <h2>Work</h2>
-        <p>Your work history.</p>
-      </div>
-    </section>
-
-    <section id="projects" class="section">
-      <div class="card">
-        <h2>Projects</h2>
-        <p>Your projects.</p>
-      </div>
-    </section>
-
-    <section id="homelab" class="section">
-      <div class="card">
-        <h2>Homelab</h2>
-        <p>Interactive topology coming soon.</p>
-      </div>
-    </section>
-
+    <section id="about" class="section reveal"><div class="card"><h2>About</h2><p>Content</p></div></section>
+    <section id="education" class="section reveal"><div class="card"><h2>Education</h2><p>Content</p></div></section>
+    <section id="work" class="section reveal"><div class="card"><h2>Work</h2><p>Content</p></div></section>
+    <section id="projects" class="section reveal"><div class="card"><h2>Projects</h2><p>Content</p></div></section>
+    <section id="homelab" class="section reveal"><div class="card"><h2>Homelab</h2><p>Coming soon</p></div></section>
   </main>
 
   <script src="scripts.js"></script>
