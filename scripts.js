@@ -4,6 +4,7 @@ themeToggle.onclick = () => {
   document.body.classList.toggle("light");
   themeToggle.textContent = document.body.classList.contains("light") ? "☀️" : "🌙";
   updateParticleColor();
+  updateTerminalColor();
 };
 
 /* TERMINAL TOGGLE */
@@ -14,23 +15,24 @@ terminalToggle.onclick = () => {
 };
 
 /* SUBTITLE TYPING */
-const subtitle = "Engineer | Mechanic | Tinkerer";
+const subtitleText = "Engineer | Mechanic | Tinkerer";
 let subIndex = 0;
 function typeSubtitle() {
-  if(subIndex <= subtitle.length){
-    document.getElementById("subtitle").textContent = subtitle.slice(0, subIndex);
+  if(subIndex <= subtitleText.length){
+    document.getElementById("subtitle").textContent = subtitleText.slice(0, subIndex);
     subIndex++;
     setTimeout(typeSubtitle, 80);
   }
 }
 typeSubtitle();
 
-/* TABS SCROLL */
+/* TABS SCROLL UNDER HEADER */
 const tabs = document.querySelectorAll(".tab");
+const headerHeight = document.querySelector("header").offsetHeight;
 tabs.forEach(tab => {
   tab.onclick = () => {
     const el = document.getElementById(tab.dataset.target);
-    window.scrollTo({ top: el.offsetTop - 70, behavior: "smooth" });
+    window.scrollTo({ top: el.offsetTop - headerHeight, behavior: "smooth" });
   };
 });
 
@@ -38,7 +40,7 @@ window.addEventListener("scroll", () => {
   tabs.forEach(tab => {
     const sec = document.getElementById(tab.dataset.target);
     const r = sec.getBoundingClientRect();
-    r.top <= 80 && r.bottom > 80 ? tab.classList.add("active") : tab.classList.remove("active");
+    r.top <= headerHeight && r.bottom > headerHeight ? tab.classList.add("active") : tab.classList.remove("active");
   });
 });
 
@@ -68,6 +70,21 @@ function animateParticles(){
 }
 animateParticles();
 window.addEventListener("resize",()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight});
+
+/* TERMINAL */
+const out=document.getElementById("terminalOutput");
+const input=document.getElementById("terminalInput");
+function log(m){let i=0;const d=document.createElement("div");out.appendChild(d);function typeChar(){if(i<m.length){d.textContent+=m[i];i++;setTimeout(typeChar,20);}else{out.scrollTop=out.scrollHeight;}} typeChar();}
+function runCommand(cmd){
+  cmd=cmd.trim().toLowerCase();
+  if(cmd==="help") log("help, nodes, download resume, clear");
+  else if(cmd==="nodes") nodes.forEach(n=>log(`${n.id} - active packets: TBD`));
+  else if(cmd==="download resume"){const a=document.createElement("a");a.href="resume.pdf";a.download="Ryan_Blackwood_Resume.pdf";a.click();log("Downloading...");}
+  else if(cmd==="clear") out.innerHTML="";
+  else log("Unknown command");
+}
+input.addEventListener("keydown",e=>{if(e.key==="Enter"){runCommand(input.value);input.value="";}});
+function updateTerminalColor(){out.style.color=document.body.classList.contains("light")?"#fdd835":"#00ffcc";input.style.color=document.body.classList.contains("light")?"#fdd835":"#00ffcc";}
 
 /* HOMELAB NODES */
 const net=document.getElementById("networkDiagram");
@@ -99,17 +116,3 @@ function updateLinks(){
   requestAnimationFrame(updateLinks);
 }
 updateLinks();
-
-/* TERMINAL */
-const out=document.getElementById("terminalOutput");
-const input=document.getElementById("terminalInput");
-function log(m){const d=document.createElement("div");d.textContent=m;out.appendChild(d);out.scrollTop=out.scrollHeight;}
-input.addEventListener("keydown",e=>{if(e.key==="Enter"){runCommand(input.value);input.value="";}});
-function runCommand(cmd){
-  cmd=cmd.trim().toLowerCase();
-  if(cmd==="help") log("help, nodes, download resume, clear");
-  else if(cmd==="nodes") nodes.forEach(n=>log(`${n.id} - active packets: TBD`));
-  else if(cmd==="download resume"){const a=document.createElement("a");a.href="resume.pdf";a.download="Ryan_Blackwood_Resume.pdf";a.click();log("Downloading...");}
-  else if(cmd==="clear") out.innerHTML="";
-  else log("Unknown command");
-}
