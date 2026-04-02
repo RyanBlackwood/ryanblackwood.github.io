@@ -1,52 +1,198 @@
 :root {
-  --bg:#05070d;
-  --text:#fff;
-  --glow:#3aa0ff;
-  --card:rgba(255,255,255,0.05);
+  --bg-dark: #000;
+  --bg-light: #fff;
+  --glow-dark: #3aa0ff;
+  --glow-light: #fdd835;
+  --card-dark: rgba(0,0,0,0.6);
+  --card-light: rgba(255,255,255,0.6);
 }
-body.light {
-  --bg:#f5f7fa;
-  --text:#111;
-  --glow:#ffd84d;
-  --card:rgba(255,255,255,0.7);
-}
+
 body {
-  margin:0; font-family:-apple-system, BlinkMacSystemFont, sans-serif;
-  background:var(--bg); color:var(--text); overflow-x:hidden; transition:0.3s;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--bg-dark);
+  color: var(--glow-dark);
+  transition: all 0.3s ease;
+  overflow-x: hidden;
 }
 
-/* HEADER */
-.header { position:sticky; top:0; text-align:center; padding:10px 0; backdrop-filter:blur(10px); z-index:10; }
-.title { margin:5px 0; font-size:3rem; text-shadow:0 0 20px var(--glow); animation:fadeInTitle 2s ease forwards; }
-@keyframes fadeInTitle { 0%{opacity:0; transform:translateY(-20px);} 100%{opacity:1; transform:translateY(0);} }
-.subtitle { color:var(--glow); font-size:1.2rem; min-height:1.4em; letter-spacing:0.5px; }
+body.light {
+  background: var(--bg-light);
+  color: var(--glow-light);
+}
 
-/* TABS */
-.tabs { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:10px; }
-.tab { background:none; border:none; color:var(--text); padding:8px 12px; cursor:pointer; border-radius:6px; font-weight:bold; text-shadow:0 0 10px var(--glow); transition:0.2s; }
-.tab:hover, .tab.active { box-shadow:0 0 15px var(--glow); }
+canvas#particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
 
-/* THEME TOGGLE */
-#themeToggle { position:fixed; bottom:20px; right:20px; width:50px; height:50px; border:none; border-radius:50%; background:rgba(0,0,0,0.4); font-size:24px; cursor:pointer; z-index:20; box-shadow:0 0 15px var(--glow); transition:all 0.3s; }
-#themeToggle:hover { box-shadow:0 0 25px var(--glow); }
+header {
+  position: sticky;
+  top: 0;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  padding: 1rem 0;
+  z-index: 100;
+}
 
-/* SECTIONS */
-.section { padding:120px 20px; display:flex; justify-content:center; }
-.card { width:100%; max-width:800px; padding:30px; border-radius:16px; background:var(--card); backdrop-filter:blur(15px); box-shadow:0 0 20px rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); transition:0.3s; }
-.card:hover { transform:translateY(-5px) scale(1.01); box-shadow:0 0 30px var(--glow); }
+header h1 {
+  font-size: 3rem;
+  text-shadow: 0 0 10px var(--glow-dark);
+  transition: text-shadow 0.3s;
+}
 
-/* NETWORK */
-#networkWrapper { width:100%; height:500px; overflow:hidden; position:relative; touch-action: none; }
-#networkDiagram { width:1200px; height:600px; position:absolute; }
-.node { position:absolute; width:80px; height:50px; background:var(--card); border-radius:10px; border:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; font-size:10px; cursor:grab; box-shadow:0 0 10px var(--glow);}
-.link { position:absolute; height:2px; background:var(--glow); border-radius:1px; }
+body.light header h1 {
+  text-shadow: 0 0 10px var(--glow-light);
+}
 
-/* TERMINAL */
-#terminal { position:fixed; bottom:20px; left:20px; width:350px; max-height:300px; background:rgba(0,0,0,0.85); border-radius:12px; box-shadow:0 0 20px var(--glow); font-family:monospace; color:#00ff9f; display:flex; flex-direction:column; z-index:20; }
-#terminalOutput { flex:1; padding:10px; overflow:auto; font-size:13px; }
-#terminalInputWrapper { display:flex; align-items:center; padding:5px 10px; }
-#terminalInputWrapper span {margin-right:5px;}
-#terminalInput { flex:1; border:none; background:transparent; color:#00ff9f; font-family:monospace; outline:none; }
+header h2 {
+  font-size: 1.2rem;
+  font-weight: normal;
+  letter-spacing: 2px;
+}
 
-/* PARTICLES */
-canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; }
+nav {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.tab {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.tab.active {
+  border-color: var(--glow-dark);
+  text-shadow: 0 0 5px var(--glow-dark);
+}
+
+body.light .tab.active {
+  border-color: var(--glow-light);
+  text-shadow: 0 0 5px var(--glow-light);
+}
+
+button#themeToggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  border: none;
+  background: none;
+  font-size: 2rem;
+  cursor: pointer;
+  text-shadow: 0 0 10px var(--glow-dark);
+  transition: all 0.3s ease;
+}
+
+body.light button#themeToggle {
+  text-shadow: 0 0 10px var(--glow-light);
+}
+
+main {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.card.glass {
+  background: var(--card-dark);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  transition: all 0.3s ease;
+}
+
+body.light .card.glass {
+  background: var(--card-light);
+  box-shadow: 0 0 20px rgba(255,255,255,0.3);
+}
+
+.card.glass:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 30px rgba(58,160,255,0.7);
+}
+
+#networkWrapper {
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 15px;
+  background: rgba(0,0,0,0.2);
+}
+
+#networkDiagram {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.node {
+  position: absolute;
+  padding: 0.5rem 1rem;
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  border-radius: 10px;
+  text-align: center;
+  cursor: grab;
+  user-select: none;
+  box-shadow: 0 0 10px var(--glow-dark);
+  transition: box-shadow 0.3s ease;
+}
+
+body.light .node {
+  background: rgba(255,255,255,0.8);
+  color: #000;
+  box-shadow: 0 0 10px var(--glow-light);
+}
+
+.link {
+  position: absolute;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #00ffff, #ff00ff);
+  pointer-events: none;
+}
+
+#terminal {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 150px;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(10px);
+  color: #00ffcc;
+  font-family: monospace;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0,255,255,0.3);
+}
+
+#terminalOutput {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 0.5rem;
+}
+
+#terminalInput {
+  border: none;
+  outline: none;
+  background: rgba(0,0,0,0.3);
+  color: #00ffcc;
+  padding: 0.3rem;
+  border-radius: 5px;
+  font-family: monospace;
+}
