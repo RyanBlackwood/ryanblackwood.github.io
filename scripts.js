@@ -1,268 +1,163 @@
-/* ===============================
-   THEME & TERMINAL PERSISTENCE
-   =============================== */
+/* ---------- THEME ---------- */
 const themeToggle = document.getElementById("themeToggle");
-const terminalToggle = document.getElementById("terminalToggle");
-const terminal = document.getElementById("terminal");
-
-function saveSettings(){
-  localStorage.setItem("theme", document.body.classList.contains("light")?"light":"dark");
-  localStorage.setItem("terminalVisible", terminal.style.display!=="none");
-}
-
-function loadSettings(){
-  if(localStorage.getItem("theme")==="light") document.body.classList.add("light");
-  themeToggle.textContent = document.body.classList.contains("light")?"☀️":"🌙";
-  if(localStorage.getItem("terminalVisible")==="true") terminal.style.display="flex"; else terminal.style.display="none";
-  updateColors();
-}
-
-themeToggle.onclick = () => {
+themeToggle.onclick=()=>{
   document.body.classList.toggle("light");
-  themeToggle.textContent = document.body.classList.contains("light")?"☀️":"🌙";
-  updateColors();
-  saveSettings();
+  localStorage.setItem("theme",document.body.classList.contains("light"));
 };
+if(localStorage.getItem("theme")==="true") document.body.classList.add("light");
 
-terminalToggle.onclick = () => {
-  terminal.style.display = terminal.style.display==="none"?"flex":"none";
-  saveSettings();
-};
-
-/* ===============================
-   SUBTITLE TYPING & GLOW
-   =============================== */
-const subtitleText = "Engineer | Mechanic | Tinkerer";
-let subIndex = 0;
-function typeSubtitle() {
-  if(subIndex <= subtitleText.length){
-    document.getElementById("subtitle").textContent = subtitleText.slice(0, subIndex);
-    subIndex++;
-    setTimeout(typeSubtitle, 80);
+/* ---------- SUBTITLE ---------- */
+const sub="Engineer | Mechanic | Tinkerer";
+let i=0;
+(function type(){
+  if(i<=sub.length){
+    document.getElementById("subtitle").textContent=sub.slice(0,i++);
+    setTimeout(type,50);
   }
-}
-typeSubtitle();
+})();
 
-/* ===============================
-   TABS SCROLL & ACTIVE HIGHLIGHT
-   =============================== */
-const tabs = document.querySelectorAll(".tab");
-const headerHeight = document.querySelector("header").offsetHeight;
+/* ---------- NETWORK ---------- */
+const canvas=document.getElementById("networkCanvas");
+const ctx=canvas.getContext("2d");
+const wrapper=document.getElementById("networkWrapper");
+canvas.width=wrapper.offsetWidth;
+canvas.height=wrapper.offsetHeight;
 
-tabs.forEach(tab=>{
-  tab.onclick=()=>{
-    const el=document.getElementById(tab.dataset.target);
-    window.scrollTo({top: el.offsetTop - headerHeight, behavior:"smooth"});
+let nodes=[
+{id:"Internet",x:100,y:200,ip:"Public",status:"online"},
+{id:"Modem",x:250,y:120,ip:"ISP",status:"online"},
+{id:"Proxmox",x:450,y:260,ip:"10.0.0.2",status:"online"},
+{id:"OPNsense",x:650,y:120,ip:"10.0.0.1",status:"online"},
+{id:"Switch",x:850,y:250,ip:"10.0.0.4",status:"online"},
+{id:"LAN",x:1050,y:250,ip:"10.0.0.x",status:"online"}
+];
+
+let links=[
+{a:"Internet",b:"Modem",active:true,load:0.6,latency:20},
+{a:"Modem",b:"Proxmox",active:true,load:0.5,latency:10},
+{a:"Proxmox",b:"OPNsense",active:true,load:0.7,latency:5},
+{a:"OPNsense",b:"Switch",active:true,load:0.8,latency:2},
+{a:"Switch",b:"LAN",active:true,load:0.4,latency:3}
+];
+
+let nodesMap={};
+const container=document.getElementById("networkNodes");
+
+nodes.forEach(n=>{
+  const el=document.createElement("div");
+  el.className="node";
+  el.textContent=n.id;
+  el.style.left=n.x+"px";
+  el.style.top=n.y+"px";
+  container.appendChild(el);
+  n.el=el;
+  nodesMap[n.id]=n;
+
+  let drag=false,ox,oy;
+  el.onmousedown=e=>{drag=true;ox=e.clientX-n.x;oy=e.clientY-n.y;};
+  window.onmousemove=e=>{
+    if(!drag) return;
+    n.x=e.clientX-ox;
+    n.y=e.clientY-oy;
+    el.style.left=n.x+"px";
+    el.style.top=n.y+"px";
   };
+  window.onmouseup=()=>drag=false;
+
+  el.onclick=()=>log(`${n.id} | ${n.ip} | ${n.status}`);
 });
 
-window.addEventListener("scroll",()=>{
-  tabs.forEach(tab=>{
-    const sec=document.getElementById(tab.dataset.target);
-    const r=sec.getBoundingClientRect();
-    if(r.top<=headerHeight && r.bottom>headerHeight){
-      tab.classList.add("active");
-    }else tab.classList.remove("active");
-  });
-});
+/* ---------- PACKETS ---------- */
+let packets=[];
 
-/* ===============================
-   GLOW COLOR UPDATE
-   =============================== */
-function updateColors(){
-  const glowColor = document.body.classList.contains("light")?"#fdd835":"#3aa0ff";
-  document.getElementById("subtitle").style.textShadow=`0 0 8px ${glowColor}`;
-  tabs.forEach(tab=>{
-    if(tab.classList.contains("active")) tab.style.textShadow=`0 0 8px ${glowColor}`;
-    else tab.style.textShadow="none";
+function spawnPackets(){
+  links.filter(l=>l.active).forEach(l=>{
+    if(Math.random()>0.7){
+      packets.push({
+        link:l,
+        progress:Math.random(),
+        dir:Math.random()>0.5?1:-1,
+        speed:0.002+Math.random()*0.01
+      });
+    }
   });
-  particleColor = glowColor;
 }
+setInterval(spawnPackets,200);
 
-/* ===============================
-   BACKGROUND PARTICLES
-   =============================== */
-const canvas = document.getElementById("particles");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-const ctx = canvas.getContext("2d");
-let particleColor = "#3aa0ff";
-
-const particles=[];
-for(let i=0;i<120;i++) particles.push({
-  x:Math.random()*canvas.width,
-  y:Math.random()*canvas.height,
-  r:Math.random()*2+1,
-  dx:(Math.random()-0.5)*0.5,
-  dy:(Math.random()-0.5)*0.5
-});
-
-function animateParticles(){
+/* ---------- DRAW ---------- */
+function draw(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  particles.forEach(p=>{
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fillStyle=particleColor+"88";
-    ctx.fill();
-    p.x+=p.dx; p.y+=p.dy;
-    if(p.x>canvas.width)p.x=0;if(p.x<0)p.x=canvas.width;
-    if(p.y>canvas.height)p.y=0;if(p.y<0)p.y=canvas.height;
-  });
-  requestAnimationFrame(animateParticles);
-}
-animateParticles();
-window.addEventListener("resize",()=>{
-  canvas.width=window.innerWidth;
-  canvas.height=window.innerHeight;
-});
+  const glow=getComputedStyle(document.body).getPropertyValue('--glow');
 
-/* ===============================
-   TERMINAL FUNCTIONALITY
-   =============================== */
+  links.filter(l=>l.active).forEach(l=>{
+    const a=nodesMap[l.a];
+    const b=nodesMap[l.b];
+
+    ctx.beginPath();
+    ctx.moveTo(a.x+30,a.y+10);
+    ctx.lineTo(b.x+30,b.y+10);
+    ctx.strokeStyle=glow;
+    ctx.lineWidth=2+l.load*3;
+    ctx.shadowBlur=10;
+    ctx.shadowColor=glow;
+    ctx.stroke();
+  });
+
+  packets.forEach(p=>{
+    const a=nodesMap[p.link.a];
+    const b=nodesMap[p.link.b];
+    const t=p.dir===1?p.progress:1-p.progress;
+
+    const x=a.x+(b.x-a.x)*t;
+    const y=a.y+(b.y-a.y)*t;
+
+    ctx.beginPath();
+    ctx.arc(x,y,4,0,Math.PI*2);
+    ctx.fillStyle=glow;
+    ctx.fill();
+
+    p.progress+=p.speed;
+    if(p.progress>1) p.progress=0;
+  });
+
+  requestAnimationFrame(draw);
+}
+draw();
+
+/* ---------- TERMINAL ---------- */
 const out=document.getElementById("terminalOutput");
 const input=document.getElementById("terminalInput");
 
-function log(m){
-  let i=0;
-  const d=document.createElement("div");
-  out.appendChild(d);
-  function typeChar(){
-    if(i<m.length){
-      d.textContent+=m[i]; i++;
-      setTimeout(typeChar,20);
-    }else out.scrollTop=out.scrollHeight;
-  }
-  typeChar();
+function log(t){out.innerHTML+=t+"<br>";out.scrollTop=out.scrollHeight;}
+
+function disconnect(n){
+  links.forEach(l=>{if(l.a===n||l.b===n)l.active=false;});
 }
 
-function runCommand(cmd){
-  cmd=cmd.trim().toLowerCase();
-  if(cmd==="help") log("help, nodes, download resume, clear");
-  else if(cmd==="nodes") nodes.forEach(n=>log(`${n.id}`));
-  else if(cmd==="download resume"){
-    const a=document.createElement("a");
-    a.href="resume.pdf";
-    a.download="Ryan_Blackwood_Resume.pdf";
-    a.click();
-    log("Downloading...");
-  }
-  else if(cmd==="clear") out.innerHTML="";
-  else log("Unknown command");
+function connect(a,b){
+  links.push({a,b,active:true,load:0.5,latency:5});
+}
+
+function create(name){
+  const n={id:name,x:300,y:200,ip:"dynamic",status:"online"};
+  nodes.push(n);
+  nodesMap[name]=n;
+  log("created "+name);
 }
 
 input.addEventListener("keydown",e=>{
   if(e.key==="Enter"){
-    runCommand(input.value);
+    const cmd=input.value.toLowerCase();
+
+    if(cmd==="clear") out.innerHTML="";
+    else if(cmd.startsWith("disconnect ")) disconnect(cmd.split(" ")[1]);
+    else if(cmd.startsWith("connect ")) {
+      const [_,a,b]=cmd.split(" ");
+      connect(a,b);
+    }
+    else if(cmd.startsWith("create ")) create(cmd.split(" ")[1]);
+    else log("unknown");
+
     input.value="";
   }
 });
-
-/* ===============================
-   HOMELAB CANVAS + NODES + PACKETS
-   =============================== */
-const networkCanvas = document.getElementById("networkCanvas");
-const nctx = networkCanvas.getContext("2d");
-const nodesDiv = document.getElementById("networkNodes");
-const wrapper = document.getElementById("networkWrapper");
-networkCanvas.width = wrapper.offsetWidth;
-networkCanvas.height = wrapper.offsetHeight;
-
-/* Define nodes */
-let nodes=[
-  {id:"Internet",x:50,y:150},
-  {id:"Modem",x:200,y:150},
-  {id:"Proxmox",x:350,y:150},
-  {id:"OPNsense",x:500,y:150},
-  {id:"Switch",x:650,y:150},
-  {id:"PC",x:900,y:150}
-];
-let nodesMap={};
-
-/* Create HTML node divs */
-nodes.forEach(n=>{
-  const el=document.createElement("div");
-  el.className="node";
-  el.style.left=n.x+"px";
-  el.style.top=n.y+"px";
-  el.textContent=n.id;
-  nodesDiv.appendChild(el);
-  n.el=el;
-  nodesMap[n.id]=n;
-
-  /* Dragging */
-  let isDragging=false, offsetX=0, offsetY=0;
-  el.onmousedown = e => { isDragging=true; offsetX=e.clientX-n.x; offsetY=e.clientY-n.y; };
-  el.addEventListener("touchstart",e=>{ isDragging=true; offsetX=e.touches[0].clientX-n.x; offsetY=e.touches[0].clientY-n.y; });
-
-  const moveNode = e => {
-    if(!isDragging) return;
-    const clientX = e.clientX || e.touches[0].clientX;
-    const clientY = e.clientY || e.touches[0].clientY;
-    n.x = clientX - offsetX;
-    n.y = clientY - offsetY;
-    n.el.style.left = n.x+"px";
-    n.el.style.top = n.y+"px";
-  };
-  const endDrag = ()=>{ isDragging=false; };
-  window.addEventListener("mousemove",moveNode);
-  window.addEventListener("mouseup",endDrag);
-  window.addEventListener("touchmove",moveNode);
-  window.addEventListener("touchend",endDrag);
-});
-
-/* Define links */
-let linksData=[["Internet","Modem"],["Modem","Proxmox"],["Proxmox","OPNsense"],["OPNsense","Switch"],["Switch","PC"]];
-
-const packetsPerLink = 3;
-let packets = [];
-linksData.forEach(([a,b])=>{
-  for(let i=0;i<packetsPerLink;i++){
-    packets.push({ link:[a,b], progress: Math.random() });
-  }
-});
-
-/* Draw network + packets */
-function drawNetwork(){
-  nctx.clearRect(0,0,networkCanvas.width,networkCanvas.height);
-  const glowColor = document.body.classList.contains("light")?"#fdd835":"#3aa0ff";
-
-  /* Draw links */
-  linksData.forEach(([a,b])=>{
-    const n1=nodesMap[a], n2=nodesMap[b];
-    nctx.beginPath();
-    nctx.moveTo(n1.x+40,n1.y+15);
-    nctx.lineTo(n2.x+40,n2.y+15);
-    nctx.strokeStyle=glowColor;
-    nctx.lineWidth=4;
-    nctx.shadowColor=glowColor;
-    nctx.shadowBlur=8;
-    nctx.stroke();
-  });
-
-  /* Draw packets */
-  packets.forEach(p=>{
-    const [a,b]=p.link;
-    const n1=nodesMap[a], n2=nodesMap[b];
-    const px = n1.x + 40 + (n2.x - n1.x)*p.progress;
-    const py = n1.y + 15 + (n2.y - n1.y)*p.progress;
-    nctx.beginPath();
-    nctx.arc(px, py, 6, 0, Math.PI*2);
-    nctx.fillStyle=glowColor;
-    nctx.shadowColor=glowColor;
-    nctx.shadowBlur=6;
-    nctx.fill();
-    p.progress += 0.01;
-    if(p.progress>1) p.progress=0;
-  });
-
-  requestAnimationFrame(drawNetwork);
-}
-drawNetwork();
-
-/* Responsive canvas */
-window.addEventListener("resize",()=>{
-  networkCanvas.width = wrapper.offsetWidth;
-  networkCanvas.height = wrapper.offsetHeight;
-});
-
-loadSettings();
