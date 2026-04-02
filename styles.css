@@ -1,186 +1,63 @@
-:root {
-  --bg-dark: #000;
-  --bg-light: #eaeaea;
-  --glow-dark: #3aa0ff;
-  --glow-light: #fdd835;
-  --card-dark: rgba(0,0,0,0.6);
-  --card-light: rgba(250,250,250,0.6);
-  --text-dark: #fff;
-  --text-light: #111;
+/* Reset & Body */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:monospace;background:#000;color:#fff;overflow-x:hidden;transition:background 0.3s,color 0.3s;position:relative;}
+body.light{background:#f1f1f1;color:#000;}
+
+/* Particles canvas */
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;}
+
+/* Header */
+header{position:sticky;top:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);z-index:10;padding:1rem;text-align:center;}
+body.light header{background:rgba(255,255,255,0.6);}
+h1#name{font-size:3rem;margin-bottom:0.5rem;text-shadow:0 0 8px #3aa0ff;}
+body.light h1#name{text-shadow:0 0 8px #fdd835;}
+h2#subtitle{font-size:1.5rem;margin-bottom:1rem;text-shadow:0 0 8px #3aa0ff;}
+body.light h2#subtitle{text-shadow:0 0 8px #fdd835;}
+
+/* Tabs */
+#tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;}
+.tab{padding:0.5rem 1rem;cursor:pointer;transition:text-shadow 0.3s;}
+.tab.active{font-weight:bold;}
+body.light .tab.active{text-shadow:0 0 8px #fdd835;}
+body:not(.light) .tab.active{text-shadow:0 0 8px #3aa0ff;}
+
+/* Sections */
+section.glass-card{
+  margin:2rem auto;max-width:900px;padding:2rem;border-radius:12px;
+  background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);
+  box-shadow:0 0 20px rgba(0,0,0,0.3);
+  transition:background 0.3s,box-shadow 0.3s,color 0.3s;
+}
+body.light section.glass-card{
+  background:rgba(255,255,255,0.3);
+  box-shadow:0 0 20px rgba(0,0,0,0.2);
 }
 
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: var(--bg-dark);
-  color: var(--text-dark);
-  transition: all 0.3s ease;
+/* Network Wrapper */
+#networkWrapper{position:relative;height:400px;margin-top:1rem;overflow:hidden;}
+#networkNodes .node{
+  position:absolute;padding:0.5rem 1rem;background:rgba(0,0,0,0.7);
+  color:#fff;border-radius:6px;cursor:grab;user-select:none;box-shadow:0 0 8px #3aa0ff;
 }
-
-body.light {
-  background: var(--bg-light);
-  color: var(--text-light);
+body.light #networkNodes .node{
+  background:rgba(255,255,255,0.7);color:#000;box-shadow:0 0 8px #fdd835;
 }
-
-canvas#particles, #networkCanvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
-
-header {
-  position: sticky;
-  top: 0;
-  background: rgba(0,0,0,0.3);
-  backdrop-filter: blur(10px);
-  text-align: center;
-  padding: 0.5rem 0;
-  z-index: 100;
-}
-
-header h1 {
-  font-size: 3rem;
-  color: var(--glow-dark);
-  text-shadow: 0 0 15px var(--glow-dark);
-  transition: all 0.3s;
-}
-
-body.light header h1 {
-  color: var(--glow-light);
-  text-shadow: 0 0 15px var(--glow-light);
-}
-
-header h2 {
-  font-size: 1.2rem;
-  font-weight: normal;
-  letter-spacing: 2px;
-  color: inherit;
-  text-shadow: 0 0 5px var(--glow-dark);
-  transition: all 0.3s;
-}
-
-body.light header h2 {
-  text-shadow: 0 0 5px var(--glow-light);
-}
-
-nav {
-  margin-top: 0.5rem;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.tab {
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s;
-  color: inherit;
-}
-
-.tab.active {
-  text-shadow: 0 0 8px var(--glow-dark);
-  border-color: var(--glow-dark);
-}
-
-body.light .tab.active {
-  text-shadow: 0 0 8px var(--glow-light);
-  border-color: var(--glow-light);
-}
-
-/* Sticky buttons */
-#controls {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  z-index: 1000;
-}
-
-#controls button {
-  border: none;
-  background: none;
-  font-size: 2rem;
-  cursor: pointer;
-  text-shadow: 0 0 10px var(--glow-dark);
-  transition: all 0.3s ease;
-}
-
-body.light #controls button {
-  text-shadow: 0 0 10px var(--glow-light);
-}
-
-main {
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-}
-
-.card.glass {
-  background: var(--card-dark);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 15px;
-  padding: 2rem;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
-  transition: all 0.3s ease;
-}
-
-body.light .card.glass {
-  background: var(--card-light);
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
-}
-
-.card.glass:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 30px rgba(58,160,255,0.7);
-}
+#networkCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:-1;}
 
 /* Terminal */
-#terminal {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 180px;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(12px);
-  color: #00ffcc;
-  font-family: monospace;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  box-shadow: 0 0 30px rgba(0,255,255,0.3);
-  z-index: 999;
+#terminal{
+  position:sticky;bottom:0;display:flex;flex-direction:column;width:100%;
+  max-height:200px;background:rgba(0,0,0,0.8);overflow:auto;padding:0.5rem;color:#0f0;
+  font-family:monospace;box-shadow:0 0 12px #3aa0ff;transition:all 0.3s;
 }
+body.light #terminal{background:rgba(255,255,255,0.9);color:#444;box-shadow:0 0 12px #fdd835;}
+#terminalOutput{flex:1;overflow-y:auto;}
+#terminalInput{background:transparent;border:none;color:inherit;outline:none;padding:0.5rem;font-family:monospace;width:100%;}
 
-body.light #terminal {
-  background: rgba(255,255,255,0.6);
-  color: #fdd835;
+/* Toggle Buttons */
+#themeToggle,#terminalToggle{
+  position:fixed;bottom:1rem;right:1rem;z-index:20;font-size:2rem;background:transparent;border:none;cursor:pointer;
+  color:#3aa0ff;text-shadow:0 0 8px #3aa0ff;transition:color 0.3s,text-shadow 0.3s;
 }
-
-#terminalOutput {
-  flex: 1;
-  overflow-y: auto;
-  margin-bottom: 0.5rem;
-}
-
-#terminalInput {
-  border: none;
-  outline: none;
-  background: rgba(0,0,0,0.3);
-  color: inherit;
-  padding: 0.3rem;
-  border-radius: 5px;
-  font-family: monospace;
-}
-
-body.light #terminalInput {
-  background: rgba(255,255,255,0.3);
-}
+body.light #themeToggle,body.light #terminalToggle{color:#fdd835;text-shadow:0 0 8px #fdd835;}
+#terminalToggle{bottom:5rem;}

@@ -6,49 +6,43 @@
 <title>Ryan Blackwood Portfolio</title>
 <link rel="stylesheet" href="styles.css">
 </head>
-<body class="dark">
-
+<body>
 <canvas id="particles"></canvas>
 
 <header>
   <h1 id="name">Ryan Blackwood</h1>
   <h2 id="subtitle"></h2>
-  <nav>
+  <nav id="tabs">
     <div class="tab" data-target="about">About</div>
     <div class="tab" data-target="education">Education</div>
-    <div class="tab" data-target="work">Work</div>
+    <div class="tab" data-target="work">Work History</div>
     <div class="tab" data-target="skills">Skills</div>
     <div class="tab" data-target="projects">Projects</div>
     <div class="tab" data-target="homelab">Homelab</div>
   </nav>
 </header>
 
-<!-- Sticky toggle buttons -->
-<div id="controls">
-  <button id="terminalToggle">💻</button>
-  <button id="themeToggle">🌙</button>
-</div>
-
 <main>
-  <section id="about" class="card glass">About me content...</section>
-  <section id="education" class="card glass">Education content...</section>
-  <section id="work" class="card glass">Work history...</section>
-  <section id="skills" class="card glass">Skills content...</section>
-  <section id="projects" class="card glass">Projects content...</section>
+  <section id="about" class="glass-card">About content...</section>
+  <section id="education" class="glass-card">Education content...</section>
+  <section id="work" class="glass-card">Work content...</section>
+  <section id="skills" class="glass-card">Skills content...</section>
+  <section id="projects" class="glass-card">Projects content...</section>
 
-  <section id="homelab" class="card glass">
+  <section id="homelab" class="glass-card">
     <div id="networkWrapper">
-      <canvas id="networkCanvas"></canvas>
       <div id="networkNodes"></div>
+      <canvas id="networkCanvas"></canvas>
+    </div>
+    <div id="terminal">
+      <div id="terminalOutput"></div>
+      <input type="text" id="terminalInput" placeholder="Enter command...">
     </div>
   </section>
 </main>
 
-<!-- Terminal pinned to footer -->
-<div id="terminal">
-  <div id="terminalOutput"></div>
-  <input type="text" id="terminalInput" placeholder="Enter command...">
-</div>
+<button id="terminalToggle">💻</button>
+<button id="themeToggle">🌙</button>
 
 <script src="scripts.js"></script>
 </body>
