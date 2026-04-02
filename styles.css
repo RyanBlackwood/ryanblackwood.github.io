@@ -31,32 +31,51 @@ body.light header {
   background: rgba(255,255,255,0.6);
 }
 
-/* ===== HEADER NAME FIX ===== */
+/* ===== HEADER NAME (DUAL-THEME GRADIENT) ===== */
 h1 {
   font-size: clamp(2rem,5vw,3rem);
   font-weight: 700;
 
-  background: linear-gradient(90deg,#fff,var(--glow),#fff);
+  background: linear-gradient(
+    90deg,
+    #ffffff,
+    var(--glow),
+    #ffffff
+  );
   background-size: 200%;
+
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  animation: shine 6s linear infinite;
+  animation: shine 5s linear infinite;
+
+  text-shadow:
+    0 0 10px var(--glow),
+    0 0 20px rgba(0,0,0,0.6);
 }
 
+/* ===== LIGHT MODE (MATCH ENERGY, NOT REMOVE EFFECT) ===== */
 body.light h1 {
-  background: none;
-  -webkit-text-fill-color: #111;
-  color: #111;
+  background: linear-gradient(
+    90deg,
+    #111111,
+    var(--glow),
+    #111111
+  );
+  background-size: 200%;
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 
   text-shadow:
     0 0 8px var(--glow),
     0 0 12px rgba(255,255,255,0.6);
 }
 
+/* ===== SHINE ANIMATION ===== */
 @keyframes shine {
-  0% {background-position:200%;}
-  100% {background-position:-200%;}
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
 }
 
 /* SUBTITLE */
