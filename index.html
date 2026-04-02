@@ -11,16 +11,20 @@
 <canvas id="particles"></canvas>
 
 <header>
-  <h1>Ryan Blackwood</h1>
-  <h2 id="subtitle"></h2>
+  <div class="header-inner">
+    <h1>Ryan Blackwood</h1>
+    <h2 id="subtitle"></h2>
 
-  <nav>
-    <div class="tab" data-target="about">About</div>
-    <div class="tab" data-target="work">Work</div>
-    <div class="tab" data-target="skills">Skills</div>
-    <div class="tab" data-target="projects">Projects</div>
-    <div class="tab" data-target="homelab">Homelab</div>
-  </nav>
+    <nav>
+      <div class="tab" data-target="about">About</div>
+      <div class="tab" data-target="work">Work</div>
+      <div class="tab" data-target="skills">Skills</div>
+      <div class="tab" data-target="projects">Projects</div>
+      <div class="tab" data-target="homelab">Homelab</div>
+    </nav>
+
+    <button id="themeToggle" aria-label="Toggle theme">🌙</button>
+  </div>
 </header>
 
 <main>
@@ -32,7 +36,6 @@
   <section id="homelab" class="glass-card">
     <div id="networkWrapper">
       <canvas id="networkCanvas"></canvas>
-      <div id="networkNodes"></div>
     </div>
 
     <div id="terminal">
@@ -42,8 +45,7 @@
   </section>
 </main>
 
-<button id="terminalToggle">💻</button>
-<button id="themeToggle">🌙</button>
+<button id="terminalToggle" aria-label="Open terminal">💻</button>
 
 <script src="scripts.js"></script>
 </body>
