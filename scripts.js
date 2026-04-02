@@ -15,34 +15,6 @@ let i=0;
   }
 })();
 
-/* PARTICLES */
-const pCanvas=document.getElementById("particles");
-const pCtx=pCanvas.getContext("2d");
-pCanvas.width=innerWidth;
-pCanvas.height=innerHeight;
-
-let dots=Array.from({length:80},()=>({
-  x:Math.random()*pCanvas.width,
-  y:Math.random()*pCanvas.height,
-  r:Math.random()*2
-}));
-
-(function drawParticles(){
-  pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
-  const glow=getComputedStyle(document.body).getPropertyValue('--glow');
-
-  dots.forEach(d=>{
-    pCtx.beginPath();
-    pCtx.arc(d.x,d.y,d.r,0,Math.PI*2);
-    pCtx.fillStyle=glow+"55";
-    pCtx.fill();
-    d.y+=0.2;
-    if(d.y>pCanvas.height)d.y=0;
-  });
-
-  requestAnimationFrame(drawParticles);
-})();
-
 /* =========================
    CANVAS SETUP
 ========================= */
@@ -56,6 +28,42 @@ function resizeCanvas(){
 }
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
+
+/* ===== PARTICLES ===== */
+const pCanvas = document.getElementById("particles");
+const pCtx = pCanvas.getContext("2d");
+
+function resizeParticles(){
+  pCanvas.width = window.innerWidth;
+  pCanvas.height = window.innerHeight;
+}
+resizeParticles();
+window.addEventListener("resize", resizeParticles);
+
+let particles = Array.from({length:80},()=>({
+  x:Math.random()*pCanvas.width,
+  y:Math.random()*pCanvas.height,
+  r:Math.random()*2
+}));
+
+function drawParticles(){
+  pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+
+  const glow = getComputedStyle(document.body).getPropertyValue('--glow');
+
+  particles.forEach(p=>{
+    pCtx.beginPath();
+    pCtx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    pCtx.fillStyle = glow + "55";
+    pCtx.fill();
+
+    p.y += 0.2;
+    if(p.y > pCanvas.height) p.y = 0;
+  });
+
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
 
 /* =========================
    CAMERA (WORLD → SCREEN)
