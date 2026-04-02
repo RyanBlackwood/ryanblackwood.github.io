@@ -23,7 +23,11 @@
   </nav>
 </header>
 
-<button id="themeToggle">🌙</button>
+<!-- Sticky toggle buttons -->
+<div id="controls">
+  <button id="terminalToggle">💻</button>
+  <button id="themeToggle">🌙</button>
+</div>
 
 <main>
   <section id="about" class="card glass">About me content...</section>
@@ -36,12 +40,14 @@
     <div id="networkWrapper">
       <div id="networkDiagram"></div>
     </div>
-    <div id="terminal">
-      <div id="terminalOutput"></div>
-      <input type="text" id="terminalInput" placeholder="Enter command...">
-    </div>
   </section>
 </main>
+
+<!-- Terminal pinned to footer -->
+<div id="terminal">
+  <div id="terminalOutput"></div>
+  <input type="text" id="terminalInput" placeholder="Enter command...">
+</div>
 
 <script src="scripts.js"></script>
 </body>

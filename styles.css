@@ -1,6 +1,6 @@
 :root {
   --bg-dark: #000;
-  --bg-light: #fff;
+  --bg-light: #f0f0f5;
   --glow-dark: #3aa0ff;
   --glow-light: #fdd835;
   --card-dark: rgba(0,0,0,0.6);
@@ -13,7 +13,6 @@ body {
   background: var(--bg-dark);
   color: var(--glow-dark);
   transition: all 0.3s ease;
-  overflow-x: hidden;
 }
 
 body.light {
@@ -34,28 +33,31 @@ header {
   background: rgba(0,0,0,0.3);
   backdrop-filter: blur(10px);
   text-align: center;
-  padding: 1rem 0;
+  padding: 0.5rem 0;
   z-index: 100;
 }
 
 header h1 {
   font-size: 3rem;
-  text-shadow: 0 0 10px var(--glow-dark);
-  transition: text-shadow 0.3s;
+  color: var(--glow-dark);
+  text-shadow: 0 0 15px var(--glow-dark);
+  transition: all 0.3s;
 }
 
 body.light header h1 {
-  text-shadow: 0 0 10px var(--glow-light);
+  color: var(--glow-light);
+  text-shadow: 0 0 15px var(--glow-light);
 }
 
 header h2 {
   font-size: 1.2rem;
   font-weight: normal;
   letter-spacing: 2px;
+  color: inherit;
 }
 
 nav {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -79,11 +81,18 @@ body.light .tab.active {
   text-shadow: 0 0 5px var(--glow-light);
 }
 
-button#themeToggle {
+/* Sticky buttons */
+#controls {
   position: fixed;
   bottom: 20px;
   right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   z-index: 1000;
+}
+
+#controls button {
   border: none;
   background: none;
   font-size: 2rem;
@@ -92,7 +101,7 @@ button#themeToggle {
   transition: all 0.3s ease;
 }
 
-body.light button#themeToggle {
+body.light #controls button {
   text-shadow: 0 0 10px var(--glow-light);
 }
 
@@ -105,7 +114,7 @@ main {
 
 .card.glass {
   background: var(--card-dark);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   border: 1px solid rgba(255,255,255,0.2);
   border-radius: 15px;
   padding: 2rem;
@@ -115,7 +124,7 @@ main {
 
 body.light .card.glass {
   background: var(--card-light);
-  box-shadow: 0 0 20px rgba(255,255,255,0.3);
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
 
 .card.glass:hover {
@@ -123,6 +132,7 @@ body.light .card.glass {
   box-shadow: 0 0 30px rgba(58,160,255,0.7);
 }
 
+/* Network diagram */
 #networkWrapper {
   position: relative;
   height: 400px;
@@ -164,21 +174,23 @@ body.light .node {
   pointer-events: none;
 }
 
+/* Terminal */
 #terminal {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 150px;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(10px);
+  height: 180px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(12px);
   color: #00ffcc;
   font-family: monospace;
   padding: 1rem;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(0,255,255,0.3);
+  box-shadow: 0 0 30px rgba(0,255,255,0.3);
+  z-index: 999;
 }
 
 #terminalOutput {
@@ -195,4 +207,14 @@ body.light .node {
   padding: 0.3rem;
   border-radius: 5px;
   font-family: monospace;
+}
+
+body.light #terminal {
+  background: rgba(255,255,255,0.6);
+  color: #ffdd33;
+}
+
+body.light #terminalInput {
+  color: #ffdd33;
+  background: rgba(255,255,255,0.3);
 }
