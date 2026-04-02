@@ -65,6 +65,84 @@ function drawParticles(){
 }
 drawParticles();
 
+/* PARTICLES */
+const pCanvas = document.getElementById("particles");
+const pCtx = pCanvas.getContext("2d");
+
+function resizeParticles(){
+  pCanvas.width = window.innerWidth;
+  pCanvas.height = window.innerHeight;
+}
+resizeParticles();
+window.addEventListener("resize", resizeParticles);
+
+let particles = Array.from({length:80},()=>({
+  x:Math.random()*pCanvas.width,
+  y:Math.random()*pCanvas.height,
+  r:Math.random()*2
+}));
+
+function drawParticles(){
+  pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+
+  const glow = getComputedStyle(document.body).getPropertyValue('--glow');
+
+  particles.forEach(p=>{
+    pCtx.beginPath();
+    pCtx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    pCtx.fillStyle = glow + "55";
+    pCtx.fill();
+
+    p.y += 0.2;
+    if(p.y > pCanvas.height) p.y = 0;
+  });
+
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+const tabs = document.querySelectorAll(".tab");
+const header = document.querySelector("header");
+
+tabs.forEach(tab=>{
+  tab.onclick = ()=>{
+    const section = document.getElementById(tab.dataset.target);
+
+    window.scrollTo({
+      top: section.offsetTop - header.offsetHeight - 10,
+      behavior: "smooth"
+    });
+  };
+});
+
+/* ACTIVE TAB ON SCROLL */
+window.addEventListener("scroll", ()=>{
+  tabs.forEach(tab=>{
+    const section = document.getElementById(tab.dataset.target);
+    const rect = section.getBoundingClientRect();
+
+    if(rect.top <= 120 && rect.bottom > 120){
+      tab.classList.add("active");
+    } else {
+      tab.classList.remove("active");
+    }
+  });
+});
+
+/* HEADER */
+header {
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(12px);
+  background: rgba(0,0,0,0.4);
+  text-align: center;
+  padding: 1rem;
+  z-index: 10;
+}
+body.light header {
+  background: rgba(255,255,255,0.6);
+}
+
 /* =========================
    CAMERA (WORLD → SCREEN)
 ========================= */
@@ -357,3 +435,117 @@ function draw(){
   requestAnimationFrame(draw);
 }
 draw();
+
+/* TERMINAL SYSTEM */
+const terminal = document.getElementById("terminal");
+const terminalToggle = document.getElementById("terminalToggle");
+const output = document.getElementById("terminalOutput");
+const input = document.getElementById("terminalInput");
+
+/* TOGGLE */
+terminalToggle.onclick = () => {
+  terminal.classList.toggle("active");
+  localStorage.setItem("terminal", terminal.classList.contains("active"));
+};
+
+/* LOAD STATE */
+if(localStorage.getItem("terminal")==="true"){
+  terminal.classList.add("active");
+}
+
+/* LOG WITH TYPE EFFECT */
+function log(text){
+  const line = document.createElement("div");
+  output.appendChild(line);
+
+  let i = 0;
+  function type(){
+    if(i < text.length){
+      line.textContent += text[i++];
+      setTimeout(type, 15);
+    } else {
+      output.scrollTop = output.scrollHeight;
+    }
+  }
+  type();
+}
+
+/* COMMANDS */
+function runCommand(cmd){
+  const c = cmd.toLowerCase().trim();
+
+  if(c === "help"){
+    log("Commands: help, nodes, create <name>, connect <a> <b>, disconnect <node>, clear");
+  }
+
+  else if(c === "nodes"){
+    nodes.forEach(n => log(n.id));
+  }
+
+  else if(c.startsWith("create ")){
+    const name = c.split(" ")[1];
+    nodes.push({id:name, x:200, y:200});
+    log("Created node: " + name);
+  }
+
+  else if(c.startsWith("disconnect ")){
+    const name = c.split(" ")[1];
+    links.forEach(l=>{
+      if(l.a===name || l.b===name) l.active=false;
+    });
+    log("Disconnected: " + name);
+  }
+
+  else if(c.startsWith("connect ")){
+    const [_,a,b] = c.split(" ");
+    links.push({a,b,load:0.5});
+    log(`Connected ${a} → ${b}`);
+  }
+
+  else if(c === "clear"){
+    output.innerHTML = "";
+  }
+
+  else{
+    log("Unknown command");
+  }
+}
+
+/* INPUT */
+input.addEventListener("keydown", e=>{
+  if(e.key === "Enter"){
+    runCommand(input.value);
+    input.value = "";
+  }
+});
+
+const pCanvas = document.getElementById("particles");
+const pCtx = pCanvas.getContext("2d");
+
+function resizeParticles(){
+  pCanvas.width = window.innerWidth;
+  pCanvas.height = window.innerHeight;
+}
+resizeParticles();
+window.addEventListener("resize", resizeParticles);
+
+let particles = Array.from({length:80},()=>({
+  x:Math.random()*pCanvas.width,
+  y:Math.random()*pCanvas.height,
+  r:Math.random()*2
+}));
+
+function drawParticles(){
+  pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+
+  const glow = getComputedStyle(document.body).getPropertyValue('--glow');
+
+  particles.forEach(p=>{
+    pCtx.beginPath();
+    pCtx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    pCtx.fillStyle = glow + "55";
+    pCtx.fill();
+
+    p.y += 0.2;
+    if(p.y > pCanvas.height) p.y = 0;
+  });
