@@ -22,7 +22,7 @@ body.light {
   color: var(--text-light);
 }
 
-canvas#particles {
+canvas#particles, #networkCanvas {
   position: fixed;
   top: 0;
   left: 0;
@@ -56,6 +56,12 @@ header h2 {
   font-weight: normal;
   letter-spacing: 2px;
   color: inherit;
+  text-shadow: 0 0 5px var(--glow-dark);
+  transition: all 0.3s;
+}
+
+body.light header h2 {
+  text-shadow: 0 0 5px var(--glow-light);
 }
 
 nav {
@@ -72,7 +78,6 @@ nav {
   border-bottom: 2px solid transparent;
   transition: all 0.2s;
   color: inherit;
-  text-shadow: 0 0 3px rgba(0,0,0,0.3);
 }
 
 .tab.active {
@@ -134,48 +139,6 @@ body.light .card.glass {
 .card.glass:hover {
   transform: translateY(-5px);
   box-shadow: 0 0 30px rgba(58,160,255,0.7);
-}
-
-/* Network diagram */
-#networkWrapper {
-  position: relative;
-  height: 400px;
-  overflow: hidden;
-  border-radius: 15px;
-  background: rgba(0,0,0,0.2);
-}
-
-#networkDiagram {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-.node {
-  position: absolute;
-  padding: 0.5rem 1rem;
-  background: rgba(0,0,0,0.8);
-  color: #fff;
-  border-radius: 10px;
-  text-align: center;
-  cursor: grab;
-  user-select: none;
-  box-shadow: 0 0 10px var(--glow-dark);
-  transition: box-shadow 0.3s ease;
-}
-
-body.light .node {
-  background: rgba(250,250,250,0.8);
-  color: #111;
-  box-shadow: 0 0 10px var(--glow-light);
-}
-
-.link {
-  position: absolute;
-  height: 3px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, #00ffff, #ff00ff);
-  pointer-events: none;
 }
 
 /* Terminal */

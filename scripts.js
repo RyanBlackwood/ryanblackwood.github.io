@@ -3,8 +3,7 @@ const themeToggle = document.getElementById("themeToggle");
 themeToggle.onclick = () => {
   document.body.classList.toggle("light");
   themeToggle.textContent = document.body.classList.contains("light") ? "☀️" : "🌙";
-  updateParticleColor();
-  updateTerminalColor();
+  updateColors();
 };
 
 /* TERMINAL TOGGLE */
@@ -14,7 +13,7 @@ terminalToggle.onclick = () => {
   terminal.style.display = terminal.style.display === "none" ? "flex" : "none";
 };
 
-/* SUBTITLE TYPING */
+/* SUBTITLE TYPING WITH GLOW */
 const subtitleText = "Engineer | Mechanic | Tinkerer";
 let subIndex = 0;
 function typeSubtitle() {
@@ -50,7 +49,11 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 const ctx = canvas.getContext("2d");
 let particleColor = "#3aa0ff";
-function updateParticleColor(){particleColor = document.body.classList.contains("light") ? "#fdd835" : "#3aa0ff";}
+function updateColors(){ 
+  particleColor = document.body.classList.contains("light") ? "#fdd835" : "#3aa0ff";
+  document.getElementById("subtitle").style.textShadow = document.body.classList.contains("light") ? "0 0 8px #fdd835" : "0 0 8px #3aa0ff";
+}
+updateColors();
 const particles=[];
 for(let i=0;i<120;i++) particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.5,dy:(Math.random()-0.5)*0.5});
 function animateParticles(){
@@ -84,35 +87,66 @@ function runCommand(cmd){
   else log("Unknown command");
 }
 input.addEventListener("keydown",e=>{if(e.key==="Enter"){runCommand(input.value);input.value="";}});
-function updateTerminalColor(){out.style.color=document.body.classList.contains("light")?"#fdd835":"#00ffcc";input.style.color=document.body.classList.contains("light")?"#fdd835":"#00ffcc";}
 
-/* HOMELAB NODES */
-const net=document.getElementById("networkDiagram");
-let nodes=[{id:"Internet",x:50,y:250},{id:"Modem",x:200,y:250},{id:"Proxmox",x:350,y:250},{id:"OPNsense",x:500,y:250},{id:"Switch",x:650,y:250},{id:"PC",x:900,y:200},{id:"Minecraft",x:350,y:150},{id:"Rust",x:320,y:150},{id:"Valheim",x:380,y:150}];
+/* HOMELAB CANVAS DIAGRAM */
+const networkCanvas = document.getElementById("networkCanvas");
+const nctx = networkCanvas.getContext("2d");
+const nodesDiv = document.getElementById("networkNodes");
+networkCanvas.width = networkCanvas.offsetWidth;
+networkCanvas.height = networkCanvas.offsetHeight;
+
+/* Define nodes */
+let nodes=[
+  {id:"Internet",x:50,y:200},
+  {id:"Modem",x:200,y:200},
+  {id:"Proxmox",x:350,y:200},
+  {id:"OPNsense",x:500,y:200},
+  {id:"Switch",x:650,y:200},
+  {id:"PC",x:900,y:150},
+  {id:"Minecraft",x:350,y:100},
+  {id:"Rust",x:380,y:100},
+  {id:"Valheim",x:320,y:100}
+];
 let nodesMap={};
 nodes.forEach(n=>{
-  const el=document.createElement("div");el.className="node";el.style.left=n.x+"px";el.style.top=n.y+"px";el.textContent=n.id;net.appendChild(el);n.el=el;nodesMap[n.id]=n;
+  const el=document.createElement("div");
+  el.className="node";
+  el.style.left=n.x+"px";
+  el.style.top=n.y+"px";
+  el.textContent=n.id;
+  nodesDiv.appendChild(el);
+  n.el=el;
+  nodesMap[n.id]=n;
+
   let isDragging=false,offsetX=0,offsetY=0;
-  el.onmousedown=e=>{isDragging=true;offsetX=e.clientX-el.getBoundingClientRect().left;offsetY=e.clientY-el.getBoundingClientRect().top;};
-  el.addEventListener("touchstart",e=>{isDragging=true;offsetX=e.touches[0].clientX-el.getBoundingClientRect().left;offsetY=e.touches[0].clientY-el.getBoundingClientRect().top;});
+  el.onmousedown=e=>{isDragging=true;offsetX=e.clientX-n.x;offsetY=e.clientY-n.y;};
+  el.addEventListener("touchstart",e=>{isDragging=true;offsetX=e.touches[0].clientX-n.x;offsetY=e.touches[0].clientY-n.y;});
   const moveNode=e=>{if(!isDragging)return;const clientX=e.clientX||e.touches[0].clientX,clientY=e.clientY||e.touches[0].clientY;n.x=clientX-offsetX;n.y=clientY-offsetY;n.el.style.left=n.x+"px";n.el.style.top=n.y+"px";};
   const endDrag=()=>{isDragging=false;};
-  window.addEventListener("mousemove",moveNode);window.addEventListener("mouseup",endDrag);
-  window.addEventListener("touchmove",moveNode);window.addEventListener("touchend",endDrag);
+  window.addEventListener("mousemove",moveNode);
+  window.addEventListener("mouseup",endDrag);
+  window.addEventListener("touchmove",moveNode);
+  window.addEventListener("touchend",endDrag);
 });
 
-/* LINKS */
+/* Links */
 let linksData=[["Internet","Modem"],["Modem","Proxmox"],["Proxmox","OPNsense"],["OPNsense","Switch"],["Switch","PC"],["Proxmox","Minecraft"],["Proxmox","Rust"],["Proxmox","Valheim"]];
-let links=linksData.map(([a,b])=>{const el=document.createElement("div");el.className="link";net.appendChild(el);return {a:nodesMap[a],b:nodesMap[b],el};});
 
-/* UPDATE LINKS */
-function updateLinks(){
-  links.forEach(l=>{
-    const x1=l.a.x+40,y1=l.a.y+25,x2=l.b.x+40,y2=l.b.y+25,dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy),ang=Math.atan2(dy,dx)*180/Math.PI;
-    l.el.style.width=len+"px";
-    l.el.style.left=x1+"px";l.el.style.top=y1+"px";
-    l.el.style.transform=`rotate(${ang}deg)`;
+function drawNetwork(){
+  nctx.clearRect(0,0,networkCanvas.width,networkCanvas.height);
+  const glowColor=document.body.classList.contains("light")?"#fdd835":"#3aa0ff";
+  linksData.forEach(([a,b])=>{
+    const n1=nodesMap[a], n2=nodesMap[b];
+    nctx.beginPath();
+    nctx.moveTo(n1.x+40,n1.y+20);
+    nctx.lineTo(n2.x+40,n2.y+20);
+    nctx.strokeStyle=glowColor;
+    nctx.lineWidth=4;
+    nctx.shadowColor=glowColor;
+    nctx.shadowBlur=8;
+    nctx.stroke();
   });
-  requestAnimationFrame(updateLinks);
+  requestAnimationFrame(drawNetwork);
 }
-updateLinks();
+drawNetwork();
+window.addEventListener("resize",()=>{networkCanvas.width=networkCanvas.offsetWidth; networkCanvas.height=networkCanvas.offsetHeight});
