@@ -264,7 +264,6 @@ const NetworkSystem = (() => {
 
     p.t+=p.speed;
     if(p.t>1) p.t=0;
-    draw();
   });
 
   /* =========================
@@ -308,7 +307,7 @@ const NetworkSystem = (() => {
 
   requestAnimationFrame(draw);
 }
-
+draw();
   /* INTERACTION (DRAG + PAN + ZOOM) */
   let dragging=null, panning=false, lastX=0,lastY=0;
 
