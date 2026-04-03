@@ -264,6 +264,7 @@ const NetworkSystem = (() => {
 
     p.t+=p.speed;
     if(p.t>1) p.t=0;
+    draw();
   });
 
   /* =========================
