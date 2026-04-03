@@ -3,6 +3,7 @@
 ========================= */
 :root {
   --glow: #3aa0ff;
+  --glow-soft: rgba(58,160,255,0.4);
 
   --bg-dark-1: #05070f;
   --bg-dark-2: #0a1a2a;
@@ -15,16 +16,17 @@
 }
 
 body.light {
-  --glow: #4a90ff;
+  --glow: #ffd400;
+  --glow-soft: rgba(255,212,0,0.35);
 
-  --bg-dark-1: #f5f7fb;
-  --bg-dark-2: #e6edf5;
-  --bg-dark-3: #dfe8f2;
+  --bg-dark-1: #ffffff;
+  --bg-dark-2: #f3f3f3;
+  --bg-dark-3: #e8e8e8;
 
-  --text: #111;
+  --text: #000000;
 
-  --glass: rgba(255,255,255,0.6);
-  --glass-border: rgba(0,0,0,0.1);
+  --glass: rgba(255,255,255,0.7);
+  --glass-border: rgba(0,0,0,0.15);
 }
 
 /* =========================
@@ -58,7 +60,7 @@ body {
 }
 
 /* =========================
-   PARTICLES (FIXED LAYER)
+   PARTICLES (BACKGROUND)
 ========================= */
 #particles {
   position: fixed;
@@ -70,32 +72,29 @@ body {
   z-index: -2;
   pointer-events: none;
 
-  opacity: 0.5;
+  opacity: 0.45;
   filter: blur(0.5px);
   mix-blend-mode: screen;
 }
 
 body.light #particles {
   mix-blend-mode: multiply;
-  opacity: 0.25;
+  opacity: 0.2;
+  filter: blur(0.4px);
 }
 
 /* =========================
-   LAYERING
+   LAYER CONTROL (FIXES HEADER ISSUE)
 ========================= */
-header,
-main,
-#terminalToggle {
+main {
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 
-/* =========================
-   HEADER
-========================= */
 header {
   position: sticky;
   top: 0;
+  z-index: 1000; /* 🔥 ensures always on top */
 
   backdrop-filter: blur(14px);
   background: rgba(0,0,0,0.35);
@@ -105,8 +104,11 @@ header {
 }
 
 body.light header {
-  background: rgba(255,255,255,0.6);
-  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.85);
+
+  box-shadow:
+    0 5px 20px rgba(0,0,0,0.15),
+    0 0 10px var(--glow-soft);
 }
 
 .header-inner {
@@ -144,10 +146,13 @@ h1 {
 body.light h1 {
   background: linear-gradient(
     90deg,
-    #111,
+    #000,
     var(--glow),
-    #111
+    #000
   );
+
+  text-shadow:
+    0 0 8px var(--glow-soft);
 }
 
 @keyframes shine {
@@ -239,12 +244,12 @@ nav {
   transform: translateY(-6px);
   box-shadow:
     0 20px 60px rgba(0,0,0,0.6),
-    0 0 20px var(--glow);
+    0 0 20px var(--glow-soft);
 }
 
 .glass-card.active-section {
   box-shadow:
-    0 0 30px var(--glow),
+    0 0 30px var(--glow-soft),
     0 0 60px rgba(0,0,0,0.3);
 }
 
@@ -273,7 +278,7 @@ nav {
 }
 
 body.light #terminal {
-  background: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.9);
 }
 
 #terminal.active {
@@ -295,7 +300,7 @@ body.light #terminal {
 }
 
 /* =========================
-   BUTTONS (MODERN GLOW)
+   BUTTONS
 ========================= */
 #themeToggle {
   position: absolute;
@@ -316,7 +321,7 @@ body.light #terminal {
   color: var(--glow);
 
   box-shadow:
-    0 0 10px var(--glow),
+    0 0 10px var(--glow-soft),
     inset 0 0 10px rgba(255,255,255,0.05);
 
   transition: all 0.3s ease;
@@ -325,8 +330,8 @@ body.light #terminal {
 #themeToggle:hover {
   transform: scale(1.1);
   box-shadow:
-    0 0 20px var(--glow),
-    0 0 40px var(--glow);
+    0 0 20px var(--glow-soft),
+    0 0 40px var(--glow-soft);
 }
 
 #terminalToggle {
@@ -344,7 +349,7 @@ body.light #terminal {
   cursor: pointer;
 
   box-shadow:
-    0 0 12px var(--glow),
+    0 0 12px var(--glow-soft),
     inset 0 0 8px rgba(255,255,255,0.05);
 
   transition: 0.3s;
@@ -353,8 +358,8 @@ body.light #terminal {
 #terminalToggle:hover {
   transform: scale(1.1);
   box-shadow:
-    0 0 25px var(--glow),
-    0 0 50px var(--glow);
+    0 0 25px var(--glow-soft),
+    0 0 50px var(--glow-soft);
 }
 
 /* =========================
