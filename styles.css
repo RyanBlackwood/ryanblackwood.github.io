@@ -17,16 +17,16 @@
 
 body.light {
   --glow: #ffd400;
-  --glow-soft: rgba(255,212,0,0.35);
+  --glow-soft: rgba(255,212,0,0.25);
 
-  --bg-dark-1: #ffffff;
-  --bg-dark-2: #f3f3f3;
-  --bg-dark-3: #e8e8e8;
+  --bg-dark-1: #f7f7f7;
+  --bg-dark-2: #eeeeee;
+  --bg-dark-3: #e4e4e4;
 
-  --text: #000000;
+  --text: #111;
 
-  --glass: rgba(255,255,255,0.7);
-  --glass-border: rgba(0,0,0,0.15);
+  --glass: rgba(255,255,255,0.55);
+  --glass-border: rgba(0,0,0,0.12);
 }
 
 /* =========================
@@ -49,6 +49,7 @@ body {
 
   position: relative;
   z-index: 0;
+  overflow-x: hidden;
 
   transition: color 0.4s ease;
 }
@@ -60,7 +61,29 @@ body {
 }
 
 /* =========================
-   PARTICLES (BACKGROUND)
+   CURSOR GLOW (🔥 HUGE UPGRADE)
+========================= */
+body::before {
+  content: "";
+  position: fixed;
+  top: var(--mouse-y, 50%);
+  left: var(--mouse-x, 50%);
+  width: 300px;
+  height: 300px;
+  pointer-events: none;
+
+  background: radial-gradient(
+    circle,
+    var(--glow-soft),
+    transparent 70%
+  );
+
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+/* =========================
+   PARTICLES
 ========================= */
 #particles {
   position: fixed;
@@ -79,12 +102,11 @@ body {
 
 body.light #particles {
   mix-blend-mode: multiply;
-  opacity: 0.2;
-  filter: blur(0.4px);
+  opacity: 0.15;
 }
 
 /* =========================
-   LAYER CONTROL (FIXES HEADER ISSUE)
+   LAYER CONTROL
 ========================= */
 main {
   position: relative;
@@ -94,29 +116,47 @@ main {
 header {
   position: sticky;
   top: 0;
-  z-index: 1000; /* 🔥 ensures always on top */
+  z-index: 1000;
 
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(16px);
   background: rgba(0,0,0,0.35);
 
   border-bottom: 1px solid var(--glass-border);
-  box-shadow: 0 5px 30px rgba(0,0,0,0.4);
-}
-
-body.light header {
-  background: rgba(255,255,255,0.85);
 
   box-shadow:
-    0 5px 20px rgba(0,0,0,0.15),
+    0 10px 40px rgba(0,0,0,0.5);
+}
+
+/* 🔥 HEADER LIGHT POLISH */
+body.light header {
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.85),
+    rgba(255,255,255,0.65)
+  );
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.1),
     0 0 10px var(--glow-soft);
 }
 
-.header-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  padding: 1rem;
+/* ✨ TOP GLOW LINE */
+header::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--glow),
+    transparent
+  );
+
+  opacity: 0.6;
 }
 
 /* =========================
@@ -139,7 +179,7 @@ h1 {
   animation: shine 6s linear infinite;
 
   text-shadow:
-    0 0 10px var(--glow),
+    0 0 12px var(--glow),
     0 0 30px rgba(0,0,0,0.6);
 }
 
@@ -152,7 +192,7 @@ body.light h1 {
   );
 
   text-shadow:
-    0 0 8px var(--glow-soft);
+    0 0 6px var(--glow-soft);
 }
 
 @keyframes shine {
@@ -161,55 +201,28 @@ body.light h1 {
 }
 
 /* =========================
-   SUBTITLE
+   NAV (🔥 MICRO-INTERACTIONS)
 ========================= */
-#subtitle {
-  font-size: clamp(1rem,2.5vw,1.5rem);
-  text-shadow: 0 0 10px var(--glow);
-}
-
-/* =========================
-   NAV
-========================= */
-nav {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
 .tab {
   position: relative;
   cursor: pointer;
   padding: 4px 6px;
+  transition: 0.2s;
 }
 
 .tab:hover {
-  text-shadow: 0 0 8px var(--glow);
-}
-
-.tab.active {
-  text-shadow: 0 0 12px var(--glow);
+  text-shadow: 0 0 10px var(--glow);
+  transform: translateY(-1px);
 }
 
 .tab.active::after {
   content: "";
   position: absolute;
   bottom: -6px;
-  left: 0;
   width: 100%;
   height: 2px;
   background: var(--glow);
   box-shadow: 0 0 12px var(--glow);
-}
-
-.tab.active::before {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  background: radial-gradient(circle, var(--glow), transparent 70%);
-  opacity: 0.15;
-  z-index: -1;
 }
 
 /* =========================
@@ -229,10 +242,7 @@ nav {
 
   opacity: 0;
   transform: translateY(40px);
-  transition:
-    transform 0.5s ease,
-    opacity 0.5s ease,
-    box-shadow 0.3s ease;
+  transition: all 0.4s ease;
 }
 
 .glass-card.visible {
@@ -241,112 +251,35 @@ nav {
 }
 
 .glass-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-8px) scale(1.01);
+
   box-shadow:
     0 20px 60px rgba(0,0,0,0.6),
-    0 0 20px var(--glow-soft);
-}
-
-.glass-card.active-section {
-  box-shadow:
-    0 0 30px var(--glow-soft),
-    0 0 60px rgba(0,0,0,0.3);
+    0 0 25px var(--glow-soft);
 }
 
 /* =========================
-   NETWORK
+   NETWORK (VISUAL UPGRADE BASE)
 ========================= */
 #networkWrapper {
   height: 400px;
   position: relative;
   overflow: hidden;
   border-radius: 12px;
+
   border: 1px solid var(--glass-border);
-}
 
-/* =========================
-   TERMINAL
-========================= */
-#terminal {
-  margin-top: 1rem;
-  display: none;
-
-  background: rgba(0,0,0,0.75);
-  border: 1px solid var(--glass-border);
-  border-radius: 10px;
-  padding: 10px;
-}
-
-body.light #terminal {
-  background: rgba(255,255,255,0.9);
-}
-
-#terminal.active {
-  display: block;
-}
-
-#terminalOutput {
-  height: 150px;
-  overflow-y: auto;
-}
-
-#terminalInput {
-  width: 100%;
-  margin-top: 5px;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  outline: none;
+  box-shadow:
+    inset 0 0 20px rgba(0,0,0,0.3),
+    0 0 10px var(--glow-soft);
 }
 
 /* =========================
    BUTTONS
 ========================= */
-#themeToggle {
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
-
-  width: 44px;
-  height: 44px;
-
-  border-radius: 12px;
-  border: 1px solid var(--glass-border);
-
-  background: var(--glass);
-  backdrop-filter: blur(10px);
-
-  cursor: pointer;
-  font-size: 18px;
-  color: var(--glow);
-
-  box-shadow:
-    0 0 10px var(--glow-soft),
-    inset 0 0 10px rgba(255,255,255,0.05);
-
-  transition: all 0.3s ease;
-}
-
-#themeToggle:hover {
-  transform: scale(1.1);
-  box-shadow:
-    0 0 20px var(--glow-soft),
-    0 0 40px var(--glow-soft);
-}
-
+#themeToggle,
 #terminalToggle {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-
-  border: none;
-  padding: 12px;
-  border-radius: 12px;
-
-  background: var(--glass);
   backdrop-filter: blur(10px);
-
-  cursor: pointer;
 
   box-shadow:
     0 0 12px var(--glow-soft),
@@ -355,8 +288,10 @@ body.light #terminal {
   transition: 0.3s;
 }
 
+#themeToggle:hover,
 #terminalToggle:hover {
   transform: scale(1.1);
+
   box-shadow:
     0 0 25px var(--glow-soft),
     0 0 50px var(--glow-soft);
