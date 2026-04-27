@@ -29,3 +29,41 @@ const terminalToggle=document.getElementById('terminalToggle');const terminal=do
 function termLine(text){if(!terminalOutput)return;const p=document.createElement('p');p.textContent=text;terminalOutput.appendChild(p);terminalOutput.scrollTop=terminalOutput.scrollHeight;}
 terminalToggle?.addEventListener('click',()=>{const open=!terminal?.classList.contains('is-open');terminal?.classList.toggle('is-open',open);terminal?.setAttribute('aria-hidden',String(!open));if(open)setTimeout(()=>terminalInput?.focus(),60)});
 terminalInput?.addEventListener('keydown',e=>{if(e.key!=='Enter')return;const value=terminalInput.value.trim();if(!value)return;termLine('> '+value);terminalInput.value='';const cmd=value.toLowerCase();if(cmd==='help')termLine('commands: projects, electronics, homelab, contact, clear');else if(cmd==='projects'){location.hash='projects';termLine('opening project library...')}else if(cmd==='electronics'){location.hash='projects';applyFilter('electronics');termLine('filtering electronics projects...')}else if(cmd==='homelab'){location.hash='projects';applyFilter('infrastructure');document.querySelector('.project-card.featured')?.classList.add('is-open');termLine('opening homelab topology...')}else if(cmd==='contact'){location.hash='contact';termLine('opening contact section...')}else if(cmd==='clear')terminalOutput.innerHTML='';else termLine('unknown command. type help.');});
+
+/* Projects polish helpers: card click/touch polish + accessible expanded state */
+(function enhanceProjectCards(){
+  const cards = [...document.querySelectorAll('.project-card')];
+  if (!cards.length) return;
+
+  function syncExpandedStates(){
+    cards.forEach(card => {
+      const button = card.querySelector('.project-expand');
+      if (button) button.setAttribute('aria-expanded', String(card.classList.contains('is-open')));
+    });
+  }
+
+  cards.forEach(card => {
+    const button = card.querySelector('.project-expand');
+    if (button) button.setAttribute('aria-expanded', 'false');
+
+    card.addEventListener('click', event => {
+      const clickedControl = event.target.closest('a, button, input, textarea, select, label');
+      if (clickedControl) return;
+
+      const willOpen = !card.classList.contains('is-open');
+      cards.forEach(other => {
+        if (other !== card) other.classList.remove('is-open');
+      });
+      card.classList.toggle('is-open', willOpen);
+      syncExpandedStates();
+    });
+  });
+
+  document.addEventListener('click', event => {
+    if (event.target.closest('.project-expand')) {
+      requestAnimationFrame(syncExpandedStates);
+    }
+  });
+
+  syncExpandedStates();
+})();
