@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Ryan Blackwood | Portfolio V2</title>
+
   <link rel="stylesheet" href="styles.css" />
   <script src="app.js" defer></script>
 </head>
@@ -11,88 +13,153 @@
 <body>
   <canvas id="particles"></canvas>
 
-  <header class="topbar">
-    <div class="brand">
-      <div class="logo">RB</div>
-      <div>
-        <h1>Ryan Blackwood</h1>
-        <p>Engineer · Mechanic · Tinkerer</p>
-      </div>
-    </div>
+  <div class="page-shell">
+    <header class="topbar">
+      <a href="#" class="brand">
+        <div class="logo">RB</div>
+        <div>
+          <h1>Ryan Blackwood</h1>
+          <p>Engineer · Mechanic · Tinkerer</p>
+        </div>
+      </a>
 
-    <nav class="tabs">
-      <a href="#about">About</a>
-      <a href="#education">Education</a>
-      <a href="#work">Work</a>
-      <a href="#projects">Projects</a>
-      <a href="#skills">Skills</a>
-    </nav>
+      <nav class="tabs" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#education">Education</a>
+        <a href="#work">Work</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+      </nav>
 
-    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">
-      ☀️
-    </button>
-  </header>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to light mode">
+        ☀️
+      </button>
+    </header>
 
-  <main>
-    <section class="hero">
-      <p class="eyebrow">Portfolio V2.0</p>
-      <h2>Built different. Engineered with intent.</h2>
-      <p>
-        A premium portfolio for software, infrastructure, automation,
-        game systems, mechanics, and hands-on technical problem solving.
-      </p>
-    </section>
+    <main>
+      <section class="hero">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Portfolio V2.0</p>
 
-    <section id="about" class="panel">
-      <h2>About</h2>
-      <p>I build, repair, design, and experiment across technology, networking, software, and mechanical systems.</p>
-    </section>
+          <h2>Built different. Engineered with intent.</h2>
 
-    <section id="education" class="panel">
-      <h2>Education</h2>
-      <p>Add degrees, certifications, technical learning, and self-taught tracks here.</p>
-    </section>
+          <p>
+            A premium technical portfolio for software, infrastructure,
+            automation, game systems, mechanics, and hands-on problem solving.
+          </p>
 
-    <section id="work" class="panel">
-      <h2>Work Experience</h2>
-      <p>Add roles, responsibilities, achievements, and measurable results here.</p>
-    </section>
+          <div class="hero-actions">
+            <a href="#projects" class="btn primary">Explore Projects</a>
+            <a href="#skills" class="btn secondary">View Skills</a>
+          </div>
+        </div>
 
-    <section id="projects" class="panel">
-      <h2>Projects</h2>
+        <aside class="hero-visual reveal">
+          <div class="orb">
+            <div class="orb-ring ring-one"></div>
+            <div class="orb-ring ring-two"></div>
+            <div class="orb-core">RB</div>
+          </div>
 
-      <div class="grid">
-        <article class="card">
-          <h3>Homelab</h3>
-          <p>Proxmox, OPNsense, VLANs, WireGuard, and self-hosted infrastructure.</p>
-        </article>
+          <div class="floating-stat stat-one">
+            <span>Focus</span>
+            <strong>Systems</strong>
+          </div>
 
-        <article class="card">
-          <h3>Game Systems</h3>
-          <p>Unreal Engine interaction, inventory, survival, and sci-fi gameplay systems.</p>
-        </article>
+          <div class="floating-stat stat-two">
+            <span>Mode</span>
+            <strong>Build</strong>
+          </div>
 
-        <article class="card">
-          <h3>Minecraft Ecosystem</h3>
-          <p>Custom server architecture, plugins, modded tooling, and launcher work.</p>
-        </article>
-      </div>
-    </section>
+          <div class="floating-stat stat-three">
+            <span>Style</span>
+            <strong>Polished</strong>
+          </div>
+        </aside>
+      </section>
 
-    <section id="skills" class="panel">
-      <h2>Skills</h2>
+      <section id="about" class="panel reveal">
+        <div class="section-label">01</div>
+        <div>
+          <h2>About</h2>
+          <p>
+            I build, repair, design, and experiment across technology, networking,
+            software, mechanical systems, and interactive experiences.
+          </p>
+        </div>
+      </section>
 
-      <div class="skills">
-        <span>Networking</span>
-        <span>Linux</span>
-        <span>Proxmox</span>
-        <span>OPNsense</span>
-        <span>JavaScript</span>
-        <span>Game Design</span>
-        <span>Automation</span>
-        <span>Mechanical Repair</span>
-      </div>
-    </section>
-  </main>
+      <section id="education" class="panel reveal">
+        <div class="section-label">02</div>
+        <div>
+          <h2>Education</h2>
+          <p>
+            Add degrees, certifications, technical learning, labs, self-taught tracks,
+            and major skill-development milestones here.
+          </p>
+        </div>
+      </section>
+
+      <section id="work" class="panel reveal">
+        <div class="section-label">03</div>
+        <div>
+          <h2>Work Experience</h2>
+          <p>
+            Add roles, responsibilities, achievements, measurable results, leadership,
+            customer-facing work, and technical wins here.
+          </p>
+        </div>
+      </section>
+
+      <section id="projects" class="panel reveal">
+        <div class="section-label">04</div>
+
+        <div class="section-full">
+          <h2>Projects</h2>
+
+          <div class="grid">
+            <article class="card">
+              <span class="card-kicker">Infrastructure</span>
+              <h3>Homelab</h3>
+              <p>Proxmox, OPNsense, VLANs, WireGuard, and self-hosted infrastructure.</p>
+            </article>
+
+            <article class="card">
+              <span class="card-kicker">Game Dev</span>
+              <h3>Game Systems</h3>
+              <p>Unreal Engine interaction, inventory, survival, and sci-fi gameplay systems.</p>
+            </article>
+
+            <article class="card">
+              <span class="card-kicker">Servers</span>
+              <h3>Minecraft Ecosystem</h3>
+              <p>Custom server architecture, plugins, modded tooling, and launcher work.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="skills" class="panel reveal">
+        <div class="section-label">05</div>
+
+        <div class="section-full">
+          <h2>Skills</h2>
+
+          <div class="skills">
+            <span>Networking</span>
+            <span>Linux</span>
+            <span>Proxmox</span>
+            <span>OPNsense</span>
+            <span>JavaScript</span>
+            <span>Game Design</span>
+            <span>Automation</span>
+            <span>Mechanical Repair</span>
+            <span>Problem Solving</span>
+            <span>Systems Design</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
 </body>
 </html>

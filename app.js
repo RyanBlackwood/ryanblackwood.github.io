@@ -6,6 +6,7 @@ function applyTheme(theme) {
   localStorage.setItem("portfolio-theme", theme);
 
   button.textContent = theme === "dark" ? "☀️" : "🌙";
+
   button.setAttribute(
     "aria-label",
     theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
@@ -18,7 +19,6 @@ applyTheme(savedTheme);
 button.addEventListener("click", () => {
   const currentTheme = html.getAttribute("data-theme");
   const nextTheme = currentTheme === "dark" ? "light" : "dark";
-
   applyTheme(nextTheme);
 });
 
@@ -31,12 +31,15 @@ function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  particles = Array.from({ length: 70 }, () => ({
+  const particleCount = window.innerWidth < 700 ? 45 : 85;
+
+  particles = Array.from({ length: particleCount }, () => ({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    r: Math.random() * 2 + 0.6,
-    dx: (Math.random() - 0.5) * 0.35,
-    dy: (Math.random() - 0.5) * 0.35
+    r: Math.random() * 2.1 + 0.45,
+    dx: (Math.random() - 0.5) * 0.38,
+    dy: (Math.random() - 0.5) * 0.38,
+    alpha: Math.random() * 0.45 + 0.18
   }));
 }
 
@@ -44,11 +47,12 @@ function drawParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   const theme = html.getAttribute("data-theme");
-  ctx.fillStyle = theme === "dark"
-    ? "rgba(26, 167, 255, 0.65)"
-    : "rgba(26, 167, 255, 0.28)";
+  const dotColor =
+    theme === "dark"
+      ? "rgba(26, 167, 255,"
+      : "rgba(26, 167, 255,";
 
-  particles.forEach(p => {
+  particles.forEach((p, index) => {
     p.x += p.dx;
     p.y += p.dy;
 
@@ -57,12 +61,47 @@ function drawParticles() {
 
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `${dotColor} ${theme === "dark" ? p.alpha : p.alpha * 0.42})`;
     ctx.fill();
+
+    for (let j = index + 1; j < particles.length; j++) {
+      const p2 = particles[j];
+      const distance = Math.hypot(p.x - p2.x, p.y - p2.y);
+
+      if (distance < 120) {
+        const lineAlpha = (1 - distance / 120) * (theme === "dark" ? 0.18 : 0.07);
+
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = `rgba(26, 167, 255, ${lineAlpha})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
   });
 
   requestAnimationFrame(drawParticles);
 }
 
 window.addEventListener("resize", resizeCanvas);
+
 resizeCanvas();
 drawParticles();
+
+const revealItems = document.querySelectorAll(".reveal");
+
+const observer = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  },
+  {
+    threshold: 0.14
+  }
+);
+
+revealItems.forEach(item => observer.observe(item));
