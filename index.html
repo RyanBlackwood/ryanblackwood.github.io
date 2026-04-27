@@ -1,26 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ryan Blackwood | Portfolio V2</title>
-
-  <script>
-    const savedTheme = localStorage.getItem("portfolio-theme");
-    if (savedTheme === "light") {
-      document.documentElement.classList.add("light");
-    }
-  </script>
-
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-  <div class="ambient-bg"></div>
+  <div class="background"></div>
 
   <header class="topbar">
     <div class="brand">
-      <div class="brand-mark">RB</div>
+      <div class="logo">RB</div>
       <div>
         <h1>Ryan Blackwood</h1>
         <p>Engineer · Mechanic · Tinkerer</p>
@@ -35,63 +27,53 @@
       <a href="#skills">Skills</a>
     </nav>
 
-    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">
-      ☾
+    <button id="themeToggle" class="theme-toggle" type="button">
+      Light
     </button>
   </header>
 
   <main>
     <section class="hero">
-      <div class="hero-card">
-        <p class="eyebrow">Portfolio V2.0</p>
-        <h2>Designed to feel engineered, not assembled.</h2>
-        <p>
-          A premium portfolio for software, infrastructure, game systems,
-          automation, mechanics, and hands-on technical problem solving.
-        </p>
-
-        <div class="hero-actions">
-          <a href="#projects" class="btn primary">View Projects</a>
-          <a href="pages/homelab.html" class="btn secondary">Homelab Lab</a>
-        </div>
-      </div>
+      <p class="eyebrow">Portfolio V2.0</p>
+      <h2>Built different. Engineered with intent.</h2>
+      <p>
+        A clean, premium portfolio for software, infrastructure, automation,
+        game systems, mechanics, and hands-on technical problem solving.
+      </p>
     </section>
 
     <section id="about" class="panel">
       <h2>About</h2>
-      <p>
-        I build, repair, design, and experiment across technology, networking,
-        mechanical systems, software, and interactive experiences.
-      </p>
+      <p>I build, repair, design, and experiment across technology, networking, software, and mechanical systems.</p>
     </section>
 
     <section id="education" class="panel">
       <h2>Education</h2>
-      <p>Add degrees, certifications, self-taught tracks, labs, and major learning paths here.</p>
+      <p>Add degrees, certifications, technical learning, and self-taught tracks here.</p>
     </section>
 
     <section id="work" class="panel">
       <h2>Work Experience</h2>
-      <p>Add professional experience, technical responsibilities, and measurable wins here.</p>
+      <p>Add roles, responsibilities, achievements, and measurable results here.</p>
     </section>
 
     <section id="projects" class="panel">
       <h2>Projects</h2>
 
-      <div class="card-grid">
-        <article class="project-card">
-          <h3>Homelab Infrastructure</h3>
-          <p>OPNsense, Proxmox, VLANs, WireGuard routing, and self-hosted services.</p>
+      <div class="grid">
+        <article class="card">
+          <h3>Homelab</h3>
+          <p>Proxmox, OPNsense, VLANs, WireGuard, and self-hosted infrastructure.</p>
         </article>
 
-        <article class="project-card">
-          <h3>Custom Game Systems</h3>
-          <p>Unreal Engine systems for interaction, inventory, survival, and sci-fi gameplay.</p>
+        <article class="card">
+          <h3>Game Systems</h3>
+          <p>Unreal Engine interaction, inventory, survival, and sci-fi gameplay systems.</p>
         </article>
 
-        <article class="project-card">
-          <h3>Minecraft Server Ecosystem</h3>
-          <p>Custom server architecture, plugins, modded infrastructure, and launcher tooling.</p>
+        <article class="card">
+          <h3>Minecraft Ecosystem</h3>
+          <p>Custom server architecture, plugins, modded tooling, and launcher work.</p>
         </article>
       </div>
     </section>
