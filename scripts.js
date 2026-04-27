@@ -1,16 +1,32 @@
-const themeToggle = document.getElementById("themeToggle");
+const toggle = document.getElementById("themeToggle");
+const root = document.documentElement;
 
-const savedTheme = localStorage.getItem("portfolio-theme");
-
-if (savedTheme === "light") {
-  document.body.classList.add("light");
-  themeToggle.textContent = "☀";
+function setTheme(mode) {
+  if (mode === "light") {
+    root.classList.add("light");
+    localStorage.setItem("portfolio-theme", "light");
+    toggle.textContent = "☀";
+  } else {
+    root.classList.remove("light");
+    localStorage.setItem("portfolio-theme", "dark");
+    toggle.textContent = "☾";
+  }
 }
 
-themeToggle.addEventListener("click", () => {
-  document.body.classList.toggle("light");
+// Initialize correctly
+(function initTheme() {
+  const saved = localStorage.getItem("portfolio-theme");
+  const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
 
-  const isLight = document.body.classList.contains("light");
-  localStorage.setItem("portfolio-theme", isLight ? "light" : "dark");
-  themeToggle.textContent = isLight ? "☀" : "☾";
+  if (saved === "light" || (!saved && prefersLight)) {
+    setTheme("light");
+  } else {
+    setTheme("dark");
+  }
+})();
+
+// Toggle handler
+toggle.addEventListener("click", () => {
+  const isLight = root.classList.contains("light");
+  setTheme(isLight ? "dark" : "light");
 });

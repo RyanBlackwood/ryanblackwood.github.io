@@ -9,7 +9,13 @@
   --glow2: #00d4ff;
 }
 
-body.light {
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  font-size: 1.2rem;
+}
+
+html.light {
   --bg: #f5f7fb;
   --bg2: #ffffff;
   --text: #10131c;
