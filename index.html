@@ -1,52 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ryan Blackwood Portfolio</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ryan Blackwood | Portfolio V2</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="ambient-bg"></div>
 
-<canvas id="particles"></canvas>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">RB</span>
+      <div>
+        <h1>Ryan Blackwood</h1>
+        <p>Engineer · Mechanic · Tinkerer</p>
+      </div>
+    </div>
 
-<header>
-  <div class="header-inner">
-    <h1>Ryan Blackwood</h1>
-    <h2 id="subtitle"></h2>
-
-    <nav>
-      <div class="tab" data-target="about">About</div>
-      <div class="tab" data-target="work">Work</div>
-      <div class="tab" data-target="skills">Skills</div>
-      <div class="tab" data-target="projects">Projects</div>
-      <div class="tab" data-target="homelab">Homelab</div>
+    <nav class="tabs">
+      <a href="#about">About</a>
+      <a href="#education">Education</a>
+      <a href="#work">Work</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
     </nav>
 
-    <button id="themeToggle" aria-label="Toggle theme">🌙</button>
-  </div>
-</header>
+    <button id="themeToggle" class="theme-toggle">☾</button>
+  </header>
 
-<main>
-  <section id="about" class="glass-card">About...</section>
-  <section id="work" class="glass-card">Work...</section>
-  <section id="skills" class="glass-card">Skills...</section>
-  <section id="projects" class="glass-card">Projects...</section>
+  <main>
+    <section class="hero">
+      <div class="hero-card">
+        <p class="eyebrow">Portfolio V2.0</p>
+        <h2>Building systems that feel engineered, not assembled.</h2>
+        <p>
+          A showcase of technical work across software, infrastructure,
+          game systems, mechanics, automation, and hands-on problem solving.
+        </p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn primary">View Projects</a>
+          <a href="pages/homelab.html" class="btn secondary">Homelab Lab</a>
+        </div>
+      </div>
+    </section>
 
-  <section id="homelab" class="glass-card">
-    <div id="networkWrapper">
-      <canvas id="networkCanvas"></canvas>
-    </div>
+    <section id="about" class="panel">
+      <h2>About</h2>
+      <p>
+        I build, repair, design, and experiment across technology, networking,
+        mechanical systems, software, and interactive experiences.
+      </p>
+    </section>
 
-    <div id="terminal">
-      <div id="terminalOutput"></div>
-      <input id="terminalInput" placeholder="Enter command...">
-    </div>
-  </section>
-</main>
+    <section id="education" class="panel">
+      <h2>Education</h2>
+      <p>Add degrees, certifications, self-taught tracks, labs, and major learning paths here.</p>
+    </section>
 
-<button id="terminalToggle" aria-label="Open terminal">💻</button>
+    <section id="work" class="panel">
+      <h2>Work Experience</h2>
+      <p>Add professional experience, technical responsibilities, and measurable wins here.</p>
+    </section>
 
-<script src="scripts.js"></script>
+    <section id="projects" class="panel grid-section">
+      <h2>Projects</h2>
+
+      <div class="card-grid">
+        <article class="project-card">
+          <h3>Homelab Infrastructure</h3>
+          <p>OPNsense, Proxmox, VLANs, WireGuard routing, and self-hosted services.</p>
+        </article>
+
+        <article class="project-card">
+          <h3>Custom Game Systems</h3>
+          <p>Unreal Engine systems for interaction, inventory, survival, and sci-fi gameplay.</p>
+        </article>
+
+        <article class="project-card">
+          <h3>Minecraft Server Ecosystem</h3>
+          <p>Custom server architecture, plugins, modded infrastructure, and launcher tooling.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills" class="panel">
+      <h2>Skills</h2>
+      <div class="skills">
+        <span>Networking</span>
+        <span>Linux</span>
+        <span>Proxmox</span>
+        <span>OPNsense</span>
+        <span>JavaScript</span>
+        <span>Game Design</span>
+        <span>Automation</span>
+        <span>Mechanical Repair</span>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
 </body>
 </html>
