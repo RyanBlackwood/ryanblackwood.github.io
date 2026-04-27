@@ -1,27 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-  (function () {
-    const saved = localStorage.getItem("portfolio-theme");
-    const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
-
-    if (saved === "light" || (!saved && prefersLight)) {
-      document.documentElement.classList.add("light");
-    }
-  })();
-</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ryan Blackwood | Portfolio V2</title>
+
+  <script>
+    const savedTheme = localStorage.getItem("portfolio-theme");
+    if (savedTheme === "light") {
+      document.documentElement.classList.add("light");
+    }
+  </script>
+
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <div class="ambient-bg"></div>
 
   <header class="topbar">
     <div class="brand">
-      <span class="brand-mark">RB</span>
+      <div class="brand-mark">RB</div>
       <div>
         <h1>Ryan Blackwood</h1>
         <p>Engineer · Mechanic · Tinkerer</p>
@@ -36,18 +35,21 @@
       <a href="#skills">Skills</a>
     </nav>
 
-    <button id="themeToggle" class="theme-toggle">☾</button>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+      ☾
+    </button>
   </header>
 
   <main>
     <section class="hero">
       <div class="hero-card">
         <p class="eyebrow">Portfolio V2.0</p>
-        <h2>Building systems that feel engineered, not assembled.</h2>
+        <h2>Designed to feel engineered, not assembled.</h2>
         <p>
-          A showcase of technical work across software, infrastructure,
-          game systems, mechanics, automation, and hands-on problem solving.
+          A premium portfolio for software, infrastructure, game systems,
+          automation, mechanics, and hands-on technical problem solving.
         </p>
+
         <div class="hero-actions">
           <a href="#projects" class="btn primary">View Projects</a>
           <a href="pages/homelab.html" class="btn secondary">Homelab Lab</a>
@@ -73,7 +75,7 @@
       <p>Add professional experience, technical responsibilities, and measurable wins here.</p>
     </section>
 
-    <section id="projects" class="panel grid-section">
+    <section id="projects" class="panel">
       <h2>Projects</h2>
 
       <div class="card-grid">
@@ -96,6 +98,7 @@
 
     <section id="skills" class="panel">
       <h2>Skills</h2>
+
       <div class="skills">
         <span>Networking</span>
         <span>Linux</span>

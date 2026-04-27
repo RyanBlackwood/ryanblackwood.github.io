@@ -1,32 +1,40 @@
-const toggle = document.getElementById("themeToggle");
+const themeToggle = document.getElementById("themeToggle");
 const root = document.documentElement;
 
-function setTheme(mode) {
-  if (mode === "light") {
+function updateThemeButton() {
+  const isLight = root.classList.contains("light");
+  themeToggle.textContent = isLight ? "☀" : "☾";
+  themeToggle.setAttribute(
+    "aria-label",
+    isLight ? "Switch to dark theme" : "Switch to light theme"
+  );
+}
+
+function setTheme(theme) {
+  if (theme === "light") {
     root.classList.add("light");
     localStorage.setItem("portfolio-theme", "light");
-    toggle.textContent = "☀";
   } else {
     root.classList.remove("light");
     localStorage.setItem("portfolio-theme", "dark");
-    toggle.textContent = "☾";
   }
+
+  updateThemeButton();
 }
 
-// Initialize correctly
-(function initTheme() {
-  const saved = localStorage.getItem("portfolio-theme");
-  const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+function initTheme() {
+  const savedTheme = localStorage.getItem("portfolio-theme");
 
-  if (saved === "light" || (!saved && prefersLight)) {
+  if (savedTheme === "light") {
     setTheme("light");
   } else {
     setTheme("dark");
   }
-})();
+}
 
-// Toggle handler
-toggle.addEventListener("click", () => {
+themeToggle.addEventListener("click", () => {
   const isLight = root.classList.contains("light");
   setTheme(isLight ? "dark" : "light");
 });
+
+initTheme();
