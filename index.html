@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Ryan Blackwood | Portfolio V2</title>
+  <title>Ryan Blackwood | Portfolio</title>
 
   <link rel="stylesheet" href="styles.css" />
   <script src="app.js" defer></script>
@@ -24,6 +24,7 @@
       </a>
 
       <nav class="tabs" aria-label="Main navigation">
+        <a href="#summary">Summary</a>
         <a href="#about">About</a>
         <a href="#education">Education</a>
         <a href="#work">Work</a>
@@ -37,15 +38,16 @@
     </header>
 
     <main>
-      <section class="hero">
+      <section id="summary" class="hero">
         <div class="hero-copy reveal">
-          <p class="eyebrow">Portfolio V2.0</p>
+          <p class="eyebrow">Engineer · Builder · Problem Solver</p>
 
-          <h2>Built different. Engineered with intent.</h2>
+          <h2>Systems built with purpose.</h2>
 
           <p>
-            A premium technical portfolio for software, infrastructure,
-            automation, game systems, mechanics, and hands-on problem solving.
+            I’m Ryan Blackwood — a hands-on technical builder focused on clean systems,
+            infrastructure, software, automation, mechanical repair, and real-world problem solving.
+            I like turning complex ideas into polished, usable solutions.
           </p>
 
           <div class="hero-actions">
@@ -62,100 +64,230 @@
           </div>
 
           <div class="floating-stat stat-one">
-            <span>Focus</span>
-            <strong>Systems</strong>
+            <span>Networking</span>
+            <strong>Infrastructure</strong>
           </div>
 
           <div class="floating-stat stat-two">
-            <span>Mode</span>
-            <strong>Build</strong>
+            <span>Development</span>
+            <strong>JavaScript</strong>
           </div>
 
           <div class="floating-stat stat-three">
-            <span>Style</span>
-            <strong>Polished</strong>
+            <span>Systems</span>
+            <strong>Automation</strong>
           </div>
         </aside>
       </section>
 
       <section id="about" class="panel reveal">
-        <div class="section-label">01</div>
-        <div>
-          <h2>About</h2>
-          <p>
-            I build, repair, design, and experiment across technology, networking,
-            software, mechanical systems, and interactive experiences.
-          </p>
-        </div>
+        <h2>About</h2>
+
+        <p>
+          I’m a technical generalist who enjoys working across software, networking,
+          infrastructure, mechanical systems, electronics, automation, and interactive
+          design. I’m most interested in projects where hardware, software, and real
+          problem solving overlap.
+        </p>
+
+        <p>
+          My approach is practical: understand the system, break down the problem,
+          build carefully, test aggressively, and improve the result until it feels
+          reliable and polished. I care about clean design, maintainable structure,
+          and interfaces that feel intentional instead of thrown together.
+        </p>
       </section>
 
       <section id="education" class="panel reveal">
-        <div class="section-label">02</div>
-        <div>
-          <h2>Education</h2>
-          <p>
-            Add degrees, certifications, technical learning, labs, self-taught tracks,
-            and major skill-development milestones here.
-          </p>
+        <h2>Education</h2>
+
+        <div class="timeline">
+          <article class="timeline-item">
+            <h3>Technical Self-Study</h3>
+            <span>Ongoing</span>
+            <p>
+              Independent study across networking, Linux, virtualization, frontend
+              development, game systems, server administration, automation, and systems design.
+            </p>
+          </article>
+
+          <article class="timeline-item">
+            <h3>Project-Based Lab Learning</h3>
+            <span>Homelab / Hands-On Training</span>
+            <p>
+              Built and managed experimental environments using Proxmox, OPNsense,
+              VLANs, WireGuard, game servers, web interfaces, and automation workflows.
+            </p>
+          </article>
+
+          <article class="timeline-item">
+            <h3>Certifications & Coursework</h3>
+            <span>Placeholder</span>
+            <p>
+              Add certifications, college coursework, trade training, online courses,
+              or professional development programs here.
+            </p>
+          </article>
         </div>
       </section>
 
       <section id="work" class="panel reveal">
-        <div class="section-label">03</div>
-        <div>
-          <h2>Work Experience</h2>
-          <p>
-            Add roles, responsibilities, achievements, measurable results, leadership,
-            customer-facing work, and technical wins here.
-          </p>
+        <h2>Work Experience</h2>
+
+        <div class="timeline">
+          <article class="timeline-item">
+            <h3>Technical Support / Repair Specialist</h3>
+            <span>Example Role · 2023 - Present</span>
+            <p>
+              Diagnosed technical issues, repaired equipment, communicated clearly with
+              customers, documented solutions, and improved repeatable troubleshooting workflows.
+            </p>
+          </article>
+
+          <article class="timeline-item">
+            <h3>Systems & Infrastructure Projects</h3>
+            <span>Independent / Freelance</span>
+            <p>
+              Designed small-scale server and network setups involving routing, firewalls,
+              virtualization, game hosting, remote access, and self-hosted services.
+            </p>
+          </article>
+
+          <article class="timeline-item">
+            <h3>Mechanical & Hands-On Problem Solving</h3>
+            <span>Example Experience</span>
+            <p>
+              Performed diagnostics, parts replacement, tool-based repair work, and practical
+              troubleshooting with a focus on clean execution and reliable results.
+            </p>
+          </article>
         </div>
       </section>
 
       <section id="projects" class="panel reveal">
-        <div class="section-label">04</div>
+        <h2>Projects</h2>
 
-        <div class="section-full">
-          <h2>Projects</h2>
+        <div class="project-grid">
+          <article class="project-card">
+            <div class="project-topline">
+              <span>Infrastructure</span>
+              <button type="button">View</button>
+            </div>
 
-          <div class="grid">
-            <article class="card">
-              <span class="card-kicker">Infrastructure</span>
-              <h3>Homelab</h3>
-              <p>Proxmox, OPNsense, VLANs, WireGuard, and self-hosted infrastructure.</p>
-            </article>
+            <h3>Homelab Command Center</h3>
 
-            <article class="card">
-              <span class="card-kicker">Game Dev</span>
-              <h3>Game Systems</h3>
-              <p>Unreal Engine interaction, inventory, survival, and sci-fi gameplay systems.</p>
-            </article>
+            <p>
+              A dedicated interactive page for visualizing real network topology,
+              VLAN routing, WireGuard paths, firewall logic, and self-hosted infrastructure.
+            </p>
 
-            <article class="card">
-              <span class="card-kicker">Servers</span>
-              <h3>Minecraft Ecosystem</h3>
-              <p>Custom server architecture, plugins, modded tooling, and launcher work.</p>
-            </article>
-          </div>
+            <div class="project-tags">
+              <span>Proxmox</span>
+              <span>OPNsense</span>
+              <span>WireGuard</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-topline">
+              <span>Game Development</span>
+              <button type="button">View</button>
+            </div>
+
+            <h3>UE5 Survival Systems</h3>
+
+            <p>
+              Experimental Unreal Engine systems for interaction, inventory, equipment,
+              survival mechanics, sci-fi world progression, and scalable gameplay loops.
+            </p>
+
+            <div class="project-tags">
+              <span>UE5</span>
+              <span>Blueprints</span>
+              <span>Systems</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-topline">
+              <span>Server Ecosystem</span>
+              <button type="button">View</button>
+            </div>
+
+            <h3>Minecraft Platform</h3>
+
+            <p>
+              Custom server architecture, plugin ideas, modded infrastructure, launcher
+              tooling, player utilities, automation, and backend server workflows.
+            </p>
+
+            <div class="project-tags">
+              <span>Java</span>
+              <span>Paper</span>
+              <span>Launcher</span>
+            </div>
+          </article>
         </div>
       </section>
 
       <section id="skills" class="panel reveal">
-        <div class="section-label">05</div>
+        <h2>Skills</h2>
 
-        <div class="section-full">
-          <h2>Skills</h2>
+        <div class="skill-bars">
+          <div class="skill-bar reveal" style="--level: 90%">
+            <div class="skill-info">
+              <span>Problem Solving</span>
+              <strong>90%</strong>
+            </div>
+            <div class="bar"><div></div></div>
+          </div>
 
-          <div class="skills">
-            <span>Networking</span>
-            <span>Linux</span>
-            <span>Proxmox</span>
-            <span>OPNsense</span>
-            <span>JavaScript</span>
-            <span>Game Design</span>
-            <span>Automation</span>
-            <span>Mechanical Repair</span>
-            <span>Problem Solving</span>
-            <span>Systems Design</span>
+          <div class="skill-bar reveal" style="--level: 85%">
+            <div class="skill-info">
+              <span>Networking & Troubleshooting</span>
+              <strong>85%</strong>
+            </div>
+            <div class="bar"><div></div></div>
+          </div>
+
+          <div class="skill-bar reveal" style="--level: 80%">
+            <div class="skill-info">
+              <span>Linux / Servers / Homelab</span>
+              <strong>80%</strong>
+            </div>
+            <div class="bar"><div></div></div>
+          </div>
+
+          <div class="skill-bar reveal" style="--level: 75%">
+            <div class="skill-info">
+              <span>JavaScript / Frontend</span>
+              <strong>75%</strong>
+            </div>
+            <div class="bar"><div></div></div>
+          </div>
+
+          <div class="skill-bar reveal" style="--level: 72%">
+            <div class="skill-info">
+              <span>Game Systems Design</span>
+              <strong>72%</strong>
+            </div>
+            <div class="bar"><div></div></div>
+          </div>
+
+          <div class="skill-bar reveal" style="--level: 82%">
+            <div class="skill-info">
+              <span>Mechanical Repair</span>
+              <strong>82%</strong>
+            </div>
+            <div class="bar"><div></div></div>
+          </div>
+
+          <div class="skill-bar reveal" style="--level: 78%">
+            <div class="skill-info">
+              <span>Automation</span>
+              <strong>78%</strong>
+            </div>
+            <div class="bar"><div></div></div>
           </div>
         </div>
       </section>
