@@ -167,226 +167,458 @@
       <section id="projects" class="panel reveal projects-panel">
         <div class="projects-header">
           <div>
-            <p class="eyebrow">Selected Work</p>
+            <p class="eyebrow">Project Explorer</p>
             <h2>Projects</h2>
             <p>
-              A categorized project library for infrastructure, software, game systems,
-              mechanical work, and experiments. Tap any project to expand the details.
+              A compact command-center view of my technical work. Filter by category,
+              open a project, and scan the stack, status, complexity, and build direction.
             </p>
+          </div>
+
+          <div class="project-console">
+            <span class="console-dot"></span>
+            <span class="console-dot"></span>
+            <span class="console-dot"></span>
+            <strong>Explorer Online</strong>
           </div>
         </div>
 
-        <div class="project-categories" aria-label="Project categories">
-          <button class="project-filter active" type="button" data-filter="all">All</button>
-          <button class="project-filter" type="button" data-filter="infrastructure">Infrastructure</button>
-          <button class="project-filter" type="button" data-filter="software">Software</button>
-          <button class="project-filter" type="button" data-filter="game">Game Dev</button>
-          <button class="project-filter" type="button" data-filter="mechanical">Mechanical</button>
-        </div>
-
-        <div class="project-list">
-          <article class="project-item" data-category="infrastructure">
-            <button class="project-summary" type="button">
-              <span class="project-icon">🛰️</span>
-              <span>
-                <small>Infrastructure</small>
-                <strong>Homelab Command Center</strong>
-              </span>
-              <span class="project-chevron">+</span>
+        <div class="project-explorer">
+          <aside class="project-sidebar" aria-label="Project category filters">
+            <button class="project-filter active" type="button" data-filter="all">
+              <span>All</span>
+              <strong>08</strong>
             </button>
 
-            <div class="project-details">
-              <p>
-                A dedicated interactive page for visualizing real network topology,
-                VLAN routing, WireGuard paths, firewall logic, Proxmox hosts, OPNsense,
-                and self-hosted services.
-              </p>
-
-              <div class="project-meta">
-                <span>Proxmox</span>
-                <span>OPNsense</span>
-                <span>WireGuard</span>
-                <span>VLANs</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="project-item" data-category="infrastructure">
-            <button class="project-summary" type="button">
-              <span class="project-icon">🌐</span>
-              <span>
-                <small>Networking</small>
-                <strong>WireGuard VLAN Routing</strong>
-              </span>
-              <span class="project-chevron">+</span>
+            <button class="project-filter" type="button" data-filter="infrastructure">
+              <span>Infrastructure</span>
+              <strong>02</strong>
             </button>
 
-            <div class="project-details">
-              <p>
-                Selective VLAN routing through a Hetzner WireGuard exit while keeping
-                normal LAN traffic on the standard WAN path. Built around firewall rules,
-                gateway policy routing, NAT, DNS, and MTU tuning.
-              </p>
-
-              <div class="project-meta">
-                <span>OPNsense</span>
-                <span>Hetzner</span>
-                <span>VPN</span>
-                <span>Firewall</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="project-item" data-category="game">
-            <button class="project-summary" type="button">
-              <span class="project-icon">🎮</span>
-              <span>
-                <small>Game Development</small>
-                <strong>UE5 Survival Systems</strong>
-              </span>
-              <span class="project-chevron">+</span>
+            <button class="project-filter" type="button" data-filter="software">
+              <span>Software</span>
+              <strong>03</strong>
             </button>
 
-            <div class="project-details">
-              <p>
-                Unreal Engine systems for interaction, inventory, equipment, survival,
-                sci-fi world progression, modular gameplay, and scalable Blueprint architecture.
-              </p>
-
-              <div class="project-meta">
-                <span>UE5</span>
-                <span>Blueprints</span>
-                <span>Inventory</span>
-                <span>Interaction</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="project-item" data-category="software">
-            <button class="project-summary" type="button">
-              <span class="project-icon">⚡</span>
-              <span>
-                <small>Server Ecosystem</small>
-                <strong>Minecraft Platform</strong>
-              </span>
-              <span class="project-chevron">+</span>
+            <button class="project-filter" type="button" data-filter="game">
+              <span>Game Dev</span>
+              <strong>01</strong>
             </button>
 
-            <div class="project-details">
-              <p>
-                Custom server architecture, plugin concepts, modded infrastructure,
-                launcher tooling, player utilities, automation workflows, and backend server design.
-              </p>
-
-              <div class="project-meta">
-                <span>Java</span>
-                <span>Paper</span>
-                <span>Launcher</span>
-                <span>Automation</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="project-item" data-category="software">
-            <button class="project-summary" type="button">
-              <span class="project-icon">💻</span>
-              <span>
-                <small>Frontend</small>
-                <strong>Portfolio V2 Interface</strong>
-              </span>
-              <span class="project-chevron">+</span>
+            <button class="project-filter" type="button" data-filter="mechanical">
+              <span>Mechanical</span>
+              <strong>02</strong>
             </button>
+          </aside>
 
-            <div class="project-details">
-              <p>
-                A polished glassmorphism portfolio interface with theme switching,
-                animated background particles, morphing navigation, interactive cards,
-                and responsive layouts.
-              </p>
-
-              <div class="project-meta">
-                <span>HTML</span>
-                <span>CSS</span>
-                <span>JavaScript</span>
-                <span>UI/UX</span>
-              </div>
+          <div class="project-stage">
+            <div class="project-stage-top">
+              <span>Tap a project to expand</span>
+              <span>Live Portfolio System</span>
             </div>
-          </article>
 
-          <article class="project-item" data-category="software">
-            <button class="project-summary" type="button">
-              <span class="project-icon">🚀</span>
-              <span>
-                <small>Launcher</small>
-                <strong>Monolith Launcher</strong>
-              </span>
-              <span class="project-chevron">+</span>
-            </button>
+            <div class="project-list">
+              <article class="project-item featured open" data-category="infrastructure">
+                <button class="project-summary" type="button">
+                  <span class="project-icon">🛰️</span>
+                  <span>
+                    <small>Infrastructure</small>
+                    <strong>Homelab Command Center</strong>
+                  </span>
+                  <span class="project-chevron">+</span>
+                </button>
 
-            <div class="project-details">
-              <p>
-                A custom Minecraft launcher concept with profile management,
-                mod syncing, server status, custom visuals, and a focused UI for a private server ecosystem.
-              </p>
+                <div class="project-details">
+                  <div class="project-preview network-preview">
+                    <div class="preview-node node-core">OPN</div>
+                    <div class="preview-node node-left">PX</div>
+                    <div class="preview-node node-right">WG</div>
+                    <div class="preview-line line-a"></div>
+                    <div class="preview-line line-b"></div>
+                    <span>Network Visualization</span>
+                  </div>
 
-              <div class="project-meta">
-                <span>Electron</span>
-                <span>React</span>
-                <span>Profiles</span>
-                <span>Mod Sync</span>
-              </div>
+                  <p>
+                    A dedicated interactive page for visualizing real network topology,
+                    VLAN routing, WireGuard paths, firewall logic, Proxmox hosts, OPNsense,
+                    and self-hosted services.
+                  </p>
+
+                  <div class="project-meta">
+                    <span>Proxmox</span>
+                    <span>OPNsense</span>
+                    <span>WireGuard</span>
+                    <span>VLANs</span>
+                  </div>
+
+                  <div class="project-info">
+                    <div>
+                      <small>Status</small>
+                      <strong>Planned</strong>
+                    </div>
+                    <div>
+                      <small>Complexity</small>
+                      <strong>High</strong>
+                    </div>
+                    <div>
+                      <small>Type</small>
+                      <strong>Infrastructure</strong>
+                    </div>
+                  </div>
+
+                  <div class="project-actions">
+                    <button class="btn secondary" type="button">Case Study</button>
+                    <button class="btn primary" type="button">Open Page</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="project-item" data-category="infrastructure">
+                <button class="project-summary" type="button">
+                  <span class="project-icon">🌐</span>
+                  <span>
+                    <small>Networking</small>
+                    <strong>WireGuard VLAN Routing</strong>
+                  </span>
+                  <span class="project-chevron">+</span>
+                </button>
+
+                <div class="project-details">
+                  <div class="project-preview route-preview">
+                    <span>LAN → VLAN → OPNsense → WireGuard → VPS</span>
+                  </div>
+
+                  <p>
+                    Selective VLAN routing through a Hetzner WireGuard exit while keeping
+                    normal LAN traffic on the standard WAN path. Built around firewall rules,
+                    gateway policy routing, NAT, DNS, and MTU tuning.
+                  </p>
+
+                  <div class="project-meta">
+                    <span>OPNsense</span>
+                    <span>Hetzner</span>
+                    <span>VPN</span>
+                    <span>Firewall</span>
+                  </div>
+
+                  <div class="project-info">
+                    <div>
+                      <small>Status</small>
+                      <strong>Built</strong>
+                    </div>
+                    <div>
+                      <small>Complexity</small>
+                      <strong>High</strong>
+                    </div>
+                    <div>
+                      <small>Type</small>
+                      <strong>Networking</strong>
+                    </div>
+                  </div>
+
+                  <div class="project-actions">
+                    <button class="btn secondary" type="button">Details</button>
+                    <button class="btn primary" type="button">Diagram</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="project-item" data-category="game">
+                <button class="project-summary" type="button">
+                  <span class="project-icon">🎮</span>
+                  <span>
+                    <small>Game Development</small>
+                    <strong>UE5 Survival Systems</strong>
+                  </span>
+                  <span class="project-chevron">+</span>
+                </button>
+
+                <div class="project-details">
+                  <div class="project-preview game-preview">
+                    <span>Interaction · Inventory · Survival · Colony Systems</span>
+                  </div>
+
+                  <p>
+                    Unreal Engine systems for interaction, inventory, equipment, survival,
+                    sci-fi world progression, modular gameplay, and scalable Blueprint architecture.
+                  </p>
+
+                  <div class="project-meta">
+                    <span>UE5</span>
+                    <span>Blueprints</span>
+                    <span>Inventory</span>
+                    <span>Interaction</span>
+                  </div>
+
+                  <div class="project-info">
+                    <div>
+                      <small>Status</small>
+                      <strong>Active</strong>
+                    </div>
+                    <div>
+                      <small>Complexity</small>
+                      <strong>High</strong>
+                    </div>
+                    <div>
+                      <small>Type</small>
+                      <strong>Game Systems</strong>
+                    </div>
+                  </div>
+
+                  <div class="project-actions">
+                    <button class="btn secondary" type="button">Systems</button>
+                    <button class="btn primary" type="button">Gameplay</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="project-item" data-category="software">
+                <button class="project-summary" type="button">
+                  <span class="project-icon">⚡</span>
+                  <span>
+                    <small>Server Ecosystem</small>
+                    <strong>Minecraft Platform</strong>
+                  </span>
+                  <span class="project-chevron">+</span>
+                </button>
+
+                <div class="project-details">
+                  <div class="project-preview code-preview">
+                    <span>Plugins · Servers · Automation · Player Tools</span>
+                  </div>
+
+                  <p>
+                    Custom server architecture, plugin concepts, modded infrastructure,
+                    launcher tooling, player utilities, automation workflows, and backend server design.
+                  </p>
+
+                  <div class="project-meta">
+                    <span>Java</span>
+                    <span>Paper</span>
+                    <span>Launcher</span>
+                    <span>Automation</span>
+                  </div>
+
+                  <div class="project-info">
+                    <div>
+                      <small>Status</small>
+                      <strong>Experimental</strong>
+                    </div>
+                    <div>
+                      <small>Complexity</small>
+                      <strong>Medium</strong>
+                    </div>
+                    <div>
+                      <small>Type</small>
+                      <strong>Server Platform</strong>
+                    </div>
+                  </div>
+
+                  <div class="project-actions">
+                    <button class="btn secondary" type="button">Plugins</button>
+                    <button class="btn primary" type="button">Server</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="project-item" data-category="software">
+                <button class="project-summary" type="button">
+                  <span class="project-icon">💻</span>
+                  <span>
+                    <small>Frontend</small>
+                    <strong>Portfolio V2 Interface</strong>
+                  </span>
+                  <span class="project-chevron">+</span>
+                </button>
+
+                <div class="project-details">
+                  <div class="project-preview ui-preview">
+                    <span>Glass UI · Theme Engine · Particle Field · Interactive Cards</span>
+                  </div>
+
+                  <p>
+                    A polished glassmorphism portfolio interface with theme switching,
+                    animated background particles, morphing navigation, interactive cards,
+                    and responsive layouts.
+                  </p>
+
+                  <div class="project-meta">
+                    <span>HTML</span>
+                    <span>CSS</span>
+                    <span>JavaScript</span>
+                    <span>UI/UX</span>
+                  </div>
+
+                  <div class="project-info">
+                    <div>
+                      <small>Status</small>
+                      <strong>Active</strong>
+                    </div>
+                    <div>
+                      <small>Complexity</small>
+                      <strong>Medium</strong>
+                    </div>
+                    <div>
+                      <small>Type</small>
+                      <strong>Frontend</strong>
+                    </div>
+                  </div>
+
+                  <div class="project-actions">
+                    <button class="btn secondary" type="button">Design</button>
+                    <button class="btn primary" type="button">Live Site</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="project-item" data-category="software">
+                <button class="project-summary" type="button">
+                  <span class="project-icon">🚀</span>
+                  <span>
+                    <small>Launcher</small>
+                    <strong>Monolith Launcher</strong>
+                  </span>
+                  <span class="project-chevron">+</span>
+                </button>
+
+                <div class="project-details">
+                  <div class="project-preview launcher-preview">
+                    <span>Profiles · Mod Sync · Server Status · Custom UI</span>
+                  </div>
+
+                  <p>
+                    A custom Minecraft launcher concept with profile management,
+                    mod syncing, server status, custom visuals, and a focused UI for a private server ecosystem.
+                  </p>
+
+                  <div class="project-meta">
+                    <span>Electron</span>
+                    <span>React</span>
+                    <span>Profiles</span>
+                    <span>Mod Sync</span>
+                  </div>
+
+                  <div class="project-info">
+                    <div>
+                      <small>Status</small>
+                      <strong>Prototype</strong>
+                    </div>
+                    <div>
+                      <small>Complexity</small>
+                      <strong>Medium</strong>
+                    </div>
+                    <div>
+                      <small>Type</small>
+                      <strong>Desktop App</strong>
+                    </div>
+                  </div>
+
+                  <div class="project-actions">
+                    <button class="btn secondary" type="button">UI Flow</button>
+                    <button class="btn primary" type="button">Launcher</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="project-item" data-category="mechanical">
+                <button class="project-summary" type="button">
+                  <span class="project-icon">🔧</span>
+                  <span>
+                    <small>Mechanical</small>
+                    <strong>Automotive Repair Work</strong>
+                  </span>
+                  <span class="project-chevron">+</span>
+                </button>
+
+                <div class="project-details">
+                  <div class="project-preview mechanical-preview">
+                    <span>Diagnostics · Brake Work · Suspension · Tooling</span>
+                  </div>
+
+                  <p>
+                    Brake service, suspension work, diagnostics, tool selection,
+                    repair planning, and hands-on mechanical troubleshooting with clean execution.
+                  </p>
+
+                  <div class="project-meta">
+                    <span>Diagnostics</span>
+                    <span>Brakes</span>
+                    <span>Suspension</span>
+                    <span>Tools</span>
+                  </div>
+
+                  <div class="project-info">
+                    <div>
+                      <small>Status</small>
+                      <strong>Ongoing</strong>
+                    </div>
+                    <div>
+                      <small>Complexity</small>
+                      <strong>Medium</strong>
+                    </div>
+                    <div>
+                      <small>Type</small>
+                      <strong>Repair</strong>
+                    </div>
+                  </div>
+
+                  <div class="project-actions">
+                    <button class="btn secondary" type="button">Repairs</button>
+                    <button class="btn primary" type="button">Tools</button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="project-item" data-category="mechanical">
+                <button class="project-summary" type="button">
+                  <span class="project-icon">🛠️</span>
+                  <span>
+                    <small>Fabrication</small>
+                    <strong>Small Vehicle Experiments</strong>
+                  </span>
+                  <span class="project-chevron">+</span>
+                </button>
+
+                <div class="project-details">
+                  <div class="project-preview fabrication-preview">
+                    <span>Electric Drive · Steering · Fabrication · Build Planning</span>
+                  </div>
+
+                  <p>
+                    Concept work around low-cost fabrication, electric conversions,
+                    mechanical steering, power delivery, and practical build planning.
+                  </p>
+
+                  <div class="project-meta">
+                    <span>Planning</span>
+                    <span>Mechanical</span>
+                    <span>Electrical</span>
+                    <span>Fabrication</span>
+                  </div>
+
+                  <div class="project-info">
+                    <div>
+                      <small>Status</small>
+                      <strong>Concept</strong>
+                    </div>
+                    <div>
+                      <small>Complexity</small>
+                      <strong>Medium</strong>
+                    </div>
+                    <div>
+                      <small>Type</small>
+                      <strong>Build</strong>
+                    </div>
+                  </div>
+
+                  <div class="project-actions">
+                    <button class="btn secondary" type="button">Plan</button>
+                    <button class="btn primary" type="button">Build</button>
+                  </div>
+                </div>
+              </article>
             </div>
-          </article>
-
-          <article class="project-item" data-category="mechanical">
-            <button class="project-summary" type="button">
-              <span class="project-icon">🔧</span>
-              <span>
-                <small>Mechanical</small>
-                <strong>Automotive Repair Work</strong>
-              </span>
-              <span class="project-chevron">+</span>
-            </button>
-
-            <div class="project-details">
-              <p>
-                Brake service, suspension work, diagnostics, tool selection,
-                repair planning, and hands-on mechanical troubleshooting with clean execution.
-              </p>
-
-              <div class="project-meta">
-                <span>Diagnostics</span>
-                <span>Brakes</span>
-                <span>Suspension</span>
-                <span>Tools</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="project-item" data-category="mechanical">
-            <button class="project-summary" type="button">
-              <span class="project-icon">🛠️</span>
-              <span>
-                <small>Fabrication</small>
-                <strong>Small Vehicle Experiments</strong>
-              </span>
-              <span class="project-chevron">+</span>
-            </button>
-
-            <div class="project-details">
-              <p>
-                Concept work around low-cost fabrication, electric conversions,
-                mechanical steering, power delivery, and practical build planning.
-              </p>
-
-              <div class="project-meta">
-                <span>Planning</span>
-                <span>Mechanical</span>
-                <span>Electrical</span>
-                <span>Fabrication</span>
-              </div>
-            </div>
-          </article>
+          </div>
         </div>
       </section>
 

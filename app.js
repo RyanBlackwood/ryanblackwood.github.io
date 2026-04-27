@@ -150,7 +150,6 @@ function moveTabIndicator(target) {
 
   const tabsRect = tabs.getBoundingClientRect();
   const targetRect = target.getBoundingClientRect();
-
   const left = targetRect.left - tabsRect.left + tabs.scrollLeft;
 
   tabIndicator.style.width = `${targetRect.width}px`;
@@ -234,17 +233,45 @@ glowTargets.forEach(target => {
 });
 
 /* =========================
-   PROJECT LIBRARY
+   PROJECT EXPLORER
 ========================= */
 
 const projectFilters = document.querySelectorAll(".project-filter");
 const projectItems = document.querySelectorAll(".project-item");
+const projectStageTop = document.querySelector(".project-stage-top");
+
+function updateProjectCounter() {
+  const visibleProjects = [...projectItems].filter(
+    item => !item.classList.contains("hidden")
+  ).length;
+
+  const openProject = document.querySelector(".project-item.open");
+  const openName = openProject
+    ? openProject.querySelector(".project-summary strong")?.textContent
+    : "No project selected";
+
+  if (projectStageTop) {
+    projectStageTop.innerHTML = `
+      <span>${visibleProjects} project${visibleProjects === 1 ? "" : "s"} visible</span>
+      <span>${openName}</span>
+    `;
+  }
+}
 
 projectItems.forEach(item => {
   const summary = item.querySelector(".project-summary");
 
   summary.addEventListener("click", () => {
-    item.classList.toggle("open");
+    const wasOpen = item.classList.contains("open");
+
+    projectItems.forEach(project => {
+      if (project !== item) {
+        project.classList.remove("open");
+      }
+    });
+
+    item.classList.toggle("open", !wasOpen);
+    updateProjectCounter();
   });
 
   item.addEventListener("mousemove", event => {
@@ -271,8 +298,21 @@ projectFilters.forEach(filter => {
         item.classList.remove("open");
       }
     });
+
+    const firstVisible = [...projectItems].find(
+      item => !item.classList.contains("hidden")
+    );
+
+    if (firstVisible) {
+      projectItems.forEach(item => item.classList.remove("open"));
+      firstVisible.classList.add("open");
+    }
+
+    updateProjectCounter();
   });
 });
+
+updateProjectCounter();
 
 /* =========================
    GLASS MORPH PANELS ON SCROLL
@@ -304,7 +344,9 @@ updatePanelMorph();
    MAGNETIC BUTTONS
 ========================= */
 
-const magneticItems = document.querySelectorAll(".btn, .theme-toggle, .project-filter");
+const magneticItems = document.querySelectorAll(
+  ".btn, .theme-toggle, .project-filter"
+);
 
 magneticItems.forEach(item => {
   item.addEventListener("mousemove", event => {
