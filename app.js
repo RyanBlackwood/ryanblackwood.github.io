@@ -106,10 +106,6 @@ const revealObserver = new IntersectionObserver(
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add("visible");
-
-        if (entry.target.classList.contains("skill-bar")) {
-          entry.target.classList.add("visible");
-        }
       }
     });
   },
@@ -209,6 +205,7 @@ function updateActiveSection() {
 }
 
 window.addEventListener("scroll", updateActiveSection, { passive: true });
+
 window.addEventListener("resize", () => {
   const active = document.querySelector(".tabs a.active") || tabLinks[0];
   moveTabIndicator(active);
@@ -237,23 +234,43 @@ glowTargets.forEach(target => {
 });
 
 /* =========================
-   PROJECT CARD INTERACTION
+   PROJECT LIBRARY
 ========================= */
 
-document.querySelectorAll(".project-card").forEach(card => {
-  card.addEventListener("mousemove", event => {
-    const rect = card.getBoundingClientRect();
+const projectFilters = document.querySelectorAll(".project-filter");
+const projectItems = document.querySelectorAll(".project-item");
 
-    card.style.setProperty("--mouse-x", `${event.clientX - rect.left}px`);
-    card.style.setProperty("--mouse-y", `${event.clientY - rect.top}px`);
+projectItems.forEach(item => {
+  const summary = item.querySelector(".project-summary");
+
+  summary.addEventListener("click", () => {
+    item.classList.toggle("open");
   });
 
-  card.addEventListener("mouseenter", () => {
-    card.style.willChange = "transform";
-  });
+  item.addEventListener("mousemove", event => {
+    const rect = item.getBoundingClientRect();
 
-  card.addEventListener("mouseleave", () => {
-    card.style.willChange = "auto";
+    item.style.setProperty("--mouse-x", `${event.clientX - rect.left}px`);
+    item.style.setProperty("--mouse-y", `${event.clientY - rect.top}px`);
+  });
+});
+
+projectFilters.forEach(filter => {
+  filter.addEventListener("click", () => {
+    const category = filter.dataset.filter;
+
+    projectFilters.forEach(btn => btn.classList.remove("active"));
+    filter.classList.add("active");
+
+    projectItems.forEach(item => {
+      const matches = category === "all" || item.dataset.category === category;
+
+      item.classList.toggle("hidden", !matches);
+
+      if (!matches) {
+        item.classList.remove("open");
+      }
+    });
   });
 });
 
@@ -287,7 +304,7 @@ updatePanelMorph();
    MAGNETIC BUTTONS
 ========================= */
 
-const magneticItems = document.querySelectorAll(".btn, .theme-toggle, .project-topline button");
+const magneticItems = document.querySelectorAll(".btn, .theme-toggle, .project-filter");
 
 magneticItems.forEach(item => {
   item.addEventListener("mousemove", event => {
