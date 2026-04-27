@@ -21,49 +21,14 @@ window.addEventListener('scroll',updateActiveTab,{passive:true});tabs.forEach(ta
 const filterButtons=[...document.querySelectorAll('.filter-pill')];const projectCards=[...document.querySelectorAll('.project-card')];const projectCount=document.getElementById('projectCount');const projectTitle=document.getElementById('projectFilterTitle');
 const labels={all:'All Projects',infrastructure:'Infrastructure',software:'Software','game-dev':'Game Dev',electronics:'Electronics',mechanical:'Mechanical'};
 function updateCounts(){filterButtons.forEach(btn=>{const cat=btn.dataset.filter;const count=cat==='all'?projectCards.length:projectCards.filter(card=>card.dataset.category===cat).length;const slot=btn.querySelector('strong');if(slot)slot.textContent=String(count).padStart(2,'0');});}
-function applyFilter(category){filterButtons.forEach(btn=>{const active=btn.dataset.filter===category;btn.classList.toggle('is-active',active);btn.setAttribute('aria-selected',String(active));});let visible=0;projectCards.forEach(card=>{const show=category==='all'||card.dataset.category===category;card.classList.toggle('hidden',!show);if(!show)card.classList.remove('is-open');else visible++;});if(projectCount)projectCount.textContent=visible;if(projectTitle)projectTitle.textContent=labels[category]||'Projects';}
+function applyFilter(category){filterButtons.forEach(btn=>{const active=btn.dataset.filter===category;btn.classList.toggle('is-active',active);btn.setAttribute('aria-selected',String(active));});let visible=0;projectCards.forEach(card=>{const show=category==='all'||card.dataset.category===category;card.classList.toggle('hidden',!show);if(!show){card.classList.remove('is-open');card.querySelector('.project-expand')?.setAttribute('aria-expanded','false');}else visible++;});if(projectCount)projectCount.textContent=visible;if(projectTitle)projectTitle.textContent=labels[category]||'Projects';}
 filterButtons.forEach(btn=>btn.addEventListener('click',()=>applyFilter(btn.dataset.filter||'all')));updateCounts();applyFilter('all');
-projectCards.forEach(card=>{const expand=card.querySelector('.project-expand');expand?.addEventListener('click',e=>{e.stopPropagation();const willOpen=!card.classList.contains('is-open');projectCards.forEach(other=>{if(other!==card)other.classList.remove('is-open')});card.classList.toggle('is-open',willOpen);});card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();card.style.setProperty('--mx',`${e.clientX-r.left}px`);card.style.setProperty('--my',`${e.clientY-r.top}px`);});});
+projectCards.forEach(card=>{const expand=card.querySelector('.project-expand');if(expand)expand.setAttribute('aria-expanded',String(card.classList.contains('is-open')));expand?.addEventListener('click',e=>{e.stopPropagation();const willOpen=!card.classList.contains('is-open');projectCards.forEach(other=>{if(other!==card){other.classList.remove('is-open');other.querySelector('.project-expand')?.setAttribute('aria-expanded','false');}});card.classList.toggle('is-open',willOpen);expand.setAttribute('aria-expanded',String(willOpen));});card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();card.style.setProperty('--mx',`${e.clientX-r.left}px`);card.style.setProperty('--my',`${e.clientY-r.top}px`);});});
+
+const historyItems=[...document.querySelectorAll('.history-item')];
+historyItems.forEach(item=>{const expand=item.querySelector('.history-expand');if(expand)expand.setAttribute('aria-expanded',String(item.classList.contains('is-open')));expand?.addEventListener('click',e=>{e.stopPropagation();const willOpen=!item.classList.contains('is-open');const parent=item.closest('.history-list');parent?.querySelectorAll('.history-item').forEach(other=>{if(other!==item){other.classList.remove('is-open');other.querySelector('.history-expand')?.setAttribute('aria-expanded','false');}});item.classList.toggle('is-open',willOpen);expand.setAttribute('aria-expanded',String(willOpen));});});
 
 const terminalToggle=document.getElementById('terminalToggle');const terminal=document.getElementById('terminal');const terminalInput=document.getElementById('terminalInput');const terminalOutput=document.getElementById('terminalOutput');
 function termLine(text){if(!terminalOutput)return;const p=document.createElement('p');p.textContent=text;terminalOutput.appendChild(p);terminalOutput.scrollTop=terminalOutput.scrollHeight;}
 terminalToggle?.addEventListener('click',()=>{const open=!terminal?.classList.contains('is-open');terminal?.classList.toggle('is-open',open);terminal?.setAttribute('aria-hidden',String(!open));if(open)setTimeout(()=>terminalInput?.focus(),60)});
 terminalInput?.addEventListener('keydown',e=>{if(e.key!=='Enter')return;const value=terminalInput.value.trim();if(!value)return;termLine('> '+value);terminalInput.value='';const cmd=value.toLowerCase();if(cmd==='help')termLine('commands: projects, electronics, homelab, contact, clear');else if(cmd==='projects'){location.hash='projects';termLine('opening project library...')}else if(cmd==='electronics'){location.hash='projects';applyFilter('electronics');termLine('filtering electronics projects...')}else if(cmd==='homelab'){location.hash='projects';applyFilter('infrastructure');document.querySelector('.project-card.featured')?.classList.add('is-open');termLine('opening homelab topology...')}else if(cmd==='contact'){location.hash='contact';termLine('opening contact section...')}else if(cmd==='clear')terminalOutput.innerHTML='';else termLine('unknown command. type help.');});
-
-/* Projects polish helpers: card click/touch polish + accessible expanded state */
-(function enhanceProjectCards(){
-  const cards = [...document.querySelectorAll('.project-card')];
-  if (!cards.length) return;
-
-  function syncExpandedStates(){
-    cards.forEach(card => {
-      const button = card.querySelector('.project-expand');
-      if (button) button.setAttribute('aria-expanded', String(card.classList.contains('is-open')));
-    });
-  }
-
-  cards.forEach(card => {
-    const button = card.querySelector('.project-expand');
-    if (button) button.setAttribute('aria-expanded', 'false');
-
-    card.addEventListener('click', event => {
-      const clickedControl = event.target.closest('a, button, input, textarea, select, label');
-      if (clickedControl) return;
-
-      const willOpen = !card.classList.contains('is-open');
-      cards.forEach(other => {
-        if (other !== card) other.classList.remove('is-open');
-      });
-      card.classList.toggle('is-open', willOpen);
-      syncExpandedStates();
-    });
-  });
-
-  document.addEventListener('click', event => {
-    if (event.target.closest('.project-expand')) {
-      requestAnimationFrame(syncExpandedStates);
-    }
-  });
-
-  syncExpandedStates();
-})();
