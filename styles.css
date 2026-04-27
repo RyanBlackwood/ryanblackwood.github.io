@@ -1256,3 +1256,259 @@ html[data-theme="light"] .bar {
     height: 130px;
   }
 }
+
+/* =========================================================
+   FINAL POLISH PASS OVERRIDES
+   Portfolio-focused project explorer refinements
+========================================================= */
+
+.section-kicker {
+  margin: 0 0 16px;
+  color: var(--glow);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.78rem;
+  font-weight: 950;
+}
+
+.project-console {
+  gap: 10px;
+}
+
+.project-console div {
+  display: grid;
+  gap: 1px;
+}
+
+.project-console strong {
+  color: var(--text);
+  line-height: 1.05;
+}
+
+.project-console small {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.console-pulse {
+  width: 10px;
+  height: 10px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--glow);
+  box-shadow: 0 0 18px var(--glow);
+  animation: consolePulse 1.8s ease-in-out infinite;
+}
+
+@keyframes consolePulse {
+  0%, 100% {
+    transform: scale(0.85);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}
+
+.project-preview > strong,
+.project-preview > span,
+.network-map {
+  position: relative;
+  z-index: 2;
+}
+
+.project-preview strong {
+  display: block;
+  max-width: min(680px, calc(100% - 32px));
+  padding: 0 12px;
+  line-height: 1.35;
+}
+
+/* Fixed, non-overlapping network preview */
+
+.network-preview {
+  grid-template-rows: 1fr auto;
+  gap: 10px;
+  padding: 14px;
+}
+
+.network-map {
+  position: relative;
+  width: min(430px, 100%);
+  height: 92px;
+  margin: 0 auto;
+}
+
+.network-node {
+  position: absolute;
+  width: 54px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.28);
+  box-shadow: 0 0 24px rgba(255,255,255,0.18);
+  color: white;
+  font-size: 0.76rem;
+  font-weight: 950;
+  z-index: 3;
+}
+
+.network-node.internet {
+  left: 0;
+  top: 27px;
+}
+
+.network-node.firewall {
+  left: calc(50% - 27px);
+  top: 27px;
+}
+
+.network-node.clients {
+  right: 0;
+  top: 27px;
+}
+
+.network-node.proxmox {
+  left: 30%;
+  bottom: 0;
+}
+
+.network-node.vpn {
+  right: 30%;
+  bottom: 0;
+}
+
+.network-link {
+  position: absolute;
+  height: 2px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.08), rgba(255,255,255,0.48), rgba(255,255,255,0.08));
+  transform-origin: left center;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.network-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 36%;
+  background: white;
+  filter: blur(2px);
+  opacity: 0.65;
+  animation: packetFlow 2.4s linear infinite;
+}
+
+@keyframes packetFlow {
+  from {
+    transform: translateX(-120%);
+  }
+
+  to {
+    transform: translateX(320%);
+  }
+}
+
+.link-wan {
+  left: 54px;
+  top: 46px;
+  width: calc(50% - 81px);
+}
+
+.link-lan {
+  left: calc(50% + 27px);
+  top: 46px;
+  width: calc(50% - 81px);
+}
+
+.link-host {
+  left: calc(30% + 42px);
+  top: 62px;
+  width: 20%;
+  transform: rotate(-22deg);
+}
+
+.link-vpn {
+  left: calc(50% + 16px);
+  top: 62px;
+  width: 21%;
+  transform: rotate(22deg);
+}
+
+.monolith-preview,
+.blackout-preview,
+.ai-preview,
+.optimization-preview,
+.level-preview,
+.emissions-preview,
+.small-engine-preview {
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255,255,255,0.18), transparent 38%),
+    linear-gradient(135deg, color-mix(in srgb, var(--glow) 65%, #111827), color-mix(in srgb, var(--glow-2) 58%, #0b1020));
+}
+
+.monolith-preview {
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255,255,255,0.18), transparent 38%),
+    radial-gradient(circle at 70% 40%, rgba(124,58,237,0.35), transparent 46%),
+    linear-gradient(135deg, #17112b, color-mix(in srgb, var(--glow) 50%, #0b1020));
+}
+
+.blackout-preview {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.12), transparent 38%),
+    radial-gradient(circle at 82% 50%, rgba(26,167,255,0.24), transparent 44%),
+    linear-gradient(135deg, #080a0f, #172033);
+}
+
+.ai-preview {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(122,215,255,0.32), transparent 30%),
+    linear-gradient(135deg, #0b1020, #12304a);
+}
+
+.optimization-preview {
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255,255,255,0.14), transparent 38%),
+    linear-gradient(135deg, #111827, #0f3b5c);
+}
+
+.level-preview {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15), transparent 38%),
+    linear-gradient(135deg, #102033, #233453);
+}
+
+.emissions-preview {
+  background:
+    radial-gradient(circle at 24% 24%, rgba(255,255,255,0.16), transparent 38%),
+    linear-gradient(135deg, #13251d, #0f3b5c);
+}
+
+.small-engine-preview {
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255,255,255,0.18), transparent 38%),
+    linear-gradient(135deg, #24211a, #22314d);
+}
+
+.project-item.open {
+  border-color: color-mix(in srgb, var(--glow) 34%, var(--border));
+}
+
+.project-stage-top span:last-child {
+  color: var(--text);
+}
+
+@media (max-width: 560px) {
+  .network-map {
+    transform: scale(0.84);
+  }
+
+  .project-preview strong {
+    font-size: 0.78rem;
+  }
+}

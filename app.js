@@ -34,16 +34,24 @@ const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
 
 let particles = [];
+let animationFrameId = null;
 
 function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+
+  canvas.width = Math.floor(window.innerWidth * pixelRatio);
+  canvas.height = Math.floor(window.innerHeight * pixelRatio);
+
+  canvas.style.width = `${window.innerWidth}px`;
+  canvas.style.height = `${window.innerHeight}px`;
+
+  ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 
   const particleCount = window.innerWidth < 700 ? 45 : 90;
 
   particles = Array.from({ length: particleCount }, () => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
     r: Math.random() * 2.2 + 0.45,
     dx: (Math.random() - 0.5) * 0.38,
     dy: (Math.random() - 0.5) * 0.38,
@@ -52,18 +60,18 @@ function resizeCanvas() {
 }
 
 function drawParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
   const theme = html.getAttribute("data-theme");
-  const dotAlphaMultiplier = theme === "dark" ? 1 : 0.42;
-  const lineAlphaMultiplier = theme === "dark" ? 1 : 0.42;
+  const dotAlphaMultiplier = theme === "dark" ? 1 : 0.36;
+  const lineAlphaMultiplier = theme === "dark" ? 1 : 0.36;
 
   particles.forEach((p, index) => {
     p.x += p.dx;
     p.y += p.dy;
 
-    if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-    if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+    if (p.x < 0 || p.x > window.innerWidth) p.dx *= -1;
+    if (p.y < 0 || p.y > window.innerHeight) p.dy *= -1;
 
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
@@ -87,12 +95,17 @@ function drawParticles() {
     }
   });
 
-  requestAnimationFrame(drawParticles);
+  animationFrameId = requestAnimationFrame(drawParticles);
+}
+
+function startParticles() {
+  if (animationFrameId) cancelAnimationFrame(animationFrameId);
+  resizeCanvas();
+  drawParticles();
 }
 
 window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
-drawParticles();
+startParticles();
 
 /* =========================
    REVEAL + SKILL FILL
@@ -124,6 +137,8 @@ skillBars.forEach(bar => revealObserver.observe(bar));
 const topbar = document.querySelector(".topbar");
 
 function updateHeaderState() {
+  if (!topbar) return;
+
   if (window.scrollY > 24) {
     topbar.classList.add("scrolled");
   } else {
@@ -141,12 +156,16 @@ updateHeaderState();
 const tabs = document.querySelector(".tabs");
 const tabLinks = document.querySelectorAll(".tabs a");
 
-const tabIndicator = document.createElement("span");
-tabIndicator.className = "tab-indicator";
-tabs.prepend(tabIndicator);
+let tabIndicator = null;
+
+if (tabs) {
+  tabIndicator = document.createElement("span");
+  tabIndicator.className = "tab-indicator";
+  tabs.prepend(tabIndicator);
+}
 
 function moveTabIndicator(target) {
-  if (!target) return;
+  if (!tabs || !tabIndicator || !target) return;
 
   const tabsRect = tabs.getBoundingClientRect();
   const targetRect = target.getBoundingClientRect();
@@ -174,10 +193,12 @@ tabLinks.forEach(link => {
   });
 });
 
-tabs.addEventListener("mouseleave", () => {
-  const active = document.querySelector(".tabs a.active");
-  if (active) moveTabIndicator(active);
-});
+if (tabs) {
+  tabs.addEventListener("mouseleave", () => {
+    const active = document.querySelector(".tabs a.active");
+    if (active) moveTabIndicator(active);
+  });
+}
 
 const sectionLinks = [...tabLinks]
   .map(link => {
@@ -240,34 +261,46 @@ const projectFilters = document.querySelectorAll(".project-filter");
 const projectItems = document.querySelectorAll(".project-item");
 const projectStageTop = document.querySelector(".project-stage-top");
 
-function updateProjectCounter() {
-  const visibleProjects = [...projectItems].filter(
-    item => !item.classList.contains("hidden")
-  ).length;
+function getVisibleProjects() {
+  return [...projectItems].filter(item => !item.classList.contains("hidden"));
+}
 
-  const openProject = document.querySelector(".project-item.open");
-  const openName = openProject
-    ? openProject.querySelector(".project-summary strong")?.textContent
+function getOpenProjectName() {
+  const openProject = document.querySelector(".project-item.open:not(.hidden)");
+  return openProject
+    ? openProject.querySelector(".project-summary strong")?.textContent || "Project selected"
     : "No project selected";
+}
+
+function updateProjectCounter() {
+  const visibleProjects = getVisibleProjects();
+  const openName = getOpenProjectName();
 
   if (projectStageTop) {
     projectStageTop.innerHTML = `
-      <span>${visibleProjects} project${visibleProjects === 1 ? "" : "s"} visible</span>
+      <span>${visibleProjects.length} project${visibleProjects.length === 1 ? "" : "s"} visible</span>
       <span>${openName}</span>
     `;
   }
 }
 
+function openProject(item) {
+  projectItems.forEach(project => {
+    if (project !== item) project.classList.remove("open");
+  });
+
+  item.classList.add("open");
+  updateProjectCounter();
+}
+
 projectItems.forEach(item => {
   const summary = item.querySelector(".project-summary");
 
-  summary.addEventListener("click", () => {
+  summary?.addEventListener("click", () => {
     const wasOpen = item.classList.contains("open");
 
     projectItems.forEach(project => {
-      if (project !== item) {
-        project.classList.remove("open");
-      }
+      if (project !== item) project.classList.remove("open");
     });
 
     item.classList.toggle("open", !wasOpen);
@@ -282,6 +315,18 @@ projectItems.forEach(item => {
   });
 });
 
+function updateFilterCounts() {
+  projectFilters.forEach(filter => {
+    const category = filter.dataset.filter;
+    const count = category === "all"
+      ? projectItems.length
+      : [...projectItems].filter(item => item.dataset.category === category).length;
+
+    const countSlot = filter.querySelector("strong");
+    if (countSlot) countSlot.textContent = String(count).padStart(2, "0");
+  });
+}
+
 projectFilters.forEach(filter => {
   filter.addEventListener("click", () => {
     const category = filter.dataset.filter;
@@ -291,7 +336,6 @@ projectFilters.forEach(filter => {
 
     projectItems.forEach(item => {
       const matches = category === "all" || item.dataset.category === category;
-
       item.classList.toggle("hidden", !matches);
 
       if (!matches) {
@@ -299,19 +343,19 @@ projectFilters.forEach(filter => {
       }
     });
 
-    const firstVisible = [...projectItems].find(
-      item => !item.classList.contains("hidden")
-    );
+    const firstVisible = getVisibleProjects()[0];
+
+    projectItems.forEach(item => item.classList.remove("open"));
 
     if (firstVisible) {
-      projectItems.forEach(item => item.classList.remove("open"));
-      firstVisible.classList.add("open");
+      openProject(firstVisible);
+    } else {
+      updateProjectCounter();
     }
-
-    updateProjectCounter();
   });
 });
 
+updateFilterCounts();
 updateProjectCounter();
 
 /* =========================
