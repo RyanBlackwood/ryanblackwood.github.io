@@ -895,3 +895,87 @@ main{position:relative;z-index:1;width:min(1180px,calc(100% - 32px));margin:0 au
   .brand-mark.brand-photo::before { border-radius: 999px; }
   .profile-core img { width: 136%; height: 136%; margin: -18%; }
 }
+
+
+/* =========================================================
+   v1.6 PROFILE ORB PORTRAIT REFINEMENT
+   Flat build: profile-orb.png remains beside index.html.
+   New portrait is centered, shadow/lighting corrected in the PNG,
+   and the glass circle stays transparent behind the face.
+========================================================= */
+.brand-mark.brand-photo {
+  border-radius: 999px;
+  padding: 4px;
+  background:
+    radial-gradient(circle at 32% 22%, rgba(255,255,255,.45), transparent 30%),
+    linear-gradient(145deg, rgba(255,255,255,.22), rgba(255,255,255,.06));
+  border: 1px solid rgba(255,255,255,.32);
+  overflow: hidden;
+}
+.brand-mark.brand-photo::before {
+  inset: 4px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 38% 24%, rgba(255,255,255,.32), transparent 28%),
+    radial-gradient(circle at 58% 72%, color-mix(in srgb, var(--glow) 26%, transparent), transparent 54%),
+    color-mix(in srgb, var(--panel-strong) 42%, transparent);
+  backdrop-filter: blur(18px) saturate(1.35);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
+}
+.brand-mark.brand-photo img {
+  position: relative;
+  z-index: 2;
+  width: 118%;
+  height: 118%;
+  margin: -9%;
+  object-fit: contain;
+  object-position: 50% 50%;
+  border-radius: 999px;
+  transform: none;
+  filter: brightness(1.02) contrast(1.02) saturate(1.01);
+}
+.profile-core {
+  overflow: visible;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 20%, rgba(255,255,255,.32), transparent 28%),
+    linear-gradient(145deg, rgba(255,255,255,.18), rgba(255,255,255,.05));
+  border: 1px solid rgba(255,255,255,.30);
+  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+}
+.profile-core::before {
+  inset: -10px;
+  z-index: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 24%, rgba(255,255,255,.28), transparent 23%),
+    radial-gradient(circle at 54% 62%, color-mix(in srgb, var(--glow) 34%, transparent), transparent 56%),
+    color-mix(in srgb, var(--panel-strong) 34%, transparent);
+  border: 1px solid rgba(255,255,255,.30);
+  backdrop-filter: blur(24px) saturate(1.38);
+  -webkit-backdrop-filter: blur(24px) saturate(1.38);
+  box-shadow:
+    inset 0 0 42px rgba(255,255,255,.11),
+    0 0 72px color-mix(in srgb, var(--glow) 30%, transparent);
+}
+.profile-core img {
+  position: relative;
+  z-index: 2;
+  width: 142%;
+  height: 142%;
+  margin: -21%;
+  object-fit: contain;
+  object-position: 50% 50%;
+  border-radius: 50%;
+  transform: none;
+  filter: brightness(1.02) contrast(1.02) saturate(1.01);
+}
+.profile-core:hover img {
+  transform: scale(1.015);
+  transition: transform .35s ease;
+}
+@media (max-width: 720px) {
+  .brand-mark.brand-photo img { width: 122%; height: 122%; margin: -11%; }
+  .profile-core img { width: 146%; height: 146%; margin: -23%; }
+}
