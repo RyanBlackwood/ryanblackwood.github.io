@@ -979,3 +979,57 @@ main{position:relative;z-index:1;width:min(1180px,calc(100% - 32px));margin:0 au
   .brand-mark.brand-photo img { width: 122%; height: 122%; margin: -11%; }
   .profile-core img { width: 146%; height: 146%; margin: -23%; }
 }
+
+/* =========================================================
+   v1.6.1 PROFILE ORB VISIBILITY FIX
+   Corrects the portrait alpha/masking issue so Ryan's face is visible
+   and only the portrait background stays transparent. Keeps the glass
+   card/orb visible behind the transparent PNG.
+========================================================= */
+.brand-mark.brand-photo {
+  background:
+    radial-gradient(circle at 35% 24%, rgba(255,255,255,.32), transparent 30%),
+    linear-gradient(145deg, rgba(255,255,255,.18), rgba(255,255,255,.055));
+}
+.brand-mark.brand-photo::before {
+  z-index: 1;
+  background:
+    radial-gradient(circle at 45% 35%, color-mix(in srgb, var(--glow) 28%, transparent), transparent 58%),
+    color-mix(in srgb, var(--panel-strong) 34%, transparent);
+}
+.brand-mark.brand-photo img {
+  z-index: 2;
+  width: 108%;
+  height: 108%;
+  margin: -4%;
+  object-fit: contain;
+  object-position: center center;
+  filter: brightness(1.04) contrast(1.03) saturate(.99);
+}
+.profile-core {
+  overflow: visible;
+  background:
+    radial-gradient(circle at 35% 22%, rgba(255,255,255,.30), transparent 28%),
+    linear-gradient(145deg, rgba(255,255,255,.18), rgba(255,255,255,.052));
+}
+.profile-core::before {
+  z-index: 0;
+  background:
+    radial-gradient(circle at 42% 28%, rgba(255,255,255,.32), transparent 24%),
+    radial-gradient(circle at 52% 58%, color-mix(in srgb, var(--glow) 38%, transparent), transparent 58%),
+    color-mix(in srgb, var(--panel-strong) 30%, transparent);
+}
+.profile-core img {
+  z-index: 2;
+  width: 108%;
+  height: 108%;
+  margin: -4%;
+  object-fit: contain;
+  object-position: center center;
+  border-radius: 50%;
+  filter: brightness(1.04) contrast(1.03) saturate(.99);
+}
+@media (max-width: 720px) {
+  .brand-mark.brand-photo img { width: 108%; height: 108%; margin: -4%; }
+  .profile-core img { width: 112%; height: 112%; margin: -6%; }
+}
