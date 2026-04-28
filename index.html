@@ -33,6 +33,7 @@
         <a class="tab" href="#about">About</a>
         <a class="tab" href="#education">Education</a>
         <a class="tab" href="#work">Work</a>
+        <a class="tab" href="#skills">Skills</a>
         <a class="tab" href="#projects">Projects</a>
         <a class="tab" href="#mechanical">Mechanical</a>
         <a class="tab" href="#contact">Contact</a>
@@ -41,7 +42,7 @@
   </header>
 
   <main>
-    <section id="summary" class="hero section-block">
+    <section id="summary" class="hero section-block hero-showcase">
       <div class="hero-card glass-shell reveal-card">
         <div class="eyebrow">Portfolio System</div>
         <h2>Hands-on engineering across software, infrastructure, electronics, game systems, and mechanical work.</h2>
@@ -52,6 +53,21 @@
         <div class="hero-actions">
           <a class="button button-primary" href="#projects">View Projects</a>
           <a class="button button-secondary" href="#contact">Get In Touch</a>
+        </div>
+      </div>
+
+      <div class="orb-card glass-shell reveal-card" aria-label="Top portfolio strengths">
+        <div class="skill-orb" aria-hidden="true">
+          <div class="orb-ring ring-one"></div>
+          <div class="orb-ring ring-two"></div>
+          <div class="orb-core">RB</div>
+          <div class="orbit-tag tag-a">Diagnostics</div>
+          <div class="orbit-tag tag-b">Systems</div>
+          <div class="orbit-tag tag-c">Repair</div>
+        </div>
+        <div class="orb-caption">
+          <strong>Engineer · Mechanic · Tinkerer</strong>
+          <span>Diagnostics, repair, infrastructure, fabrication, and interactive systems.</span>
         </div>
       </div>
     </section>
@@ -183,6 +199,25 @@
             </ul>
           </div>
         </article>
+      </div>
+    </section>
+
+
+    <section id="skills" class="section-block skills-section split-section">
+      <div class="section-heading reveal-card">
+        <p class="eyebrow">Skills</p>
+        <h2>Practical technical strengths.</h2>
+        <p>Animated progress bars highlight the hands-on areas most relevant to diagnostics, repair, testing, and build work.</p>
+      </div>
+      <div class="glass-shell content-card reveal-card skills-card">
+        <div class="skill-bars" aria-label="Technical skill levels">
+          <div class="skill-bar" style="--level:94%"><div class="skill-info"><span>System Diagnostics</span><strong>94%</strong></div><div class="bar-track"><div class="bar-fill"><i></i><i></i><i></i></div></div></div>
+          <div class="skill-bar" style="--level:92%"><div class="skill-info"><span>Computer Hardware & Repair</span><strong>92%</strong></div><div class="bar-track"><div class="bar-fill"><i></i><i></i><i></i></div></div></div>
+          <div class="skill-bar" style="--level:90%"><div class="skill-info"><span>Electronics Troubleshooting</span><strong>90%</strong></div><div class="bar-track"><div class="bar-fill"><i></i><i></i><i></i></div></div></div>
+          <div class="skill-bar" style="--level:86%"><div class="skill-info"><span>Infrastructure & Networking</span><strong>86%</strong></div><div class="bar-track"><div class="bar-fill"><i></i><i></i><i></i></div></div></div>
+          <div class="skill-bar" style="--level:84%"><div class="skill-info"><span>Game Systems Design</span><strong>84%</strong></div><div class="bar-track"><div class="bar-fill"><i></i><i></i><i></i></div></div></div>
+          <div class="skill-bar" style="--level:78%"><div class="skill-info"><span>FreeCAD & 3D Printing</span><strong>78%</strong></div><div class="bar-track"><div class="bar-fill"><i></i><i></i><i></i></div></div></div>
+        </div>
       </div>
     </section>
 
@@ -451,6 +486,9 @@
     <div id="terminalOutput" class="terminal-output">
       <p>&gt; Portfolio system online.</p>
       <p>&gt; Type help to view commands.</p>
+      <p>&gt; Type resume to download Ryan_Blackwood_Resume.pdf.</p>
+      <p>&gt; Try: work, education, skills, projects, electronics, homelab, contact.</p>
+      <p>&gt; Try: theme purple or themes.</p>
     </div>
     <label class="sr-only" for="terminalInput">Terminal input</label>
     <input id="terminalInput" class="terminal-input" type="text" autocomplete="off" placeholder="type a command..." />
