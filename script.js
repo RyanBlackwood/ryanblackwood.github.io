@@ -1,34 +1,253 @@
-
 const html = document.documentElement;
 const themeButton = document.getElementById('themeToggle');
 const themeIcon = themeButton?.querySelector('.theme-toggle__icon');
-function applyTheme(theme){html.setAttribute('data-theme',theme);localStorage.setItem('portfolio-theme',theme);if(themeIcon) themeIcon.textContent=theme==='dark'?'☀️':'🌙';themeButton?.setAttribute('aria-label',theme==='dark'?'Switch to light mode':'Switch to dark mode');}
+
+function applyTheme(theme) {
+  html.setAttribute('data-theme', theme);
+  localStorage.setItem('portfolio-theme', theme);
+  if (themeIcon) themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+  themeButton?.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+}
+
 applyTheme(localStorage.getItem('portfolio-theme') || 'dark');
-themeButton?.addEventListener('click',()=>applyTheme(html.getAttribute('data-theme')==='dark'?'light':'dark'));
+themeButton?.addEventListener('click', () => applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
 
-const canvas=document.getElementById('particles');const ctx=canvas?.getContext('2d');let particles=[];let raf=null;
-function resizeCanvas(){if(!canvas||!ctx)return;const ratio=Math.min(devicePixelRatio||1,2);canvas.width=Math.floor(innerWidth*ratio);canvas.height=Math.floor(innerHeight*ratio);canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px';ctx.setTransform(ratio,0,0,ratio,0,0);const count=innerWidth<700?42:88;particles=Array.from({length:count},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2+0.5,dx:(Math.random()-.5)*.35,dy:(Math.random()-.5)*.35,a:Math.random()*.42+.16}));}
-function draw(){if(!ctx)return;ctx.clearRect(0,0,innerWidth,innerHeight);const light=html.getAttribute('data-theme')==='light';const mul=light?.42:1;for(let i=0;i<particles.length;i++){const p=particles[i];p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>innerWidth)p.dx*=-1;if(p.y<0||p.y>innerHeight)p.dy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(26,167,255,${p.a*mul})`;ctx.fill();for(let j=i+1;j<particles.length;j++){const q=particles[j];const d=Math.hypot(p.x-q.x,p.y-q.y);if(d<118){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=`rgba(26,167,255,${(1-d/118)*.16*mul})`;ctx.lineWidth=1;ctx.stroke();}}}raf=requestAnimationFrame(draw)}
-function startParticles(){if(raf)cancelAnimationFrame(raf);resizeCanvas();draw()} window.addEventListener('resize',resizeCanvas,{passive:true});startParticles();
+const canvas = document.getElementById('particles');
+const ctx = canvas?.getContext('2d');
+let particles = [];
+let raf = null;
 
-const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('is-visible')}),{threshold:.14});document.querySelectorAll('.reveal-card').forEach(el=>revealObserver.observe(el));
+function resizeCanvas() {
+  if (!canvas || !ctx) return;
+  const ratio = Math.min(devicePixelRatio || 1, 2);
+  canvas.width = Math.floor(innerWidth * ratio);
+  canvas.height = Math.floor(innerHeight * ratio);
+  canvas.style.width = innerWidth + 'px';
+  canvas.style.height = innerHeight + 'px';
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  const count = innerWidth < 700 ? 42 : 88;
+  particles = Array.from({ length: count }, () => ({
+    x: Math.random() * innerWidth,
+    y: Math.random() * innerHeight,
+    r: Math.random() * 2 + 0.5,
+    dx: (Math.random() - .5) * .35,
+    dy: (Math.random() - .5) * .35,
+    a: Math.random() * .42 + .16
+  }));
+}
 
-const tabs=[...document.querySelectorAll('.section-tabs .tab')];const sections=tabs.map(tab=>({tab,section:document.querySelector(tab.getAttribute('href'))})).filter(x=>x.section);
-function setActiveTab(tab){tabs.forEach(t=>t.classList.toggle('is-active',t===tab));}
-function updateActiveTab(){let current=sections[0];sections.forEach(item=>{if(item.section.getBoundingClientRect().top<=innerHeight*.36)current=item});if(current)setActiveTab(current.tab)}
-window.addEventListener('scroll',updateActiveTab,{passive:true});tabs.forEach(tab=>tab.addEventListener('click',()=>setActiveTab(tab)));updateActiveTab();
+function draw() {
+  if (!ctx) return;
+  ctx.clearRect(0, 0, innerWidth, innerHeight);
+  const light = html.getAttribute('data-theme') === 'light';
+  const mul = light ? .42 : 1;
+  for (let i = 0; i < particles.length; i++) {
+    const p = particles[i];
+    p.x += p.dx;
+    p.y += p.dy;
+    if (p.x < 0 || p.x > innerWidth) p.dx *= -1;
+    if (p.y < 0 || p.y > innerHeight) p.dy *= -1;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(26,167,255,${p.a * mul})`;
+    ctx.fill();
+    for (let j = i + 1; j < particles.length; j++) {
+      const q = particles[j];
+      const d = Math.hypot(p.x - q.x, p.y - q.y);
+      if (d < 118) {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(q.x, q.y);
+        ctx.strokeStyle = `rgba(26,167,255,${(1 - d / 118) * .16 * mul})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+  }
+  raf = requestAnimationFrame(draw);
+}
 
-const filterButtons=[...document.querySelectorAll('.filter-pill')];const projectCards=[...document.querySelectorAll('.project-card')];const projectCount=document.getElementById('projectCount');const projectTitle=document.getElementById('projectFilterTitle');
-const labels={all:'All Projects',infrastructure:'Infrastructure',software:'Software','game-dev':'Game Dev',electronics:'Electronics',mechanical:'Mechanical'};
-function updateCounts(){filterButtons.forEach(btn=>{const cat=btn.dataset.filter;const count=cat==='all'?projectCards.length:projectCards.filter(card=>card.dataset.category===cat).length;const slot=btn.querySelector('strong');if(slot)slot.textContent=String(count).padStart(2,'0');});}
-function applyFilter(category){filterButtons.forEach(btn=>{const active=btn.dataset.filter===category;btn.classList.toggle('is-active',active);btn.setAttribute('aria-selected',String(active));});let visible=0;projectCards.forEach(card=>{const show=category==='all'||card.dataset.category===category;card.classList.toggle('hidden',!show);if(!show){card.classList.remove('is-open');card.querySelector('.project-expand')?.setAttribute('aria-expanded','false');}else visible++;});if(projectCount)projectCount.textContent=visible;if(projectTitle)projectTitle.textContent=labels[category]||'Projects';}
-filterButtons.forEach(btn=>btn.addEventListener('click',()=>applyFilter(btn.dataset.filter||'all')));updateCounts();applyFilter('all');
-projectCards.forEach(card=>{const expand=card.querySelector('.project-expand');if(expand)expand.setAttribute('aria-expanded',String(card.classList.contains('is-open')));expand?.addEventListener('click',e=>{e.stopPropagation();const willOpen=!card.classList.contains('is-open');projectCards.forEach(other=>{if(other!==card){other.classList.remove('is-open');other.querySelector('.project-expand')?.setAttribute('aria-expanded','false');}});card.classList.toggle('is-open',willOpen);expand.setAttribute('aria-expanded',String(willOpen));});card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();card.style.setProperty('--mx',`${e.clientX-r.left}px`);card.style.setProperty('--my',`${e.clientY-r.top}px`);});});
+function startParticles() {
+  if (raf) cancelAnimationFrame(raf);
+  resizeCanvas();
+  draw();
+}
 
-const historyItems=[...document.querySelectorAll('.history-item')];
-historyItems.forEach(item=>{const expand=item.querySelector('.history-expand');if(expand)expand.setAttribute('aria-expanded',String(item.classList.contains('is-open')));expand?.addEventListener('click',e=>{e.stopPropagation();const willOpen=!item.classList.contains('is-open');const parent=item.closest('.history-list');parent?.querySelectorAll('.history-item').forEach(other=>{if(other!==item){other.classList.remove('is-open');other.querySelector('.history-expand')?.setAttribute('aria-expanded','false');}});item.classList.toggle('is-open',willOpen);expand.setAttribute('aria-expanded',String(willOpen));});});
+window.addEventListener('resize', resizeCanvas, { passive: true });
+startParticles();
 
-const terminalToggle=document.getElementById('terminalToggle');const terminal=document.getElementById('terminal');const terminalInput=document.getElementById('terminalInput');const terminalOutput=document.getElementById('terminalOutput');
-function termLine(text){if(!terminalOutput)return;const p=document.createElement('p');p.textContent=text;terminalOutput.appendChild(p);terminalOutput.scrollTop=terminalOutput.scrollHeight;}
-terminalToggle?.addEventListener('click',()=>{const open=!terminal?.classList.contains('is-open');terminal?.classList.toggle('is-open',open);terminal?.setAttribute('aria-hidden',String(!open));if(open)setTimeout(()=>terminalInput?.focus(),60)});
-terminalInput?.addEventListener('keydown',e=>{if(e.key!=='Enter')return;const value=terminalInput.value.trim();if(!value)return;termLine('> '+value);terminalInput.value='';const cmd=value.toLowerCase();if(cmd==='help')termLine('commands: projects, electronics, homelab, contact, clear');else if(cmd==='projects'){location.hash='projects';termLine('opening project library...')}else if(cmd==='electronics'){location.hash='projects';applyFilter('electronics');termLine('filtering electronics projects...')}else if(cmd==='homelab'){location.hash='projects';applyFilter('infrastructure');document.querySelector('.project-card.featured')?.classList.add('is-open');termLine('opening homelab topology...')}else if(cmd==='contact'){location.hash='contact';termLine('opening contact section...')}else if(cmd==='clear')terminalOutput.innerHTML='';else termLine('unknown command. type help.');});
+const revealObserver = new IntersectionObserver(
+  entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); }),
+  { threshold: .14 }
+);
+document.querySelectorAll('.reveal-card').forEach(el => revealObserver.observe(el));
+
+const tabs = [...document.querySelectorAll('.section-tabs .tab')];
+const sections = tabs.map(tab => ({ tab, section: document.querySelector(tab.getAttribute('href')) })).filter(x => x.section);
+function setActiveTab(tab) { tabs.forEach(t => t.classList.toggle('is-active', t === tab)); }
+function updateActiveTab() {
+  let current = sections[0];
+  sections.forEach(item => { if (item.section.getBoundingClientRect().top <= innerHeight * .36) current = item; });
+  if (current) setActiveTab(current.tab);
+}
+window.addEventListener('scroll', updateActiveTab, { passive: true });
+tabs.forEach(tab => tab.addEventListener('click', () => setActiveTab(tab)));
+updateActiveTab();
+
+const filterButtons = [...document.querySelectorAll('.filter-pill')];
+const projectCards = [...document.querySelectorAll('.project-card')];
+const projectCount = document.getElementById('projectCount');
+const projectTitle = document.getElementById('projectFilterTitle');
+const labels = {
+  all: 'All Projects',
+  infrastructure: 'Infrastructure',
+  software: 'Software',
+  'game-dev': 'Game Dev',
+  electronics: 'Electronics',
+  mechanical: 'Mechanical'
+};
+
+function syncExpandButton(button, open) {
+  if (!button) return;
+  button.setAttribute('aria-expanded', String(open));
+  button.textContent = open ? '×' : '+';
+  button.title = open ? 'Collapse details' : 'Expand details';
+}
+
+function updateCounts() {
+  filterButtons.forEach(btn => {
+    const cat = btn.dataset.filter;
+    const count = cat === 'all' ? projectCards.length : projectCards.filter(card => card.dataset.category === cat).length;
+    const slot = btn.querySelector('strong');
+    if (slot) slot.textContent = String(count).padStart(2, '0');
+  });
+}
+
+function applyFilter(category) {
+  filterButtons.forEach(btn => {
+    const active = btn.dataset.filter === category;
+    btn.classList.toggle('is-active', active);
+    btn.setAttribute('aria-selected', String(active));
+  });
+
+  let visible = 0;
+  projectCards.forEach(card => {
+    const show = category === 'all' || card.dataset.category === category;
+    card.classList.toggle('hidden', !show);
+    if (!show) {
+      card.classList.remove('is-open');
+      syncExpandButton(card.querySelector('.project-expand'), false);
+    } else {
+      visible++;
+    }
+  });
+
+  if (projectCount) projectCount.textContent = visible;
+  if (projectTitle) projectTitle.textContent = labels[category] || 'Projects';
+}
+
+function toggleProjectCard(card) {
+  if (!card) return;
+  const willOpen = !card.classList.contains('is-open');
+  projectCards.forEach(other => {
+    if (other !== card) {
+      other.classList.remove('is-open');
+      syncExpandButton(other.querySelector('.project-expand'), false);
+    }
+  });
+  card.classList.toggle('is-open', willOpen);
+  syncExpandButton(card.querySelector('.project-expand'), willOpen);
+}
+
+function toggleHistoryItem(item) {
+  if (!item) return;
+  const willOpen = !item.classList.contains('is-open');
+  const parent = item.closest('.history-list');
+  parent?.querySelectorAll('.history-item').forEach(other => {
+    if (other !== item) {
+      other.classList.remove('is-open');
+      syncExpandButton(other.querySelector('.history-expand'), false);
+    }
+  });
+  item.classList.toggle('is-open', willOpen);
+  syncExpandButton(item.querySelector('.history-expand'), willOpen);
+}
+
+filterButtons.forEach(btn => btn.addEventListener('click', () => applyFilter(btn.dataset.filter || 'all')));
+updateCounts();
+applyFilter('all');
+
+projectCards.forEach(card => {
+  syncExpandButton(card.querySelector('.project-expand'), card.classList.contains('is-open'));
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    card.style.setProperty('--my', `${e.clientY - r.top}px`);
+  });
+});
+
+document.querySelectorAll('.history-item').forEach(item => {
+  syncExpandButton(item.querySelector('.history-expand'), item.classList.contains('is-open'));
+});
+
+document.addEventListener('click', event => {
+  const projectButton = event.target.closest('.project-expand');
+  if (projectButton) {
+    event.preventDefault();
+    event.stopPropagation();
+    toggleProjectCard(projectButton.closest('.project-card'));
+    return;
+  }
+
+  const historyButton = event.target.closest('.history-expand');
+  if (historyButton) {
+    event.preventDefault();
+    event.stopPropagation();
+    toggleHistoryItem(historyButton.closest('.history-item'));
+  }
+});
+
+const terminalToggle = document.getElementById('terminalToggle');
+const terminal = document.getElementById('terminal');
+const terminalInput = document.getElementById('terminalInput');
+const terminalOutput = document.getElementById('terminalOutput');
+
+function termLine(text) {
+  if (!terminalOutput) return;
+  const p = document.createElement('p');
+  p.textContent = text;
+  terminalOutput.appendChild(p);
+  terminalOutput.scrollTop = terminalOutput.scrollHeight;
+}
+
+terminalToggle?.addEventListener('click', () => {
+  const open = !terminal?.classList.contains('is-open');
+  terminal?.classList.toggle('is-open', open);
+  terminal?.setAttribute('aria-hidden', String(!open));
+  if (open) setTimeout(() => terminalInput?.focus(), 60);
+});
+
+terminalInput?.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const value = terminalInput.value.trim();
+  if (!value) return;
+  termLine('> ' + value);
+  terminalInput.value = '';
+  const cmd = value.toLowerCase();
+  if (cmd === 'help') termLine('commands: projects, electronics, homelab, contact, clear');
+  else if (cmd === 'projects') { location.hash = 'projects'; termLine('opening project library...'); }
+  else if (cmd === 'electronics') { location.hash = 'projects'; applyFilter('electronics'); termLine('filtering electronics projects...'); }
+  else if (cmd === 'homelab') {
+    location.hash = 'projects';
+    applyFilter('infrastructure');
+    const homelab = document.querySelector('.project-card.featured');
+    if (homelab) {
+      homelab.classList.add('is-open');
+      syncExpandButton(homelab.querySelector('.project-expand'), true);
+    }
+    termLine('opening homelab topology...');
+  }
+  else if (cmd === 'contact') { location.hash = 'contact'; termLine('opening contact section...'); }
+  else if (cmd === 'clear') terminalOutput.innerHTML = '';
+  else termLine('unknown command. type help.');
+});
