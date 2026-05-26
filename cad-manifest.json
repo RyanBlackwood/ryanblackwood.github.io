@@ -88,7 +88,7 @@
       ],
       "files": {
         "stl": "cad/CarAudio/Mid_Speaker_Mount/Mid_Speaker_Mount-Top.stl",
-        "freecad": "cad/CarAudio/Mid_Speaker_Mount/Mid_Speaker_Mount.FCStd",
+        "freecad": "cad/CarAudio/Mid_Speaker_Mount/Mid_Speaker_Mount.FCStd"
         
       }
     },
@@ -107,7 +107,7 @@
       ],
       "files": {
         "stl": "cad/CarAudio/Mid_Speaker_Mount/Mid_Speaker_Mount-Bottom.stl",
-        "freecad": "cad/CarAudio/Mid_Speaker_Mount/Mid_Speaker_Mount.FCStd",
+        "freecad": "cad/CarAudio/Mid_Speaker_Mount/Mid_Speaker_Mount.FCStd"
         
       }
     },
