@@ -1,0 +1,172 @@
+{
+  "version": "4.1-cad-integration",
+  "assetRoot": "cad",
+  "projects": [
+    {
+      "id": "battletiles-l1",
+      "family": "BattleTiles",
+      "title": "TileBase L1 v1",
+      "subtitle": "Low-profile modular battle tile base",
+      "description": "First layer BattleTiles base focused on repeatable tabletop terrain alignment, resin-printable geometry, and a clean foundation for future magnetic or powered tile concepts.",
+      "status": "Prototype",
+      "materials": "Resin print prototype",
+      "notes": [
+        "Baseline tile geometry for the BattleTiles system.",
+        "Useful for showing scale, modularity, and layer progression.",
+        "Pairs with L2/L3 versions to show iteration."
+      ],
+      "files": {
+        "stl": "cad/BattleTiles/TileBase_L1_v1/TileBase_L1_v1.stl",
+        "freecad": "cad/BattleTiles/TileBase_L1_v1/TileBase_L1_v1.FCStd"
+      }
+    },
+    {
+      "id": "battletiles-l2",
+      "family": "BattleTiles",
+      "title": "TileBase L2 v1",
+      "subtitle": "Second layer BattleTiles base iteration",
+      "description": "A follow-up layer prototype for the BattleTiles system, intended to demonstrate iterative CAD development and stacked terrain/platform design logic.",
+      "status": "Prototype",
+      "materials": "Resin print prototype",
+      "notes": [
+        "Shows how the base system evolves by layer.",
+        "Keeps the project family grouped instead of scattered.",
+        "Good candidate for future magnetic indexing details."
+      ],
+      "files": {
+        "stl": "cad/BattleTiles/TileBase_L2_v1/TileBase_L2_v1.stl",
+        "freecad": "cad/BattleTiles/TileBase_L2_v1/TileBase_L2_v1.FCStd"
+      }
+    },
+    {
+      "id": "battletiles-l3",
+      "family": "BattleTiles",
+      "title": "TileBase L3 v1",
+      "subtitle": "Third layer BattleTiles base iteration",
+      "description": "A higher layer concept in the BattleTiles family, showing how the system can support varied terrain heights while preserving a shared design language.",
+      "status": "Prototype",
+      "materials": "Resin print prototype",
+      "notes": [
+        "Demonstrates layered terrain progression.",
+        "Highlights modular product thinking.",
+        "Can support a future revision with more detailed alignment hardware."
+      ],
+      "files": {
+        "stl": "cad/BattleTiles/TileBase_L3_v1/TileBase_L3_v1.stl",
+        "freecad": "cad/BattleTiles/TileBase_L3_v1/TileBase_L3_v1.FCStd"
+      }
+    },
+    {
+      "id": "powertile",
+      "family": "BattleTiles",
+      "title": "PowerTile V1",
+      "subtitle": "Sliced powered tile manufacturing file",
+      "description": "Manufacturing-side CTB file for the powered tile concept. This is included as process evidence for resin printer preparation, orientation, supports, and production workflow.",
+      "status": "Sliced Print File",
+      "materials": "Resin CTB",
+      "notes": [
+        "Use the CTB as manufacturing evidence rather than viewer geometry.",
+        "Pairs with the BattleTiles family as the electronics/power direction.",
+        "Good place to add LED, magnet, or conductive contact notes later."
+      ],
+      "files": {
+        "ctb": "cad/BattleTiles/PowerTile_V1/PowerTile_V1.ctb"
+      }
+    },
+    {
+      "id": "mid-speaker-top",
+      "family": "Car Audio",
+      "title": "Mid Speaker Mount \u2014 Top",
+      "subtitle": "Automotive component speaker mount top shell",
+      "description": "Top half of a custom mid speaker mounting solution for vehicle audio fitment. Presented as a real-world functional CAD part rather than decorative modeling.",
+      "status": "Printed Prototype",
+      "materials": "Resin print / car audio fitment",
+      "notes": [
+        "Part of a two-piece mount system.",
+        "Shows practical fitment, mounting geometry, and real installation intent.",
+        "Download set includes STL, FreeCAD source, and CTB manufacturing files."
+      ],
+      "files": {
+        "stl": "cad/CarAudio/Mid_Speaker_Mount/Mid_Speaker_Mount-Top.stl",
+        "freecad": "cad/CarAudio/Mid_Speaker_Mount/Mid_Speaker_Mount.FCStd",
+        "ctb": "cad/CarAudio/Mid_Speaker_Mount/Mid_Speaker_Mount_Top.ctb"
+      }
+    },
+    {
+      "id": "mid-speaker-bottom",
+      "family": "Car Audio",
+      "title": "Mid Speaker Mount \u2014 Bottom",
+      "subtitle": "Automotive component speaker mount lower shell",
+      "description": "Bottom half of the mid speaker mounting system, designed to support clean fitment and a serviceable two-piece print strategy.",
+      "status": "Printed Prototype",
+      "materials": "Resin print / car audio fitment",
+      "notes": [
+        "Complements the top shell model.",
+        "Two-piece design makes the print and install path easier to explain.",
+        "Useful project for demonstrating CAD-to-install workflow."
+      ],
+      "files": {
+        "stl": "cad/CarAudio/Mid_Speaker_Mount/Mid_Speaker_Mount-Bottom.stl",
+        "freecad": "cad/CarAudio/Mid_Speaker_Mount/Mid_Speaker_Mount.FCStd",
+        "ctb": "cad/CarAudio/Mid_Speaker_Mount/Mid_Speaker_Mount_Bottom.ctb"
+      }
+    },
+    {
+      "id": "tweeter-mount",
+      "family": "Car Audio",
+      "title": "Universal Tweeter Mount",
+      "subtitle": "Universal tweeter fitment adapter",
+      "description": "Compact universal tweeter mount for adapting small audio components into a cleaner custom installation package.",
+      "status": "Printed Prototype",
+      "materials": "Resin print / car audio fitment",
+      "notes": [
+        "Small functional part with clear fitment purpose.",
+        "Good example of practical CAD use for automotive customization.",
+        "Includes STL, source CAD, and CTB file paths."
+      ],
+      "files": {
+        "stl": "cad/CarAudio/Tweeter_Mount_Universal/Tweeter_Mount_Universal.stl",
+        "freecad": "cad/CarAudio/Tweeter_Mount_Universal/Tweeter_Mount_Universal.FCStd",
+        "ctb": "cad/CarAudio/Tweeter_Mount_Universal/Tweeter_Mount_Universal.ctb"
+      }
+    },
+    {
+      "id": "socket-tree-quarter",
+      "family": "Tool Systems",
+      "title": "1/4in Socket Tree Test",
+      "subtitle": "Workshop socket organization prototype",
+      "description": "Prototype socket tree for 1/4in sockets. The next revision will use a larger base with two holes for surface-mounted inductive sensors, turning the storage concept into an inventory-aware tool system.",
+      "status": "Sensor Revision Planned",
+      "materials": "Resin print prototype",
+      "notes": [
+        "Current version validates socket spacing and physical storage layout.",
+        "Next version: larger base with two surface inductive sensor holes.",
+        "Portfolio value: bridges CAD, electronics, and inventory software thinking."
+      ],
+      "files": {
+        "stl": "cad/ToolSystems/1-4in_SocketTree_Test/1-4in_SocketTree_Test.stl",
+        "freecad": "cad/ToolSystems/1-4in_SocketTree_Test/1-4in_SocketTree_v1.FCStd",
+        "ctb": "cad/ToolSystems/1-4in_SocketTree_Test/1-4in_SocketTree_Test.ctb"
+      }
+    },
+    {
+      "id": "socket-tree-three-eighths",
+      "family": "Tool Systems",
+      "title": "3/8in Socket Tree Test",
+      "subtitle": "Workshop socket organization prototype",
+      "description": "Prototype socket tree for 3/8in sockets. This is part of a larger smart tool storage concept where physical tool presence can be detected and logged by software.",
+      "status": "Sensor Revision Planned",
+      "materials": "Resin print prototype",
+      "notes": [
+        "Current model supports the mechanical layout phase.",
+        "Future larger base will include two sensor mounting holes.",
+        "Strong recruiter story: mechanical design + sensor concept + software inventory system."
+      ],
+      "files": {
+        "stl": "cad/ToolSystems/3-8in_SocketTree_Test/3-8in_SocketTree_Test.stl",
+        "freecad": "cad/ToolSystems/3-8in_SocketTree_Test/3-8in_SocketTree_Test.FCStd",
+        "ctb": "cad/ToolSystems/3-8in_SocketTree_Test/3-8in_SocketTree_Test.ctb"
+      }
+    }
+  ]
+}

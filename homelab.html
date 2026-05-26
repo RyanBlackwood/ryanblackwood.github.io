@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Ryan Blackwood portfolio — engineering, mechanics, game development, homelab infrastructure, electronics repair, and software projects." name="description"/>
+<title>Ryan Blackwood | Homelab</title>
+<!-- Website v4: dedicated homelab simulator, troubleshooting lab, architecture viewer, and CAD/STL showcase -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
+</head>
+<body>
+<canvas aria-hidden="true" id="particles"></canvas>
+<div aria-hidden="true" class="page-glow"></div>
+<header class="site-header">
+<div class="header-card glass-shell">
+<div class="identity-row">
+<a aria-label="Ryan Blackwood home" class="brand-mark brand-photo" href="index.html#summary"><img alt="Ryan Blackwood" src="profile-orb.png"/></a>
+<div class="brand-copy">
+<h1>Ryan Blackwood</h1>
+<p id="subtitle">Engineer · Mechanic · Tinkerer</p>
+</div>
+<button aria-label="Toggle light and dark theme" class="theme-toggle" id="themeToggle" type="button">
+<span aria-hidden="true" class="theme-toggle__icon">☀️</span>
+</button>
+</div>
+<nav aria-label="Portfolio sections" class="section-tabs">
+<a class="tab" href="index.html#summary">Summary</a>
+<a class="tab" href="index.html#about">About</a>
+<a class="tab" href="index.html#work">Work</a>
+<a class="tab" href="index.html#skills">Skills</a>
+<a class="tab is-active" href="homelab.html">Homelab</a>
+<a class="tab" href="index.html#projects">Projects</a>
+<a class="tab" href="index.html#contact">Contact</a>
+</nav>
+</div>
+</header>
+<main>
+<section class="hero section-block hero-showcase homelab-page-hero" id="homelab-intro">
+<div class="hero-card glass-shell reveal-card">
+<div class="eyebrow">Dedicated Workspace</div>
+<h2>Homelab simulator and CAD showcase.</h2>
+<p>
+          This page keeps the main portfolio focused while giving the network topology, VLAN routing, WireGuard path, and CAD projects enough space for clear detail.
+        </p>
+<div class="hero-actions">
+<a class="button button-primary" href="#homelab">Open Network Simulator</a>
+<a class="button button-secondary" href="#troubleshooting">Run Troubleshooting Lab</a>
+<a class="button button-secondary" href="#cad">View STL Library</a>
+<a class="button button-secondary" href="index.html">Back to Portfolio</a>
+</div>
+</div>
+</section>
+<section class="section-block homelab-section" id="homelab">
+<div class="section-heading reveal-card">
+<p class="eyebrow">Homelab</p>
+<h2>Editable network lab.</h2>
+<p>Pan, zoom, drag nodes, edit device details, create new nodes, and simulate traffic across the homelab layout. Changes save locally in the browser.</p>
+</div>
+<div class="homelab-console glass-shell reveal-card">
+<div aria-label="Network tools" class="sim-toolbar sim-toolbar--wrap" role="group">
+<button class="sim-pill is-active" data-path="lan" type="button">LAN path</button>
+<button class="sim-pill" data-path="wg" type="button">WireGuard VLAN</button>
+<button class="sim-pill" data-path="eero" type="button">Eero VLAN</button>
+<button class="sim-pill" data-path="server" type="button">Hosted services</button>
+<button class="sim-pill sim-tool" id="addNode" type="button">+ Node</button>
+<button class="sim-pill sim-tool" id="deleteNode" type="button">Delete</button>
+<button class="sim-pill sim-tool" id="resetTopology" type="button">Reset</button>
+</div>
+<div class="network-simulator network-simulator--editor">
+<div aria-label="Editable homelab topology" class="topology-stage topology-stage--editor">
+<svg aria-labelledby="homelabTitle homelabDesc" class="topology-svg" id="homelabSvg" preserveaspectratio="xMidYMid meet" role="img" viewbox="0 0 1100 680">
+<title id="homelabTitle">Ryan Blackwood editable homelab topology</title>
+<desc id="homelabDesc">Arris modem feeds OPNsense on Proxmox, then VLANs separate main LAN, Eero, portfolio interaction, servers, and a Hetzner WireGuard-routed VLAN.</desc>
+<defs>
+<filter height="180%" id="simGlow" width="180%" x="-40%" y="-40%"><fegaussianblur result="blur" stddeviation="8"></fegaussianblur><femerge><femergenode in="blur"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+</defs>
+<g id="viewport">
+<g id="topologyLinks"></g>
+<g id="topologyNodes"></g>
+<circle class="packet-dot" cx="0" cy="0" id="packetDot" r="9"></circle>
+</g>
+</svg>
+<div class="topology-hint">Drag empty space to pan · mouse wheel / pinch to zoom · drag nodes to reposition · select a node to edit</div>
+</div>
+<aside aria-live="polite" class="node-inspector node-inspector--editor">
+<p class="eyebrow">Selected Node</p>
+<label class="editor-label">Title<input class="editor-input" id="nodeEditTitle" type="text"/></label>
+<label class="editor-label">Description<textarea class="editor-input" id="nodeEditDescription" rows="4"></textarea></label>
+<div class="editor-grid">
+<label class="editor-label">Role<input class="editor-input" id="nodeEditRole" type="text"/></label>
+<label class="editor-label">Segment<input class="editor-input" id="nodeEditSegment" type="text"/></label>
+<label class="editor-label">Status<input class="editor-input" id="nodeEditStatus" type="text"/></label>
+<label class="editor-label">Icon<input class="editor-input" id="nodeEditIcon" maxlength="2" type="text"/></label>
+</div>
+<div class="editor-actions">
+<button class="button button-secondary" id="saveNode" type="button">Save Node</button>
+<button class="button button-primary" id="runPacket" type="button">Run Packet</button>
+</div>
+<dl class="node-meta">
+<div><dt>Tip</dt><dd>Positions and edits are saved in localStorage.</dd></div>
+</dl>
+</aside>
+</div>
+</div>
+</section>
+<section class="section-block troubleshooting-section" id="troubleshooting">
+<div class="section-heading reveal-card">
+<p class="eyebrow">Troubleshooting Lab</p>
+<h2>Guided troubleshooting scenarios.</h2>
+<p>Select a scenario to review symptoms, likely causes, verification steps, and the fix path.</p>
+</div>
+<div class="glass-shell trouble-shell reveal-card">
+<div aria-label="Troubleshooting scenarios" class="trouble-list" role="tablist">
+<button class="trouble-case is-active" data-case="dns" type="button"><span>01</span><strong>DNS outage on VLAN 40</strong><small>Sites fail, ping still works</small></button>
+<button class="trouble-case" data-case="wg" type="button"><span>02</span><strong>WireGuard tunnel idle</strong><small>Handshake missing data</small></button>
+<button class="trouble-case" data-case="dhcp" type="button"><span>03</span><strong>VLAN DHCP failure</strong><small>Client self-assigns address</small></button>
+<button class="trouble-case" data-case="mtu" type="button"><span>04</span><strong>MTU blackhole</strong><small>Some websites hang</small></button>
+</div>
+<article class="trouble-detail" id="troubleDetail">
+<p class="eyebrow">Scenario 01</p>
+<h3>DNS outage on VLAN 40</h3>
+<p>Symptoms: IP pings succeed, but domain lookups fail from the WireGuard-routed VLAN.</p>
+<ol>
+<li>Confirm gateway reachability with a direct IP ping.</li>
+<li>Test DNS from the affected client and from OPNsense.</li>
+<li>Verify Unbound is listening on the VLAN interface.</li>
+<li>Apply interface/DNS rule fix and retest.</li>
+</ol>
+</article>
+</div>
+</section>
+<section class="section-block architecture-section" id="architecture">
+<div class="section-heading reveal-card">
+<p class="eyebrow">Architecture Viewer</p>
+<h2>Layered lab architecture.</h2>
+<p>Switch between layers to show how the lab is organized from edge routing through virtualization, services, and CAD delivery.</p>
+</div>
+<div class="glass-shell architecture-viewer reveal-card">
+<div class="arch-controls">
+<button class="arch-pill is-active" data-layer="edge" type="button">Edge</button>
+<button class="arch-pill" data-layer="virtualization" type="button">Virtualization</button>
+<button class="arch-pill" data-layer="services" type="button">Services</button>
+<button class="arch-pill" data-layer="cad" type="button">CAD Delivery</button>
+</div>
+<div class="arch-stack" id="archStack">
+<article><span>01</span><h3>Arris Modem</h3><p>Public WAN enters the environment.</p></article>
+<article><span>02</span><h3>OPNsense</h3><p>Routing, firewall policy, DHCP, DNS, VLAN interfaces, and WireGuard gateway control.</p></article>
+<article><span>03</span><h3>Managed Switch</h3><p>Port-level VLAN separation for lab clients, servers, and Eero network experiments.</p></article>
+</div>
+</div>
+</section>
+<section class="section-block cad-section cad-workbench-section" id="cad">
+<div class="section-heading reveal-card">
+<p class="eyebrow">CAD Showcase</p>
+<h2>CAD project library.</h2>
+<p>The CAD Showcase displays a 3D render of project files, dimensions, and allows the download of project files in the form of .STL, .FreeCAD, and .CTB.</p>
+</div>
+<div class="cad-workbench glass-shell reveal-card">
+<div class="cad-viewer-panel">
+<div class="cad-viewer-toolbar"><div><p class="eyebrow">Viewer</p><h3 id="cadTitle">Loading CAD Library</h3></div><div aria-label="CAD viewer display toggles" class="cad-toggle-row" role="group"><button class="sim-pill is-active" id="cadSolidToggle" type="button">Solid</button><button class="sim-pill is-active" id="cadWireToggle" type="button">Wireframe</button><button class="sim-pill is-active" id="cadDimsToggle" type="button">Dimensions</button></div></div>
+<div class="cad-canvas-shell"><canvas aria-label="Interactive STL mesh viewer" class="stl-viewer" id="stlCanvas"></canvas><div class="viewer-status" id="viewerStatus">Loading CAD manifest…</div></div>
+<div class="viewer-controls viewer-controls--spread"><button class="button button-secondary" id="resetCamera" type="button">Reset View</button><div aria-label="CAD downloads" class="cad-downloads" id="cadDownloads"></div></div>
+</div>
+<aside class="cad-info-panel">
+<div class="cad-details-card"><p class="eyebrow" id="cadFamily">Project Family</p><h3 id="cadProjectTitle">Select a CAD project</h3><p id="cadDesc">Choose a project to view geometry, dimensions, notes, and available downloads.</p><dl class="cad-meta-grid"><div><dt>Status</dt><dd id="cadStatus">—</dd></div><div><dt>Material / Use</dt><dd id="cadMaterial">—</dd></div><div><dt>Dimensions</dt><dd id="cadDimensions">Load STL</dd></div></dl><div class="cad-notes" id="cadNotes"></div></div>
+<div class="cad-library-toolbar"><button class="filter-pill is-active" data-cad-filter="all" type="button"><strong>All</strong></button><button class="filter-pill" data-cad-filter="BattleTiles" type="button"><strong>BattleTiles</strong></button><button class="filter-pill" data-cad-filter="Car Audio" type="button"><strong>Car Audio</strong></button><button class="filter-pill" data-cad-filter="Tool Systems" type="button"><strong>Tool Systems</strong></button></div>
+<div aria-label="CAD project library" class="cad-library cad-library--integrated" id="cadLibrary"></div>
+</aside>
+</div>
+
+</section>
+</main>
+<button aria-label="Open terminal panel" class="terminal-toggle" id="terminalToggle" type="button">⌘</button>
+<aside aria-hidden="true" aria-label="Portfolio terminal" class="terminal-panel glass-shell" id="terminal">
+<div class="terminal-header">
+<span></span><span></span><span></span>
+<strong>homelab.console</strong>
+</div>
+<div class="terminal-output" id="terminalOutput">
+<p>&gt; Portfolio system online.</p>
+<p>&gt; Type help to view commands.</p>
+<p>&gt; Type resume to download Ryan_Blackwood_Resume.pdf.</p>
+<p>&gt; Try: network, troubleshoot, architecture, cad, stl, projects, home, contact.</p>
+<p>&gt; Try: theme purple or themes.</p>
+</div>
+<label class="sr-only" for="terminalInput">Terminal input</label>
+<input autocomplete="off" class="terminal-input" id="terminalInput" placeholder="type a command..." type="text"/>
+</aside>
+<script src="script.js"></script>
+</body>
+</html>
