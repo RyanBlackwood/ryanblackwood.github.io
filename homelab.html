@@ -131,6 +131,9 @@
 <button class="dash-tab is-active" data-dash-view="overview" type="button">Overview</button>
 <button class="dash-tab" data-dash-view="proxmox" type="button">Proxmox</button>
 <button class="dash-tab" data-dash-view="opnsense" type="button">OPNsense</button>
+<button class="dash-tab" data-dash-view="gamefleet" type="button">Game Servers</button>
+<button class="dash-tab" data-dash-view="minecraft" type="button">Minecraft</button>
+<button class="dash-tab" data-dash-view="zomboid" type="button">Project Zomboid</button>
 <button class="dash-tab" data-dash-view="security" type="button">Firewall Events</button>
 </div>
 <div class="dash-grid">
@@ -158,6 +161,35 @@
 <section class="dash-panel" data-dash-card="overview security opnsense">
 <div class="dash-panel-head"><span>⛨</span><div><p class="eyebrow">Firewall Feed</p><h4>Recent events</h4></div></div>
 <div class="event-feed" id="eventFeed"></div>
+</section>
+<section class="dash-panel dash-panel--wide game-hero-panel" data-dash-card="overview gamefleet minecraft zomboid">
+<div class="dash-panel-head"><span>🎮</span><div><p class="eyebrow">Game Server Fleet</p><h4>Live demo operations</h4></div></div>
+<div class="game-server-grid" id="gameServerCards" aria-label="Simulated game server status cards"></div>
+</section>
+<section class="dash-panel" data-dash-card="gamefleet minecraft">
+<div class="dash-panel-head"><span>⛏</span><div><p class="eyebrow">Minecraft</p><h4>Server telemetry</h4></div></div>
+<div class="game-metric-stack" id="minecraftMetrics"></div>
+</section>
+<section class="dash-panel" data-dash-card="gamefleet zomboid">
+<div class="dash-panel-head"><span>☣</span><div><p class="eyebrow">Project Zomboid</p><h4>Server telemetry</h4></div></div>
+<div class="game-metric-stack" id="zomboidMetrics"></div>
+</section>
+<section class="dash-panel dash-panel--wide" data-dash-card="gamefleet minecraft zomboid">
+<div class="dash-panel-head"><span>◷</span><div><p class="eyebrow">Live Event Viewer</p><h4 id="gameEventTitle">Game server events</h4></div></div>
+<div class="game-event-toolbar" aria-label="Game event stream filters">
+<button class="game-filter is-active" data-game-filter="all" type="button">All</button>
+<button class="game-filter" data-game-filter="minecraft" type="button">Minecraft</button>
+<button class="game-filter" data-game-filter="zomboid" type="button">Zomboid</button>
+</div>
+<div class="game-event-feed" id="gameEventFeed" aria-live="polite"></div>
+</section>
+<section class="dash-panel" data-dash-card="gamefleet minecraft zomboid">
+<div class="dash-panel-head"><span>⇄</span><div><p class="eyebrow">Network Path</p><h4>Isolated service routing</h4></div></div>
+<div class="game-route-card">
+<strong id="gameRouteTitle">VLAN 40 service segment</strong>
+<p id="gameRouteText">Players reach game workloads through port-forward policy, firewall rules, and monitored VM resource limits.</p>
+<div class="route-steps"><span>WAN</span><i></i><span>OPNsense</span><i></i><span>VLAN 40</span><i></i><span>VM</span></div>
+</div>
 </section>
 <section class="dash-panel dash-panel--wide" data-dash-card="overview proxmox opnsense security">
 <div class="dash-panel-head"><span>⌁</span><div><p class="eyebrow">Console</p><h4>Sanitized activity log</h4></div></div>
