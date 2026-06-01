@@ -747,3 +747,65 @@ function initSandboxButton(){
   });
 }
 window.addEventListener('load',()=>{ initSkillHeatmap(); initTroubleshooting(); initArchitecture(); initSandboxButton(); });
+
+
+/* =========================================================
+   v4.2 — Simulated Proxmox / OPNsense dashboard telemetry
+========================================================= */
+const dashState={tick:0,view:'overview',baseStarted:Date.now()-1000*60*60*24*14-1000*60*60*6,logs:[
+  'dashboard booted in public-safe simulation mode',
+  'loaded sanitized Proxmox + OPNsense profile',
+  'confirmed management interfaces are represented, not exposed'
+]};
+const dashVLANs=[
+  {name:'MainLAN',cidr:'10.0.11.0/24',role:'trusted devices',state:'online'},
+  {name:'Lab VLAN',cidr:'10.0.20.0/24',role:'portfolio demos',state:'online'},
+  {name:'EeroLAN',cidr:'10.0.30.0/24',role:'Wi‑Fi clients',state:'online'},
+  {name:'WG Services',cidr:'10.0.40.0/24',role:'Hetzner egress',state:'routed'}
+];
+const dashVMs=[
+  {id:'100',name:'OPNsense',type:'Firewall VM',cpu:[8,15],mem:'2.4 / 4 GB',net:'WAN/LAN bridges'},
+  {id:'110',name:'Minecraft',type:'Game server',cpu:[12,34],mem:'3.8 / 8 GB',net:'VLAN 40'},
+  {id:'120',name:'Portfolio Lab',type:'Demo services',cpu:[4,13],mem:'1.1 / 4 GB',net:'VLAN 20'},
+  {id:'130',name:'Monitoring Notes',type:'Docs + status',cpu:[2,8],mem:'.7 / 2 GB',net:'MainLAN'}
+];
+const dashEvents=[
+  ['pass','DHCP lease renewed','MainLAN client received 10.0.11.x address'],
+  ['block','Default deny','Blocked inter-VLAN attempt from guest segment'],
+  ['pass','WireGuard keepalive','wg0 handshake refreshed through Hetzner exit'],
+  ['pass','Unbound query','DNS resolved for isolated VLAN client'],
+  ['block','WAN unsolicited','Dropped inbound packet on WAN interface']
+];
+function dashRand(min,max,phase=0){return Math.round(min+(max-min)*(0.5+0.5*Math.sin((dashState.tick+phase)/5)));}
+function setText(id,text){const el=document.getElementById(id);if(el)el.textContent=text;}
+function setBar(id,value){const el=document.getElementById(id);if(el)el.style.width=Math.max(2,Math.min(100,value))+'%';}
+function renderDashStatic(){
+  const vlan=document.getElementById('vlanList');
+  if(vlan) vlan.innerHTML=dashVLANs.map(v=>`<div class="vlan-row"><span></span><span><strong>${v.name}</strong><small>${v.role}</small></span><code>${v.cidr}</code></div>`).join('');
+  const table=document.getElementById('vmTable');
+  if(table) table.innerHTML='<div class="vm-row vm-head"><span>ID</span><span>Name</span><span>Type</span><span>Memory</span><span>Network</span></div>'+dashVMs.map(vm=>`<div class="vm-row" data-vm="${vm.id}"><span>${vm.id}</span><span>${vm.name}</span><span>${vm.type}</span><span>${vm.mem}</span><span>${vm.net}</span></div>`).join('');
+}
+function renderDashEvents(){
+  const feed=document.getElementById('eventFeed'); if(!feed) return;
+  const rotated=dashEvents.map((_,i)=>dashEvents[(i+dashState.tick)%dashEvents.length]).slice(0,4);
+  feed.innerHTML=rotated.map(([sev,title,body])=>`<div class="event-row" data-severity="${sev}"><small>${sev==='block'?'BLOCK':'PASS'} · just now</small><strong>${title}</strong><small>${body}</small></div>`).join('');
+}
+function pushDashLog(line){dashState.logs.unshift(new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'})+'  '+line);dashState.logs=dashState.logs.slice(0,8);const out=document.getElementById('dashConsole');if(out)out.innerHTML=dashState.logs.map(l=>`<div class="console-line">${l}</div>`).join('');}
+function updateDashboardTelemetry(){
+  if(!document.getElementById('live-dashboard')) return;
+  dashState.tick++;
+  const cpu=dashRand(12,31,1), mem=dashRand(38,53,8), disk=61, wan=dashRand(94,99,3);
+  setText('dashClock','Live demo · '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'}));
+  setText('proxCpu',cpu+'%'); setText('proxMem',mem+'%'); setText('proxDisk',disk+'%');
+  setBar('proxCpuBar',cpu); setBar('proxMemBar',mem); setBar('proxDiskBar',disk);
+  const upMs=Date.now()-dashState.baseStarted; const days=Math.floor(upMs/86400000); const hrs=Math.floor(upMs%86400000/3600000); setText('proxUptime',`${days}d ${String(hrs).padStart(2,'0')}h`);
+  setText('wanHealth',wan); const ring=document.getElementById('wanRing'); if(ring)ring.style.setProperty('--ring',wan+'%');
+  setText('wgState', dashState.tick%9===0?'WireGuard: keepalive refreshed':'WireGuard: active');
+  setText('dnsState', dashState.tick%7===0?'Unbound DNS checked on all VLAN interfaces':'Unbound DNS responding on VLANs');
+  document.querySelectorAll('[data-vm]').forEach((row,idx)=>{const vm=dashVMs[idx]; if(!vm)return; const cpu=dashRand(vm.cpu[0],vm.cpu[1],idx*3); row.style.borderColor=cpu>28?'rgba(250,204,21,.38)':''; row.title=`Simulated CPU: ${cpu}%`;});
+  renderDashEvents();
+  if(dashState.tick%4===0){const snippets=['sampled Proxmox node metrics','validated OPNsense VLAN gateway status','rotated firewall event feed','checked WireGuard route health','refreshed VM inventory snapshot'];pushDashLog(snippets[(dashState.tick/4)%snippets.length|0]);}
+}
+function setDashboardView(view){dashState.view=view||'overview';document.querySelectorAll('.dash-tab').forEach(b=>b.classList.toggle('is-active',b.dataset.dashView===dashState.view));document.querySelectorAll('[data-dash-card]').forEach(card=>{const views=(card.dataset.dashCard||'').split(' ');card.classList.toggle('is-hidden',!views.includes(dashState.view));});}
+function initLabDashboard(){if(!document.getElementById('live-dashboard'))return;renderDashStatic();renderDashEvents();setDashboardView('overview');document.querySelectorAll('.dash-tab').forEach(btn=>btn.addEventListener('click',()=>setDashboardView(btn.dataset.dashView)));pushDashLog('started dashboard telemetry loop');updateDashboardTelemetry();setInterval(updateDashboardTelemetry,2400);}
+window.addEventListener('load',initLabDashboard);

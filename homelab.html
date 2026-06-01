@@ -48,6 +48,7 @@
         </p>
 <div class="hero-actions">
 <a class="button button-primary" href="#homelab">Open Network Simulator</a>
+<a class="button button-secondary" href="#live-dashboard">View Live Dashboard</a>
 <a class="button button-secondary" href="#troubleshooting">Run Troubleshooting Lab</a>
 <a class="button button-secondary" href="#cad">View STL Library</a>
 <a class="button button-secondary" href="index.html">Back to Portfolio</a>
@@ -107,6 +108,66 @@
 </div>
 </div>
 </section>
+
+<section class="section-block dashboard-section" id="live-dashboard">
+<div class="section-heading reveal-card">
+<p class="eyebrow">Simulated Operations Dashboard</p>
+<h2>Proxmox + OPNsense live lab view.</h2>
+<p>A safe portfolio demo that looks and behaves like a live infrastructure dashboard without exposing real hostnames, keys, public IPs, logs, or management interfaces.</p>
+</div>
+<div class="lab-dashboard glass-shell reveal-card" data-dashboard-mode="overview">
+<div class="dash-topbar">
+<div>
+<p class="eyebrow">Edge Stack</p>
+<h3>Homelab control plane</h3>
+</div>
+<div class="dash-status-cluster" aria-label="Dashboard status summary">
+<span class="dash-live-dot"></span>
+<span id="dashClock">Syncing telemetry…</span>
+<span class="dash-badge dash-badge--good">Demo Safe</span>
+</div>
+</div>
+<div class="dash-tabs" aria-label="Dashboard views" role="tablist">
+<button class="dash-tab is-active" data-dash-view="overview" type="button">Overview</button>
+<button class="dash-tab" data-dash-view="proxmox" type="button">Proxmox</button>
+<button class="dash-tab" data-dash-view="opnsense" type="button">OPNsense</button>
+<button class="dash-tab" data-dash-view="security" type="button">Firewall Events</button>
+</div>
+<div class="dash-grid">
+<section class="dash-panel dash-panel--wide" data-dash-card="overview proxmox">
+<div class="dash-panel-head"><span>▦</span><div><p class="eyebrow">Proxmox Node</p><h4>Virtualization health</h4></div></div>
+<div class="metric-grid">
+<article><small>CPU Load</small><strong id="proxCpu">18%</strong><div class="meter"><i id="proxCpuBar"></i></div></article>
+<article><small>Memory</small><strong id="proxMem">42%</strong><div class="meter"><i id="proxMemBar"></i></div></article>
+<article><small>ZFS / Local</small><strong id="proxDisk">61%</strong><div class="meter"><i id="proxDiskBar"></i></div></article>
+<article><small>Uptime</small><strong id="proxUptime">14d 06h</strong><div class="mini-spark" id="proxSpark" aria-hidden="true"></div></article>
+</div>
+</section>
+<section class="dash-panel" data-dash-card="overview opnsense">
+<div class="dash-panel-head"><span>⌁</span><div><p class="eyebrow">OPNsense</p><h4>Firewall state</h4></div></div>
+<div class="gauge-card"><div class="ring" id="wanRing"><strong id="wanHealth">98</strong><small>WAN health</small></div><p><b id="wgState">WireGuard: active</b><br/><span id="dnsState">Unbound DNS responding on VLANs</span></p></div>
+</section>
+<section class="dash-panel" data-dash-card="overview opnsense security">
+<div class="dash-panel-head"><span>▤</span><div><p class="eyebrow">Interfaces</p><h4>VLAN gateways</h4></div></div>
+<div class="vlan-list" id="vlanList"></div>
+</section>
+<section class="dash-panel dash-panel--wide" data-dash-card="overview proxmox">
+<div class="dash-panel-head"><span>▣</span><div><p class="eyebrow">VM Inventory</p><h4>Service workloads</h4></div></div>
+<div class="vm-table" id="vmTable" role="table" aria-label="Simulated Proxmox virtual machines"></div>
+</section>
+<section class="dash-panel" data-dash-card="overview security opnsense">
+<div class="dash-panel-head"><span>⛨</span><div><p class="eyebrow">Firewall Feed</p><h4>Recent events</h4></div></div>
+<div class="event-feed" id="eventFeed"></div>
+</section>
+<section class="dash-panel dash-panel--wide" data-dash-card="overview proxmox opnsense security">
+<div class="dash-panel-head"><span>⌁</span><div><p class="eyebrow">Console</p><h4>Sanitized activity log</h4></div></div>
+<div class="dash-console" id="dashConsole" aria-live="polite"></div>
+</section>
+</div>
+<p class="dashboard-note">This dashboard is intentionally simulated for portfolio presentation. It demonstrates monitoring UX, segmentation awareness, and troubleshooting logic without exposing a real management plane to the public internet.</p>
+</div>
+</section>
+
 <section class="section-block troubleshooting-section" id="troubleshooting">
 <div class="section-heading reveal-card">
 <p class="eyebrow">Troubleshooting Lab</p>
