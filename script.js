@@ -891,101 +891,224 @@ function initLabDashboard(){
 window.addEventListener('load',initLabDashboard);
 
 /* =========================================================
-   v8 — Live SLA Printer Dashboard (read-only public telemetry)
+   v8.2 — Live SLA Printer Dashboard (Cloudflare Tunnel API)
+   CT110 -> printer_test.py -> Flask /status -> Cloudflare Tunnel -> GitHub Pages
 ========================================================= */
-const printerState={endpoint:'https://printer-api.blackwoodtechservices.com/status',last:null,events:[]};
-function printerSetText(id,text){const el=document.getElementById(id);if(el)el.textContent=text;}
-function printerSetBar(id,value){const el=document.getElementById(id);if(el)el.style.width=Math.max(2,Math.min(100,Number(value)||0))+'%';}
-function printerNumber(value,digits=1){const n=Number(value);return Number.isFinite(n)?n.toFixed(digits):'--';}
-function pushPrinterEvent(title,body,tone='ok'){
-  const time=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  printerState.events.unshift({time,title,body,tone});
-  printerState.events=printerState.events.slice(0,8);
-  const feed=document.getElementById('printerEventFeed');
-  if(feed)feed.innerHTML=printerState.events.map(e=>`<div class="printer-event" data-tone="${e.tone}"><em></em><span><strong>${e.title}</strong><small>${e.body}</small></span><code>${e.time}</code></div>`).join('');
+const printerState = {
+  endpoint: 'https://printer-api.blackwoodtechservices.com/status',
+  fallbackEndpoints: [
+    'https://printer-api.blackwoodtechservices.com/status',
+    'https://printer-api.blackwoodtechservices.com/'
+  ],
+  last: null,
+  events: [],
+  lastError: ''
+};
+
+function printerSetText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
 }
-function normalizePrinterData(data){
-  const print=data.active_print||{};
+
+function printerSetBar(id, value) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.width = Math.max(2, Math.min(100, Number(value) || 0)) + '%';
+}
+
+function printerNumber(value, digits = 1) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n.toFixed(digits) : '--';
+}
+
+function printerTime(value) {
+  if (!value) return 'just now';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleString([], {
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+}
+
+function pushPrinterEvent(title, body, tone = 'ok') {
+  const signature = `${title}|${body}|${tone}`;
+  if (printerState.events[0]?.signature === signature) return;
+
+  const time = new Date().toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+
+  printerState.events.unshift({ time, title, body, tone, signature });
+  printerState.events = printerState.events.slice(0, 8);
+
+  const feed = document.getElementById('printerEventFeed');
+  if (feed) {
+    feed.innerHTML = printerState.events
+      .map(e => `<div class="printer-event" data-tone="${e.tone}"><em></em><span><strong>${e.title}</strong><small>${e.body}</small></span><code>${e.time}</code></div>`)
+      .join('');
+  }
+}
+
+function normalizePrinterData(data) {
+  const print = data.active_print || data.print || {};
+  const film = data.release_film ?? data.releaseFilm ?? data.film ?? 0;
+  const filmMax = data.release_film_max ?? data.releaseFilmMax ?? data.filmMax ?? 60000;
+  const filmPct = data.release_film_used_percent ?? data.releaseFilmUsedPercent ?? (filmMax ? (Number(film) / Number(filmMax)) * 100 : 0);
+
   return {
-    printer:data.printer||data.machine_name||'Saturn 4 Ultra 16K',
-    status:data.status||'Unknown',
-    firmware:data.firmware||'Unknown',
-    protocol:data.protocol||'Unknown',
-    resolution:data.resolution||'Unknown',
-    buildVolume:data.build_volume||'Unknown',
-    uvTemp:data.uv_temp,
-    tankTemp:data.tank_temp,
-    tankTarget:data.tank_target,
-    heatStatus:data.heat_status,
-    timelapse:data.timelapse_status,
-    film:data.release_film??0,
-    filmMax:data.release_film_max??60000,
-    filmPct:data.release_film_used_percent??0,
-    cameraOnline:Boolean(data.camera_online||data.camera_url_discovered),
-    updated:data.updated||new Date().toISOString(),
-    filename:print.filename||data.current_print||'',
-    taskId:print.task_id||data.task_id||'',
-    currentLayer:print.current_layer??data.current_layer??0,
-    totalLayer:print.total_layer??data.total_layer??0,
-    progress:print.progress_percent??data.progress_percent??0,
-    errorNumber:print.error_number??data.error_number??0
+    printer: data.printer || data.machine_name || data.machine || 'Saturn 4 Ultra 16K',
+    status: data.status || data.state || 'Unknown',
+    firmware: data.firmware || data.firmware_version || 'Unknown',
+    protocol: data.protocol || data.protocol_version || 'Unknown',
+    resolution: data.resolution || 'Unknown',
+    buildVolume: data.build_volume || data.buildVolume || 'Unknown',
+    uvTemp: data.uv_temp ?? data.uvTemp ?? data.TempOfUVLED,
+    tankTemp: data.tank_temp ?? data.tankTemp ?? data.TempOfTank,
+    tankTarget: data.tank_target ?? data.tankTarget ?? data.TempTargetTank,
+    heatStatus: data.heat_status ?? data.heatStatus,
+    timelapse: data.timelapse_status ?? data.timelapseStatus,
+    film,
+    filmMax,
+    filmPct,
+    cameraOnline: Boolean(data.camera_online || data.camera_url_discovered || data.cameraOnline),
+    updated: data.updated || data.last_seen || data.lastUpdated || new Date().toISOString(),
+    filename: print.filename || print.Filename || data.current_print || data.filename || '',
+    taskId: print.task_id || print.TaskId || data.task_id || '',
+    currentLayer: print.current_layer ?? print.CurrentLayer ?? data.current_layer ?? 0,
+    totalLayer: print.total_layer ?? print.TotalLayer ?? data.total_layer ?? 0,
+    progress: print.progress_percent ?? data.progress_percent ?? data.progress ?? 0,
+    errorNumber: print.error_number ?? print.ErrorNumber ?? data.error_number ?? 0,
+    publicNote: data.public_note || 'Read-only public telemetry endpoint. Control commands are not exposed.'
   };
 }
-function renderPrinterDashboard(raw){
-  const d=normalizePrinterData(raw||{});
-  const changed=!printerState.last||printerState.last.status!==d.status||printerState.last.filename!==d.filename||printerState.last.currentLayer!==d.currentLayer;
-  printerState.last=d;
-  printerSetText('printerName',d.printer);
-  printerSetText('printerSubtitle',`Updated ${d.updated || 'just now'} · read-only public telemetry`);
-  printerSetText('printerStatusText',d.status);
-  const pill=document.getElementById('printerStatusPill');
-  if(pill){pill.dataset.state=(d.status||'unknown').toLowerCase();}
-  printerSetText('printerActiveFile',d.filename||'No active print');
-  printerSetText('printProgressValue',`${printerNumber(d.progress,1)}%`);
-  const ring=document.getElementById('printProgressRing');
-  if(ring)ring.style.setProperty('--printer-ring', `${Math.max(0,Math.min(100,Number(d.progress)||0))}%`);
-  printerSetText('printerLayer',`${d.currentLayer} / ${d.totalLayer}`);
-  printerSetText('printerTask',d.taskId||'N/A');
-  printerSetText('printerError',String(d.errorNumber ?? 0));
-  printerSetText('tankTemp',`${printerNumber(d.tankTemp,0)} °C`);
-  printerSetText('tankTarget',`${printerNumber(d.tankTarget,0)} °C`);
-  printerSetText('uvTemp',`${printerNumber(d.uvTemp,1)} °C`);
-  printerSetBar('tankTempBar',Number(d.tankTemp||0)/40*100);
-  printerSetBar('tankTargetBar',Number(d.tankTarget||0)/40*100);
-  printerSetBar('uvTempBar',Number(d.uvTemp||0)/60*100);
-  printerSetText('filmPercent',`${printerNumber(d.filmPct,1)}%`);
-  printerSetText('filmCount',String(d.film));
-  printerSetText('filmMax',String(d.filmMax));
-  printerSetBar('filmBar',d.filmPct);
-  printerSetText('cameraState',d.cameraOnline?'Camera endpoint discovered':'Camera endpoint not detected');
-  printerSetText('cameraNote',d.cameraOnline?'RTSP stream is private; public UI exposes availability only':'Waiting for Cmd 386 camera response');
-  printerSetText('printerFirmware',d.firmware);
-  printerSetText('printerProtocol',d.protocol);
-  printerSetText('printerResolution',d.resolution);
-  printerSetText('printerVolume',d.buildVolume);
-  if(changed) pushPrinterEvent('Telemetry refresh', `${d.status} · ${d.filename||'no active print'} · layer ${d.currentLayer}/${d.totalLayer}`, d.errorNumber?'warn':'ok');
+
+function renderPrinterDashboard(raw, endpointUsed = '') {
+  const d = normalizePrinterData(raw || {});
+  const changed = !printerState.last ||
+    printerState.last.status !== d.status ||
+    printerState.last.filename !== d.filename ||
+    printerState.last.currentLayer !== d.currentLayer ||
+    printerState.last.progress !== d.progress;
+
+  printerState.last = d;
+  printerState.lastError = '';
+
+  printerSetText('printerName', d.printer);
+  printerSetText('printerSubtitle', `Live via Cloudflare Tunnel · Updated ${printerTime(d.updated)}`);
+  printerSetText('printerStatusText', d.status);
+
+  const pill = document.getElementById('printerStatusPill');
+  if (pill) pill.dataset.state = (d.status || 'unknown').toLowerCase();
+
+  printerSetText('printerActiveFile', d.filename || 'No active print');
+  printerSetText('printProgressValue', `${printerNumber(d.progress, 1)}%`);
+
+  const ring = document.getElementById('printProgressRing');
+  if (ring) ring.style.setProperty('--printer-ring', `${Math.max(0, Math.min(100, Number(d.progress) || 0))}%`);
+
+  printerSetText('printerLayer', `${d.currentLayer} / ${d.totalLayer}`);
+  printerSetText('printerTask', d.taskId || 'N/A');
+  printerSetText('printerError', String(d.errorNumber ?? 0));
+
+  printerSetText('tankTemp', `${printerNumber(d.tankTemp, 0)} °C`);
+  printerSetText('tankTarget', `${printerNumber(d.tankTarget, 0)} °C`);
+  printerSetText('uvTemp', `${printerNumber(d.uvTemp, 1)} °C`);
+
+  printerSetBar('tankTempBar', Number(d.tankTemp || 0) / 40 * 100);
+  printerSetBar('tankTargetBar', Number(d.tankTarget || 0) / 40 * 100);
+  printerSetBar('uvTempBar', Number(d.uvTemp || 0) / 60 * 100);
+
+  printerSetText('filmPercent', `${printerNumber(d.filmPct, 1)}%`);
+  printerSetText('filmCount', String(d.film));
+  printerSetText('filmMax', String(d.filmMax));
+  printerSetBar('filmBar', d.filmPct);
+
+  printerSetText('cameraState', d.cameraOnline ? 'Camera endpoint discovered' : 'Camera endpoint not detected');
+  printerSetText('cameraNote', d.cameraOnline ? 'RTSP stream is private; public UI exposes availability only' : 'Waiting for Cmd 386 camera response');
+
+  printerSetText('printerFirmware', d.firmware);
+  printerSetText('printerProtocol', d.protocol);
+  printerSetText('printerResolution', d.resolution);
+  printerSetText('printerVolume', d.buildVolume);
+
+  if (changed) {
+    pushPrinterEvent(
+      'Telemetry refresh',
+      `${d.status} · ${d.filename || 'no active print'} · layer ${d.currentLayer}/${d.totalLayer} · ${printerNumber(d.progress, 1)}%`,
+      d.errorNumber ? 'warn' : 'ok'
+    );
+  }
+
+  if (endpointUsed && !printerState.events.some(e => e.title === 'Cloudflare endpoint connected')) {
+    pushPrinterEvent('Cloudflare endpoint connected', endpointUsed.replace('https://', ''), 'system');
+  }
 }
-function renderPrinterOffline(error){
-  printerSetText('printerSubtitle','Live endpoint unavailable; showing safe offline state');
-  printerSetText('printerStatusText','Offline');
-  const pill=document.getElementById('printerStatusPill'); if(pill)pill.dataset.state='offline';
-  pushPrinterEvent('Endpoint unavailable', String(error?.message||error||'Could not fetch telemetry'), 'warn');
+
+function renderPrinterOffline(error) {
+  const msg = String(error?.message || error || 'Could not fetch telemetry');
+  printerSetText('printerSubtitle', 'Live endpoint unavailable; check CT110, cloudflared, and /status');
+  printerSetText('printerStatusText', 'Offline');
+
+  const pill = document.getElementById('printerStatusPill');
+  if (pill) pill.dataset.state = 'offline';
+
+  if (printerState.lastError !== msg) {
+    printerState.lastError = msg;
+    pushPrinterEvent('Endpoint unavailable', msg, 'warn');
+  }
 }
-async function updatePrinterDashboard(){
-  const shell=document.querySelector('.printer-dashboard');
-  if(!shell)return;
-  const endpoint=shell.dataset.printerApi||printerState.endpoint;
-  try{
-    const res=await fetch(endpoint,{cache:'no-store'});
-    if(!res.ok)throw new Error(`HTTP ${res.status}`);
-    const data=await res.json();
-    renderPrinterDashboard(data);
-  }catch(err){renderPrinterOffline(err);}
+
+async function fetchPrinterEndpoint(endpoint) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 6500);
+  try {
+    const separator = endpoint.includes('?') ? '&' : '?';
+    const res = await fetch(`${endpoint}${separator}t=${Date.now()}`, {
+      cache: 'no-store',
+      mode: 'cors',
+      credentials: 'omit',
+      headers: { Accept: 'application/json' },
+      signal: controller.signal
+    });
+    if (!res.ok) throw new Error(`${endpoint} returned HTTP ${res.status}`);
+    return await res.json();
+  } finally {
+    clearTimeout(timeout);
+  }
 }
-function initPrinterDashboard(){
-  if(!document.querySelector('.printer-dashboard'))return;
-  pushPrinterEvent('Dashboard started','Connecting to sanitized Saturn telemetry endpoint','system');
+
+async function updatePrinterDashboard() {
+  const shell = document.querySelector('.printer-dashboard');
+  if (!shell) return;
+
+  const configured = shell.dataset.printerApi || printerState.endpoint;
+  const endpoints = [...new Set([configured, ...printerState.fallbackEndpoints].filter(Boolean))];
+
+  let lastError = null;
+  for (const endpoint of endpoints) {
+    try {
+      const data = await fetchPrinterEndpoint(endpoint);
+      renderPrinterDashboard(data, endpoint);
+      return;
+    } catch (err) {
+      lastError = err;
+    }
+  }
+
+  renderPrinterOffline(lastError);
+}
+
+function initPrinterDashboard() {
+  if (!document.querySelector('.printer-dashboard')) return;
+  pushPrinterEvent('Dashboard started', 'Connecting to CT110 Saturn telemetry through Cloudflare Tunnel', 'system');
   updatePrinterDashboard();
-  setInterval(updatePrinterDashboard,5000);
+  setInterval(updatePrinterDashboard, 5000);
 }
-window.addEventListener('load',initPrinterDashboard);
+
+window.addEventListener('load', initPrinterDashboard);
