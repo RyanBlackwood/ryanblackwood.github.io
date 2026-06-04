@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Ryan Blackwood portfolio — engineering, mechanics, game development, homelab infrastructure, electronics repair, and software projects." name="description"/>
+<title>Ryan Blackwood | Manufacturing Lab</title>
+<!-- Manufacturing lab: live SLA telemetry and CAD/STL project workspace -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
+</head>
+<body>
+<canvas aria-hidden="true" id="particles"></canvas>
+<div aria-hidden="true" class="page-glow"></div>
+<header class="site-header">
+<div class="header-card glass-shell">
+<div class="identity-row">
+<a aria-label="Ryan Blackwood home" class="brand-mark brand-photo" href="index.html#summary"><img alt="Ryan Blackwood" src="profile-orb.png"/></a>
+<div class="brand-copy">
+<h1>Ryan Blackwood</h1>
+<p id="subtitle">Engineer · Mechanic · Tinkerer</p>
+</div>
+<button aria-label="Toggle light and dark theme" class="theme-toggle" id="themeToggle" type="button">
+<span aria-hidden="true" class="theme-toggle__icon">☀️</span>
+</button>
+</div>
+<nav aria-label="Portfolio sections" class="section-tabs">
+<a class="tab" href="index.html#summary">Summary</a>
+<a class="tab" href="index.html#about">About</a>
+<a class="tab" href="index.html#work">Work</a>
+<a class="tab" href="index.html#skills">Skills</a>
+<a class="tab" href="homelab.html">Homelab</a>
+<a class="tab is-active" href="manufacturing.html">Manufacturing</a>
+<a class="tab" href="index.html#projects">Projects</a>
+<a class="tab" href="index.html#contact">Contact</a>
+</nav>
+</div>
+</header>
+<main>
+<section class="hero section-block hero-showcase manufacturing-page-hero" id="manufacturing-intro">
+<div class="hero-card glass-shell reveal-card">
+<div class="eyebrow">Manufacturing Lab</div>
+<h2>Live SLA telemetry and CAD project workspace.</h2>
+<p>
+          This page separates additive manufacturing and CAD work from the networking homelab. It combines a live read-only Saturn 4 Ultra dashboard with the interactive STL library and project download center.
+        </p>
+<div class="hero-actions">
+<a class="button button-primary" href="#printer-dashboard">Open Printer Dashboard</a>
+<a class="button button-secondary" href="#cad">View CAD Library</a>
+<a class="button button-secondary" href="homelab.html">Back to Homelab</a>
+</div>
+</div>
+</section>
+
+<section class="section-block printer-dashboard-section" id="printer-dashboard">
+<div class="section-heading reveal-card">
+<p class="eyebrow">Live SLA Operations</p>
+<h2>Saturn 4 Ultra telemetry dashboard.</h2>
+<p>Read-only telemetry is pulled from a local Python collector through Cloudflare Tunnel. The public endpoint exposes sanitized status only; print-control commands and raw printer access stay private.</p>
+</div>
+<div class="printer-dashboard glass-shell reveal-card" data-printer-api="https://printer-api.blackwoodtechservices.com/status">
+<div class="printer-topbar">
+<div>
+<p class="eyebrow">Blackwood Manufacturing Lab</p>
+<h3 id="printerName">Saturn 4 Ultra 16K</h3>
+<p id="printerSubtitle">Connecting to live telemetry…</p>
+</div>
+<div class="printer-status-pill" id="printerStatusPill"><span></span><strong id="printerStatusText">Syncing</strong></div>
+</div>
+<div class="printer-grid">
+<section class="printer-card printer-card--hero">
+<div class="printer-card-head"><span>▣</span><div><p class="eyebrow">Current Print</p><h4 id="printerActiveFile">No active print</h4></div></div>
+<div class="print-progress-wrap">
+<div class="print-progress-ring" id="printProgressRing"><strong id="printProgressValue">0%</strong><small>progress</small></div>
+<div class="print-progress-meta">
+<div><small>Layer</small><strong id="printerLayer">0 / 0</strong></div>
+<div><small>Task ID</small><strong id="printerTask">N/A</strong></div>
+<div><small>Error</small><strong id="printerError">0</strong></div>
+</div>
+</div>
+</section>
+<section class="printer-card">
+<div class="printer-card-head"><span>♨</span><div><p class="eyebrow">Thermal</p><h4>Resin and UV system</h4></div></div>
+<div class="printer-metric-stack">
+<div class="printer-metric"><small>Tank Temp</small><strong id="tankTemp">-- °C</strong><div class="meter"><i id="tankTempBar"></i></div></div>
+<div class="printer-metric"><small>Target Temp</small><strong id="tankTarget">-- °C</strong><div class="meter"><i id="tankTargetBar"></i></div></div>
+<div class="printer-metric"><small>UV LED Temp</small><strong id="uvTemp">-- °C</strong><div class="meter"><i id="uvTempBar"></i></div></div>
+</div>
+</section>
+<section class="printer-card">
+<div class="printer-card-head"><span>◌</span><div><p class="eyebrow">Consumables</p><h4>Release film life</h4></div></div>
+<div class="film-life-panel">
+<strong id="filmPercent">--%</strong>
+<div class="meter meter--large"><i id="filmBar"></i></div>
+<p><span id="filmCount">--</span> / <span id="filmMax">--</span> cycles used</p>
+</div>
+</section>
+<section class="printer-card">
+<div class="printer-card-head"><span>◉</span><div><p class="eyebrow">Camera</p><h4>RTSP discovered</h4></div></div>
+<div class="camera-safe-card">
+<strong id="cameraState">Checking…</strong>
+<p>Public dashboard shows camera availability only. Raw RTSP video stays private on the lab network.</p>
+<code id="cameraNote">rtsp endpoint hidden from public UI</code>
+</div>
+</section>
+<section class="printer-card printer-card--wide">
+<div class="printer-card-head"><span>⌁</span><div><p class="eyebrow">Machine Details</p><h4>Printer identity</h4></div></div>
+<div class="printer-detail-grid">
+<div><small>Firmware</small><strong id="printerFirmware">Unknown</strong></div>
+<div><small>Protocol</small><strong id="printerProtocol">Unknown</strong></div>
+<div><small>Resolution</small><strong id="printerResolution">Unknown</strong></div>
+<div><small>Build Volume</small><strong id="printerVolume">Unknown</strong></div>
+</div>
+</section>
+<section class="printer-card printer-card--wide">
+<div class="printer-card-head"><span>▤</span><div><p class="eyebrow">Live Event Viewer</p><h4>Telemetry feed</h4></div></div>
+<div class="printer-event-feed" id="printerEventFeed" aria-live="polite"></div>
+</section>
+</div>
+<p class="dashboard-note">This is a read-only public telemetry dashboard. Start, pause, resume, cancel, file upload, raw WebSocket, and RTSP stream access are intentionally not exposed.</p>
+</div>
+</section>
+<section class="section-block cad-section cad-workbench-section" id="cad">
+<div class="section-heading reveal-card">
+<p class="eyebrow">CAD Showcase</p>
+<h2>CAD project library.</h2>
+<p>The CAD Showcase displays a 3D render of project files, dimensions, and allows the download of project files in the form of .STL, .FreeCAD, and .CTB.</p>
+</div>
+<div class="cad-workbench glass-shell reveal-card">
+<div class="cad-viewer-panel">
+<div class="cad-viewer-toolbar"><div><p class="eyebrow">Viewer</p><h3 id="cadTitle">Loading CAD Library</h3></div><div aria-label="CAD viewer display toggles" class="cad-toggle-row" role="group"><button class="sim-pill is-active" id="cadSolidToggle" type="button">Solid</button><button class="sim-pill is-active" id="cadWireToggle" type="button">Wireframe</button><button class="sim-pill is-active" id="cadDimsToggle" type="button">Dimensions</button></div></div>
+<div class="cad-canvas-shell"><canvas aria-label="Interactive STL mesh viewer" class="stl-viewer" id="stlCanvas"></canvas><div class="viewer-status" id="viewerStatus">Loading CAD manifest…</div></div>
+<div class="viewer-controls viewer-controls--spread"><button class="button button-secondary" id="resetCamera" type="button">Reset View</button><div aria-label="CAD downloads" class="cad-downloads" id="cadDownloads"></div></div>
+</div>
+<aside class="cad-info-panel">
+<div class="cad-details-card"><p class="eyebrow" id="cadFamily">Project Family</p><h3 id="cadProjectTitle">Select a CAD project</h3><p id="cadDesc">Choose a project to view geometry, dimensions, notes, and available downloads.</p><dl class="cad-meta-grid"><div><dt>Status</dt><dd id="cadStatus">—</dd></div><div><dt>Material / Use</dt><dd id="cadMaterial">—</dd></div><div><dt>Dimensions</dt><dd id="cadDimensions">Load STL</dd></div></dl><div class="cad-notes" id="cadNotes"></div></div>
+<div class="cad-library-toolbar"><button class="filter-pill is-active" data-cad-filter="all" type="button"><strong>All</strong></button><button class="filter-pill" data-cad-filter="BattleTiles" type="button"><strong>BattleTiles</strong></button><button class="filter-pill" data-cad-filter="Car Audio" type="button"><strong>Car Audio</strong></button><button class="filter-pill" data-cad-filter="Tool Systems" type="button"><strong>Tool Systems</strong></button></div>
+<div aria-label="CAD project library" class="cad-library cad-library--integrated" id="cadLibrary"></div>
+</aside>
+</div>
+
+</section>
+
+</main>
+<button aria-label="Open terminal panel" class="terminal-toggle" id="terminalToggle" type="button">⌘</button>
+<aside aria-hidden="true" aria-label="Portfolio terminal" class="terminal-panel glass-shell" id="terminal">
+<div class="terminal-header">
+<span></span><span></span><span></span>
+<strong>manufacturing.console</strong>
+</div>
+<div class="terminal-output" id="terminalOutput">
+<p>&gt; Portfolio system online.</p>
+<p>&gt; Type help to view commands.</p>
+<p>&gt; Type resume to download RyanBlackwood_Resume.pdf.</p>
+<p>&gt; Try: printer, cad, stl, homelab, projects, home, contact.</p>
+<p>&gt; Try: theme purple or themes.</p>
+</div>
+<label class="sr-only" for="terminalInput">Terminal input</label>
+<input autocomplete="off" class="terminal-input" id="terminalInput" placeholder="type a command..." type="text"/>
+</aside>
+<script src="script.js"></script>
+</body>
+</html>

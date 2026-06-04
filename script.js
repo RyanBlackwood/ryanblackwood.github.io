@@ -283,6 +283,8 @@ const terminalCommands = {
   electronics: 'Filter projects: electronics',
   fabrication: 'Filter projects: mechanical / fabrication',
   homelab: 'Open the dedicated homelab page',
+  manufacturing: 'Open the manufacturing lab page',
+  printer: 'Open the live SLA printer dashboard',
   diagnose: 'Run a sample diagnostic summary',
   architecture: 'Open the architecture viewer',
   troubleshoot: 'Open troubleshooting lab',
@@ -409,7 +411,7 @@ function runTerminalCommand(rawValue) {
   const cmd = raw.replace(/\s+/g, '-');
   if (!cmd) return;
   if (cmd === 'help') return showHelp();
-  if (cmd === 'sections') return termLine('sections: summary, about, education, work, skills, tools, timeline, skill-map, logbook, projects, mechanical, contact, homelab page');
+  if (cmd === 'sections') return termLine('sections: summary, about, education, work, skills, tools, timeline, skill-map, logbook, projects, mechanical, contact, homelab page, manufacturing lab');
   if (cmd === 'clear') { if (terminalOutput) terminalOutput.innerHTML = ''; return; }
   if (cmd === 'resume' || cmd === 'download-resume') return downloadResume();
   if (cmd === 'open-resume' || cmd === 'view-resume') return openResume();
@@ -460,6 +462,16 @@ function runTerminalCommand(rawValue) {
     window.location.href = 'homelab.html';
     return;
   }
+  if (cmd === 'manufacturing' || cmd === 'manufacturing-lab' || cmd === 'sla') {
+    termLine('opening manufacturing lab...');
+    window.location.href = 'manufacturing.html';
+    return;
+  }
+  if (cmd === 'printer' || cmd === 'saturn' || cmd === 'telemetry') {
+    if (document.getElementById('printer-dashboard')) return scrollToSection('printer-dashboard', 'live SLA printer dashboard');
+    window.location.href = 'manufacturing.html#printer-dashboard';
+    return;
+  }
   if (cmd === 'diagnose') { termLine('diagnostic: WAN reachable; DHCP OK; DNS listening; WireGuard path should verify MTU and outbound NAT.', 'terminal-success'); return; }
   if (cmd === 'architecture') { if (document.getElementById('architecture')) return scrollToSection('architecture', 'architecture viewer'); window.location.href = 'homelab.html#architecture'; return; }
   if (cmd === 'troubleshoot' || cmd === 'troubleshooting') { if (document.getElementById('troubleshooting')) return scrollToSection('troubleshooting', 'troubleshooting lab'); window.location.href = 'homelab.html#troubleshooting'; return; }
@@ -469,8 +481,8 @@ function runTerminalCommand(rawValue) {
     return;
   }
   if (cmd === 'cad' || cmd === 'stl') {
-    if (document.getElementById('cad')) return scrollToSection('cad', 'CAD/STL showcase');
-    window.location.href = 'homelab.html#cad';
+    if (document.getElementById('cad') && document.getElementById('stlCanvas')) return scrollToSection('cad', 'CAD/STL showcase');
+    window.location.href = 'manufacturing.html#cad';
     return;
   }
   if (cmd === 'expand' || cmd === 'open-all') return expandVisibleCards();
@@ -877,3 +889,103 @@ function initLabDashboard(){
   setInterval(updateDashboardTelemetry,2400);
 }
 window.addEventListener('load',initLabDashboard);
+
+/* =========================================================
+   v8 — Live SLA Printer Dashboard (read-only public telemetry)
+========================================================= */
+const printerState={endpoint:'https://printer-api.blackwoodtechservices.com/status',last:null,events:[]};
+function printerSetText(id,text){const el=document.getElementById(id);if(el)el.textContent=text;}
+function printerSetBar(id,value){const el=document.getElementById(id);if(el)el.style.width=Math.max(2,Math.min(100,Number(value)||0))+'%';}
+function printerNumber(value,digits=1){const n=Number(value);return Number.isFinite(n)?n.toFixed(digits):'--';}
+function pushPrinterEvent(title,body,tone='ok'){
+  const time=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  printerState.events.unshift({time,title,body,tone});
+  printerState.events=printerState.events.slice(0,8);
+  const feed=document.getElementById('printerEventFeed');
+  if(feed)feed.innerHTML=printerState.events.map(e=>`<div class="printer-event" data-tone="${e.tone}"><em></em><span><strong>${e.title}</strong><small>${e.body}</small></span><code>${e.time}</code></div>`).join('');
+}
+function normalizePrinterData(data){
+  const print=data.active_print||{};
+  return {
+    printer:data.printer||data.machine_name||'Saturn 4 Ultra 16K',
+    status:data.status||'Unknown',
+    firmware:data.firmware||'Unknown',
+    protocol:data.protocol||'Unknown',
+    resolution:data.resolution||'Unknown',
+    buildVolume:data.build_volume||'Unknown',
+    uvTemp:data.uv_temp,
+    tankTemp:data.tank_temp,
+    tankTarget:data.tank_target,
+    heatStatus:data.heat_status,
+    timelapse:data.timelapse_status,
+    film:data.release_film??0,
+    filmMax:data.release_film_max??60000,
+    filmPct:data.release_film_used_percent??0,
+    cameraOnline:Boolean(data.camera_online||data.camera_url_discovered),
+    updated:data.updated||new Date().toISOString(),
+    filename:print.filename||data.current_print||'',
+    taskId:print.task_id||data.task_id||'',
+    currentLayer:print.current_layer??data.current_layer??0,
+    totalLayer:print.total_layer??data.total_layer??0,
+    progress:print.progress_percent??data.progress_percent??0,
+    errorNumber:print.error_number??data.error_number??0
+  };
+}
+function renderPrinterDashboard(raw){
+  const d=normalizePrinterData(raw||{});
+  const changed=!printerState.last||printerState.last.status!==d.status||printerState.last.filename!==d.filename||printerState.last.currentLayer!==d.currentLayer;
+  printerState.last=d;
+  printerSetText('printerName',d.printer);
+  printerSetText('printerSubtitle',`Updated ${d.updated || 'just now'} · read-only public telemetry`);
+  printerSetText('printerStatusText',d.status);
+  const pill=document.getElementById('printerStatusPill');
+  if(pill){pill.dataset.state=(d.status||'unknown').toLowerCase();}
+  printerSetText('printerActiveFile',d.filename||'No active print');
+  printerSetText('printProgressValue',`${printerNumber(d.progress,1)}%`);
+  const ring=document.getElementById('printProgressRing');
+  if(ring)ring.style.setProperty('--printer-ring', `${Math.max(0,Math.min(100,Number(d.progress)||0))}%`);
+  printerSetText('printerLayer',`${d.currentLayer} / ${d.totalLayer}`);
+  printerSetText('printerTask',d.taskId||'N/A');
+  printerSetText('printerError',String(d.errorNumber ?? 0));
+  printerSetText('tankTemp',`${printerNumber(d.tankTemp,0)} °C`);
+  printerSetText('tankTarget',`${printerNumber(d.tankTarget,0)} °C`);
+  printerSetText('uvTemp',`${printerNumber(d.uvTemp,1)} °C`);
+  printerSetBar('tankTempBar',Number(d.tankTemp||0)/40*100);
+  printerSetBar('tankTargetBar',Number(d.tankTarget||0)/40*100);
+  printerSetBar('uvTempBar',Number(d.uvTemp||0)/60*100);
+  printerSetText('filmPercent',`${printerNumber(d.filmPct,1)}%`);
+  printerSetText('filmCount',String(d.film));
+  printerSetText('filmMax',String(d.filmMax));
+  printerSetBar('filmBar',d.filmPct);
+  printerSetText('cameraState',d.cameraOnline?'Camera endpoint discovered':'Camera endpoint not detected');
+  printerSetText('cameraNote',d.cameraOnline?'RTSP stream is private; public UI exposes availability only':'Waiting for Cmd 386 camera response');
+  printerSetText('printerFirmware',d.firmware);
+  printerSetText('printerProtocol',d.protocol);
+  printerSetText('printerResolution',d.resolution);
+  printerSetText('printerVolume',d.buildVolume);
+  if(changed) pushPrinterEvent('Telemetry refresh', `${d.status} · ${d.filename||'no active print'} · layer ${d.currentLayer}/${d.totalLayer}`, d.errorNumber?'warn':'ok');
+}
+function renderPrinterOffline(error){
+  printerSetText('printerSubtitle','Live endpoint unavailable; showing safe offline state');
+  printerSetText('printerStatusText','Offline');
+  const pill=document.getElementById('printerStatusPill'); if(pill)pill.dataset.state='offline';
+  pushPrinterEvent('Endpoint unavailable', String(error?.message||error||'Could not fetch telemetry'), 'warn');
+}
+async function updatePrinterDashboard(){
+  const shell=document.querySelector('.printer-dashboard');
+  if(!shell)return;
+  const endpoint=shell.dataset.printerApi||printerState.endpoint;
+  try{
+    const res=await fetch(endpoint,{cache:'no-store'});
+    if(!res.ok)throw new Error(`HTTP ${res.status}`);
+    const data=await res.json();
+    renderPrinterDashboard(data);
+  }catch(err){renderPrinterOffline(err);}
+}
+function initPrinterDashboard(){
+  if(!document.querySelector('.printer-dashboard'))return;
+  pushPrinterEvent('Dashboard started','Connecting to sanitized Saturn telemetry endpoint','system');
+  updatePrinterDashboard();
+  setInterval(updatePrinterDashboard,5000);
+}
+window.addEventListener('load',initPrinterDashboard);
